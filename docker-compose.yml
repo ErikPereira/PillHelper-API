@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:13
+    volumes:
+      - ./node_modules/sdk-utils-module/scripts/database/postgres-create-tables.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: env_analysis
+    ports:
+      - 5432:5432
+  mongo:
+    image: mongo:4.4.1
+    volumes:
+      - ./node_modules/sdk-utils-module/scripts/database/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: admin
+    ports:
+      - 27017:27017
