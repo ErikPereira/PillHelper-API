@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const path = {
   test: ".env.test",
-  pipeline: ".env.pipeline",
+  dev: ".env.dev",
 };
 
 module.exports =

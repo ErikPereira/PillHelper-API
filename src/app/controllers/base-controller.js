@@ -1,55 +1,39 @@
 /* eslint-disable no-console */
 
 const { StatusCodes } = require("http-status-codes");
-const moment = require("moment");
-
-const lifecycleController = require("./lifecycle-controller");
-
 const CollectorResponse = require("../utils/response/CollectorResponse");
+const pillhelperController = require("./pillhelper-controller");
 
 class Controller {
   static routes() {
     return {
-      getLifecycle: "/getLifecycle",
+      test: "/test",
     };
   }
 
-  static formatResponseBody(body, requestInfo) {
-    const { startedAt } = requestInfo;
+  static formatResponseBody(body) {
     if (body.error) {
       return new CollectorResponse({
-        startedAt,
-        endedAt: moment(),
-        error: body.error,
-        status: "error",
+        response: false,
+        msg: body.error,
       });
     }
 
     return new CollectorResponse({
-      startedAt,
-      body,
-      endedAt: moment(),
-      status: "succeeded",
+      response: true,
+      msg: body,
     });
   }
 
-  static getLifecycle() {
-    const requestInfo = {
-      startedAt: moment(),
-    };
-
+  static test() {
     return async (req, res) => {
       try {
-        const lifecycleResponse = await lifecycleController.getLifecycle(
-          req.query
-        );
-        res
-          .status(StatusCodes.OK)
-          .send(this.formatResponseBody(lifecycleResponse, requestInfo));
+        const testeResponse = await pillhelperController.teste(req.body);
+        res.status(StatusCodes.OK).send(this.formatResponseBody(testeResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
-          .send(this.formatResponseBody({ error: error.message }, requestInfo));
+          .send(this.formatResponseBody({ error: error.message }));
       }
     };
   }

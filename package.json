@@ -1,19 +1,19 @@
 {
-  "name": "lifecycle-collector",
+  "name": "pill-helper-api",
   "version": "1.0.0",
-  "description": "Lifecycle collector project to be used in future collectors development. It is a part of the Equinix automation project.",
+  "description": "",
   "main": "server.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --testTimeout 80000 --detectOpenHandles --forceExit",
     "reset": "cross-env NODE_ENV=test node src/app/utils/reset-postgre.js --detectOpenHandles --forceExit",
     "start": "node server.js",
     "linter": "node node_modules/eslint/bin/eslint.js .",
-    "dev": "cross-env NODE_ENV=test node server.js",
-    "pipeline": "cross-env NODE_ENV=pipeline jest --testTimeout 80000 --detectOpenHandles --forceExit || exit 1"
+    "myTest": "cross-env NODE_ENV=test node server.js",
+    "dev": "cross-env NODE_ENV=dev jest --testTimeout 80000 --detectOpenHandles --forceExit || exit 1"
   },
   "repository": {
-    "type": "git",
-    "url": "http://gitlab-brhsa.equinix.com.br:8888/icarotech/environment-analysis/collectors/lifecycle-collector.git"
+    "type": "github",
+    "url": "https://github.com/ErikPereira/PillHelper-API"
   },
   "author": "Erik Bezerra",
   "license": "ISC",
@@ -27,7 +27,6 @@
     "eslint-plugin-prettier": "3.1.4",
     "jest": "26.6.3",
     "prettier": "2.1.2",
-    "sonarqube-scanner": "2.7.0",
     "supertest": "5.0.0"
   },
   "dependencies": {
@@ -39,11 +38,9 @@
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "http-status-codes": "2.1.4",
-    "js-base64": "3.6.0",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.20",
-    "moment": "2.29.1",
-    "sdk-utils-module": "git+ssh://git@gitlab.brhsa.equinix.com/icarotech/environment-analysis/back-end/sdk-utils-module.git",
+    "pill-helper-sdk": "https://github.com/ErikPereira/PillHelper-SDK.git",
     "uuid": "8.3.1"
   }
 }

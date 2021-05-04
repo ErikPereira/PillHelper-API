@@ -7,6 +7,12 @@ const app = express();
 
 app.use(authMiddleware.verifyJWT);
 
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
 routes(app);
 
 module.exports = app;

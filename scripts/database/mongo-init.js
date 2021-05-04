@@ -1,6 +1,6 @@
 db.auth("admin", "admin");
 
-db = db.getSiblingDB("env_analysis");
+db = db.getSiblingDB("pillHelperbd");
 
 db.createUser({
   user: "admin",
@@ -8,17 +8,11 @@ db.createUser({
   roles: [
     {
       role: "dbOwner",
-      db: "env_analysis",
+      db: "pillHelperbd",
     },
   ],
 });
 
-db.createCollection("metadata");
-db.createCollection("collector_object");
-db.createCollection("collected_data");
-db.createCollection("processed_data");
-db.createCollection("reports");
-db.createCollection("collector_template");
-db.createCollection("sn_client_configuration_items");
-db.createCollection("analysis");
-
+db.createCollection("User");
+db.createCollection("Box");
+db.createCollection("Pharmaceutical");

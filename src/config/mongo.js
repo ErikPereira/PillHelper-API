@@ -6,6 +6,7 @@ module.exports = {
     mongoDBdb: process.env.MONGO_DB,
     mongoDBAuthSource: process.env.MONGO_AUTH,
   },
-  mongoCollectionProductLifecycleData:
-    process.env.MONGO_COLLECTION_PRODUCT_LIFECYCLE_DATA,
+  mongoCollectionUser: process.env.MONGO_COLLECTION_USER,
+  mongoCollectionBox: process.env.MONGO_COLLECTION_BOX,
+  mongoCollectionPharmaceutical: process.env.MONGO_COLLECTION_PHARMACEUTICAL,
 };

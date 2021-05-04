@@ -1,4 +1,4 @@
-const MongoDBCollectionDao = require("sdk-utils-module/src/app/infra/mongodb/mongo-collection-dao");
+const MongoDBCollectionDao = require("pill-helper-sdk/src/app/infra/mongodb/mongo-collection-dao");
 
 const Mongo = require("../../../config/mongo");
 
