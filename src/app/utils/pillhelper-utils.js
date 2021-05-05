@@ -36,18 +36,42 @@ class TemplateUtils {
   }
 
   static checkHasError(response) {
+    let err = {};
     if (response.hasError) {
-      response.msg = response.msgError;
-      response.status = StatusCodes.INTERNAL_SERVER_ERROR;
-      throw response;
+      err = {
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        error: response.hasError,
+        msgError: response.msgError,
+        response: {},
+      };
+      throw err;
     }
   }
 
+  static checkError(err) {
+    const { msgError } = err;
+    const internalError = "Internal Server Error";
+
+    if (msgError === undefined) {
+      return {
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        error: true,
+        msgError: err.message || internalError,
+        response: {},
+      };
+    }
+    return err;
+  }
+
   static checkNotFound(result, message) {
-    const err = {};
+    let err = {};
     if (result.length === 0) {
-      err.message = `Not Found - ${message}`;
-      err.status = StatusCodes.NOT_FOUND;
+      err = {
+        status: StatusCodes.NOT_FOUND,
+        error: true,
+        msgError: `Not Found - ${message}`,
+        response: {},
+      };
       throw err;
     }
   }

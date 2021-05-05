@@ -56,13 +56,40 @@ async function getAllUser(mongo = Mongo) {
     utils.checkHasError(response);
     return response.result;
   } catch (err) {
-    console.log(`[mongo-controller.getAllUser] ${err.msg}`);
-    throw err;
+    const res = utils.checkError(err);
+    console.log(`[mongo-controller.getAllUser] ${res.msgError}`);
+    throw res;
+  }
+}
+
+async function getLoginUser(mongo = Mongo) {
+  try {
+    const jsonFilter = [
+      {
+        $project: {
+          _id: 0,
+          uuid: 1,
+          login: 1,
+        },
+      },
+    ];
+
+    const response = await mongoDao.aggregate(
+      mongo.mongoCollectionUser,
+      jsonFilter
+    );
+    utils.checkHasError(response);
+    return response.result;
+  } catch (err) {
+    const res = utils.checkError(err);
+    console.log(`[mongo-controller.getLoginUser] ${res.msgError}`);
+    throw res;
   }
 }
 
 module.exports = {
   savePillHelpers,
   getPillHelpers,
+  getLoginUser,
   getAllUser,
 };
