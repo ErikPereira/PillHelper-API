@@ -1,6 +1,9 @@
+const mongo = require("../../src/config/mongo");
+const dbName = mongo.oMongoConnection.mongoDBdb;
+
 db.auth("admin", "admin");
 
-db = db.getSiblingDB("pillHelperbd");
+db = db.getSiblingDB(dbName);
 
 db.createUser({
   user: "admin",
@@ -8,11 +11,11 @@ db.createUser({
   roles: [
     {
       role: "dbOwner",
-      db: "pillHelperbd",
+      db: dbName,
     },
   ],
 });
 
-db.createCollection("User");
-db.createCollection("Box");
-db.createCollection("Pharmaceutical");
+db.createCollection(mongo.mongoCollectionUser);
+db.createCollection(mongo.mongoCollectionBox);
+db.createCollection(mongo.mongoCollectionPharmaceutical);

@@ -1,6 +1,6 @@
 const { execSync } = require("child_process");
 
-function getLifecycle(url, username, password, tableIndex) {
+function getPillHelper(url, username, password, tableIndex) {
   try {
     let command = `python ./src/Python/collectTables.py "${url}" ${tableIndex}`;
 
@@ -21,11 +21,11 @@ function getLifecycle(url, username, password, tableIndex) {
 
     return JSON.parse(resultSet);
   } catch (err) {
-    console.log(`[python-services.getLifecycle] ${err.message}`);
+    console.log(`[python-services.getPillHelper] ${err.message}`);
     throw err;
   }
 }
 
 module.exports = {
-  getLifecycle,
+  getPillHelper,
 };

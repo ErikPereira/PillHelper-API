@@ -1,10 +1,10 @@
 const MongoDBCollectionDao = require("pill-helper-sdk/src/app/infra/mongodb/mongo-collection-dao");
-
 const Mongo = require("../../../config/mongo");
+const utils = require("../../utils/pillhelper-utils");
 
 const mongoDao = new MongoDBCollectionDao(Mongo.oMongoConnection);
 
-async function saveLifeCycles(lifeCycles, mongo = Mongo) {
+async function savePillHelpers(lifeCycles, mongo = Mongo) {
   /* Object to be used as filter in select */
 
   const jsonFilter = {
@@ -15,13 +15,13 @@ async function saveLifeCycles(lifeCycles, mongo = Mongo) {
 
   mongoDao.setURI(mongo.oMongoConnection);
   let result = await mongoDao.update(
-    mongo.mongoCollectionProductLifecycleData,
+    mongo.mongoCollectionProductPillHelperData,
     jsonFilter,
     lifeCycles
   );
   if (!result.result) {
     result = await mongoDao.insertOne(
-      mongo.mongoCollectionProductLifecycleData,
+      mongo.mongoCollectionProductPillHelperData,
       lifeCycles
     );
   }
@@ -29,17 +29,40 @@ async function saveLifeCycles(lifeCycles, mongo = Mongo) {
   return result;
 }
 
-async function getLifeCycles(lifeCycles, mongo = Mongo) {
+async function getPillHelpers(lifeCycles, mongo = Mongo) {
   const jsonFilter = {
     name: lifeCycles.name,
     type: lifeCycles.type,
     product: lifeCycles.product,
   };
   mongoDao.setURI(mongo.oMongoConnection);
-  return mongoDao.find(mongo.mongoCollectionProductLifecycleData, jsonFilter);
+  return mongoDao.find(mongo.mongoCollectionProductPillHelperData, jsonFilter);
+}
+
+async function getAllUser(mongo = Mongo) {
+  try {
+    const jsonFilter = [
+      {
+        $project: {
+          _id: 0,
+        },
+      },
+    ];
+
+    const response = await mongoDao.aggregate(
+      mongo.mongoCollectionUser,
+      jsonFilter
+    );
+    utils.checkHasError(response);
+    return response.result;
+  } catch (err) {
+    console.log(`[mongo-controller.getAllUser] ${err.msg}`);
+    throw err;
+  }
 }
 
 module.exports = {
-  saveLifeCycles,
-  getLifeCycles,
+  savePillHelpers,
+  getPillHelpers,
+  getAllUser,
 };

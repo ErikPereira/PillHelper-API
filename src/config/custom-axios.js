@@ -11,7 +11,7 @@ const msToSecs = 1000;
 const secsMultiplier = 2;
 const Headers = {
   headers: {
-    Authorization: JSON.parse(process.env.AXIOS_HEADER),
+    Authorization: "",
   },
 };
 

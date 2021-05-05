@@ -1,6 +1,6 @@
 const customAxios = require("../../config/custom-axios");
 
-async function getLifecycle(url) {
+async function getPillHelper(url) {
   const request = {
     url,
     method: "get",
@@ -11,5 +11,5 @@ async function getLifecycle(url) {
 }
 
 module.exports = {
-  getLifecycle,
+  getPillHelper,
 };

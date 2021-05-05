@@ -13,7 +13,7 @@ const mongoController = require("../../src/app/controllers/mongo/mongo-controlle
 const request = supertest(app);
 
 const validJwtToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjpudWxsLCJzeXN0ZW0iOiJsaWZlY3ljbGVDb250cm9sbGVyIn0.-swHY0LOYCWvzsij4PaO-aIthtjfblv770qDv7rsN_E";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZGV2Iiwic3lzdGVtIjoiQVBJIn0.6lrvVMtHdb6P5f-Au4c36SK1OT8kb0_gg5BuEok_TpU";
 
 const invalidJwtToken = "invalidJwtToken";
 
@@ -27,9 +27,11 @@ describe("Requester Controller", () => {
     // avoid jest rushing into tests without completing insertion on db
 
     mongoConn = new MongoDBCollectionDao(mongo.oMongoConnection);
-    await mongoConn.createCollection(mongo.mongoCollectionProductLifecycleData);
+    await mongoConn.createCollection(
+      mongo.mongoCollectionProductPillHelperData
+    );
     await mongoConn.insertMany(
-      mongo.mongoCollectionProductLifecycleData,
+      mongo.mongoCollectionProductPillHelperData,
       mock.mongoMock()
     );
 
@@ -39,32 +41,32 @@ describe("Requester Controller", () => {
 
   afterAll(async () => {
     await new Promise(resolve => setTimeout(() => resolve(), 500));
-    await mongoConn.dropCollection(mongo.mongoCollectionProductLifecycleData);
+    await mongoConn.dropCollection(mongo.mongoCollectionProductPillHelperData);
   });
 
-  describe("endpoint getLifecycle", () => {
-    it("getLifecycle invalid token", async () => {
+  describe("endpoint getPillHelper", () => {
+    it("getPillHelper invalid token", async () => {
       const result = await request
-        .get(`/getLifecycle?type=type&product=product`)
+        .get(`/getPillHelper?type=type&product=product`)
         .auth(invalidJwtToken, { type: "bearer" })
         .set("Accept", "application/json");
 
       expect(result).toEqual("Invalid JWT Token");
     });
 
-    it("getLifecycle Nont Found", async () => {
+    it("getPillHelper Nont Found", async () => {
       const result = await request
-        .get(`/getLifecycle?type=test&product=test`)
+        .get(`/getPillHelper?type=test&product=test`)
         .auth(validJwtToken, { type: "bearer" })
         .set("Accept", "application/json");
 
-      expect(result).toEqual("Not Found - Postgre, collectorLifeCycleParams");
+      expect(result).toEqual("Not Found - Postgre, collectorPillHelperParams");
       expect(result.status).toEqual(StatusCodes.NOT_FOUND);
     });
 
-    it("getLifecycle 500", async () => {
+    it("getPillHelper 500", async () => {
       const result = await request
-        .get(`/getLifecycle/`)
+        .get(`/getPillHelper/`)
         .auth(validJwtToken, { type: "bearer" })
         .set("Accept", "application/json");
 
@@ -74,18 +76,18 @@ describe("Requester Controller", () => {
   });
 
   describe("mongo Controller", () => {
-    it("saveLifeCycles insert", async () => {
-      const lifecycle = mock.mongoMock()[0];
-      lifecycle.name = "forTest";
-      lifecycle.lifecycle = {};
-      const result = await mongoController.saveLifeCycles(lifecycle);
+    it("savePillHelpers insert", async () => {
+      const pillHelper = mock.mongoMock()[0];
+      pillHelper.name = "forTest";
+      pillHelper.pillHelper = {};
+      const result = await mongoController.savePillHelpers(pillHelper);
 
       expect(result.hasError).toEqual(false);
       expect(result.msgError).toEqual("");
     });
 
-    it("saveLifeCycles update", async () => {
-      const result = await mongoController.saveLifeCycles(mock.mongoMock()[0]);
+    it("savePillHelpers update", async () => {
+      const result = await mongoController.savePillHelpers(mock.mongoMock()[0]);
 
       expect(result.hasError).toEqual(false);
       expect(result.msgError).toEqual("");

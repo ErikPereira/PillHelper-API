@@ -13,6 +13,8 @@ app.use(
   })
 );
 
+app.use(express.json());
+
 routes(app);
 
 module.exports = app;

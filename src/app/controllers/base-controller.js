@@ -1,39 +1,33 @@
 /* eslint-disable no-console */
 
 const { StatusCodes } = require("http-status-codes");
-const CollectorResponse = require("../utils/response/CollectorResponse");
 const pillhelperController = require("./pillhelper-controller");
 
 class Controller {
   static routes() {
     return {
-      test: "/test",
+      getAllUser: "/getAllUser",
     };
   }
 
   static formatResponseBody(body) {
-    if (body.error) {
-      return new CollectorResponse({
-        response: false,
-        msg: body.error,
-      });
-    }
-
-    return new CollectorResponse({
-      response: true,
-      msg: body,
-    });
+    return {
+      error: body.error,
+      response: body.response,
+    };
   }
 
-  static test() {
+  static getAllUser() {
     return async (req, res) => {
       try {
-        const testeResponse = await pillhelperController.teste(req.body);
-        res.status(StatusCodes.OK).send(this.formatResponseBody(testeResponse));
+        const getAllUserResponse = await pillhelperController.getAllUser();
+        res
+          .status(getAllUserResponse.status)
+          .send(this.formatResponseBody(getAllUserResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
-          .send(this.formatResponseBody({ error: error.message }));
+          .send(this.formatResponseBody(error));
       }
     };
   }

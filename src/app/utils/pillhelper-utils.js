@@ -37,7 +37,8 @@ class TemplateUtils {
 
   static checkHasError(response) {
     if (response.hasError) {
-      response.message = response.msgError;
+      response.msg = response.msgError;
+      response.status = StatusCodes.INTERNAL_SERVER_ERROR;
       throw response;
     }
   }
