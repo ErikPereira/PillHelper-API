@@ -26,7 +26,7 @@ async function insertOneUser(credentials, mongo = Mongo) {
     return { ...response, uuid: user.uuid };
   } catch (err) {
     const res = utils.checkError(err);
-    console.log(`[mongo-controller.getLoginUser] ${res.msgError}`);
+    console.log(`[mongoUser-controller.getLoginUser] ${res.msgError}`);
     throw res;
   }
 }
@@ -57,7 +57,7 @@ async function getOneUser(uuid, mongo = Mongo) {
     return response.result[0];
   } catch (err) {
     const res = utils.checkError(err);
-    console.log(`[mongo-controller.getLoginUser] ${res.msgError}`);
+    console.log(`[mongoUser-controller.getLoginUser] ${res.msgError}`);
     throw res;
   }
 }
@@ -80,7 +80,7 @@ async function getAllUser(mongo = Mongo) {
     return response.result;
   } catch (err) {
     const res = utils.checkError(err);
-    console.log(`[mongo-controller.getAllUser] ${res.msgError}`);
+    console.log(`[mongoUser-controller.getAllUser] ${res.msgError}`);
     throw res;
   }
 }
@@ -105,7 +105,7 @@ async function getLoginUser(mongo = Mongo) {
     return response.result;
   } catch (err) {
     const res = utils.checkError(err);
-    console.log(`[mongo-controller.getLoginUser] ${res.msgError}`);
+    console.log(`[mongoUser-controller.getLoginUser] ${res.msgError}`);
     throw res;
   }
 }
@@ -126,7 +126,7 @@ async function updateUser(user, mongo = Mongo) {
     utils.checkUpdateFail(response.result);
   } catch (err) {
     const res = utils.checkError(err);
-    console.log(`[mongo-controller.updateUser] ${res.msgError}`);
+    console.log(`[mongoUser-controller.updateUser] ${res.msgError}`);
     throw res;
   }
 }

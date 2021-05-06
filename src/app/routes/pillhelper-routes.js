@@ -1,14 +1,21 @@
 const BaseController = require("../controllers/base-controller");
 
 module.exports = app => {
-  const reportRoutes = BaseController.routes();
+  const { User, Box } = BaseController.routes();
 
   // Users endpoints
-  app.get(reportRoutes.getAllUser, BaseController.getAllUser());
 
-  app.post(reportRoutes.updateAlarmUser, BaseController.updateAlarmUser());
-  app.post(reportRoutes.createAlarmUser, BaseController.createAlarmUser());
-  app.post(reportRoutes.deleteAlarmUser, BaseController.deleteAlarmUser());
-  app.post(reportRoutes.checkLoginUser, BaseController.checkLoginUser());
-  app.post(reportRoutes.insertOneUser, BaseController.insertOneUser());
+  app.get(User.getAllUser, BaseController.getAllUser());
+
+  app.post(User.updateAlarmUser, BaseController.updateAlarmUser());
+  app.post(User.createAlarmUser, BaseController.createAlarmUser());
+  app.post(User.deleteAlarmUser, BaseController.deleteAlarmUser());
+  app.post(User.checkLoginUser, BaseController.checkLoginUser());
+  app.post(User.insertOneUser, BaseController.insertOneUser());
+
+  // Box endpoints
+
+  app.get(Box.getAllBox, BaseController.getAllBox());
+
+  // Pharmaceutical endpoints
 };

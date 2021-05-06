@@ -2,16 +2,24 @@
 
 const { StatusCodes } = require("http-status-codes");
 const userController = require("./user-controller");
+const boxController = require("./box-controller");
 
 class Controller {
   static routes() {
     return {
-      getAllUser: "/getAllUser",
-      insertOneUser: "/insertOneUser",
-      checkLoginUser: "/checkLoginUser",
-      createAlarmUser: "/createAlarmUser",
-      deleteAlarmUser: "/deleteAlarmUser",
-      updateAlarmUser: "/updateAlarmUser",
+      User: {
+        getAllUser: "/getAllUser",
+        insertOneUser: "/insertOneUser",
+        checkLoginUser: "/checkLoginUser",
+        createAlarmUser: "/createAlarmUser",
+        deleteAlarmUser: "/deleteAlarmUser",
+        updateAlarmUser: "/updateAlarmUser",
+      },
+      Box: {
+        getAllBox: "/getAllBox",
+        insertOneBox: "/insertOneBox",
+      },
+      Pharmaceutical: {},
     };
   }
 
@@ -22,6 +30,8 @@ class Controller {
       response: body.response,
     };
   }
+
+  // Start endpoints User
 
   static getAllUser() {
     return async (req, res) => {
@@ -125,5 +135,26 @@ class Controller {
       }
     };
   }
+
+  // Finish endpoints User
+
+  // Start endpoints Box
+
+  static getAllBox() {
+    return async (req, res) => {
+      try {
+        const getAllBoxResponse = await boxController.getAllBox();
+        res
+          .status(getAllBoxResponse.status)
+          .send(this.formatResponseBody(getAllBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints Box
 }
 module.exports = Controller;
