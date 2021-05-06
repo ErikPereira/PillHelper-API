@@ -3,11 +3,11 @@
 // const _ = require("lodash");
 const { StatusCodes } = require("http-status-codes");
 const { encode } = require("js-base64");
-const mongoController = require("./mongo/mongo-controller");
+const mongoUserController = require("./mongo/mongoUser-controller");
 
 async function getAllUser() {
   try {
-    const result = await mongoController.getAllUser();
+    const result = await mongoUserController.getAllUser();
     return {
       status: StatusCodes.OK,
       error: false,
@@ -22,7 +22,7 @@ async function getAllUser() {
 
 async function checkLoginUser(credentials) {
   try {
-    const result = await mongoController.getLoginUser();
+    const result = await mongoUserController.getLoginUser();
     const check = result.find(
       user =>
         user.login.password === encode(credentials.password) &&
@@ -47,11 +47,41 @@ async function checkLoginUser(credentials) {
       response: check.uuid,
     };
   } catch (err) {
-    console.log(`[pillhelper-collector.checkLoginUser] ${err.msg}`);
+    console.log(`[pillhelper-collector.checkLoginUser] ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function insertOneUser(credentials) {
+  // check if login recive is valide
+  try {
+    await checkLoginUser(credentials);
+    return {
+      status: StatusCodes.CONFLICT,
+      error: true,
+      msgError: "email ou celular já cadastrado",
+      response: {},
+    };
+  } catch (err) {
+    console.log("Login disponivel");
+  }
+
+  // insert a new user in Mongobd, collection: User
+  try {
+    const result = await mongoUserController.insertOneUser(credentials);
+    return {
+      status: StatusCodes.CREATED,
+      error: false,
+      msgError: "",
+      response: result.uuid,
+    };
+  } catch (err) {
+    console.log(`[pillhelper-collector.checkLoginUser] ${err.msgError}`);
     throw err;
   }
 }
 module.exports = {
   getAllUser,
+  insertOneUser,
   checkLoginUser,
 };

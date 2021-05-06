@@ -1,42 +1,53 @@
+/* eslint-disable no-console */
+const { v4: uuidv4 } = require("uuid");
+const { encode } = require("js-base64");
 const MongoDBCollectionDao = require("pill-helper-sdk/src/app/infra/mongodb/mongo-collection-dao");
 const Mongo = require("../../../config/mongo");
 const utils = require("../../utils/pillhelper-utils");
 
 const mongoDao = new MongoDBCollectionDao(Mongo.oMongoConnection);
 
-async function savePillHelpers(lifeCycles, mongo = Mongo) {
-  /* Object to be used as filter in select */
+async function insertOneUser(credentials, mongo = Mongo) {
+  const login = credentials;
+  login.password = encode(login.password);
+  try {
+    const user = {
+      uuid: uuidv4(),
+      alarms: [],
+      box: [],
+      pharmaceutical: [],
+      login,
+    };
 
-  const jsonFilter = {
-    name: lifeCycles.name,
-    type: lifeCycles.type,
-    product: lifeCycles.product,
-  };
+    mongoDao.setURI(mongo.oMongoConnection);
+    const response = await mongoDao.insertOne(mongo.mongoCollectionUser, user);
+    utils.checkHasError(response);
 
-  mongoDao.setURI(mongo.oMongoConnection);
-  let result = await mongoDao.update(
-    mongo.mongoCollectionProductPillHelperData,
-    jsonFilter,
-    lifeCycles
-  );
-  if (!result.result) {
-    result = await mongoDao.insertOne(
-      mongo.mongoCollectionProductPillHelperData,
-      lifeCycles
-    );
+    return { ...response, uuid: user.uuid };
+  } catch (err) {
+    const res = utils.checkError(err);
+    console.log(`[mongo-controller.getLoginUser] ${res.msgError}`);
+    throw res;
   }
-
-  return result;
 }
 
-async function getPillHelpers(lifeCycles, mongo = Mongo) {
-  const jsonFilter = {
-    name: lifeCycles.name,
-    type: lifeCycles.type,
-    product: lifeCycles.product,
-  };
-  mongoDao.setURI(mongo.oMongoConnection);
-  return mongoDao.find(mongo.mongoCollectionProductPillHelperData, jsonFilter);
+async function getOneUser(uuid, mongo = Mongo) {
+  try {
+    const jsonFilter = {
+      uuid,
+    };
+    mongoDao.setURI(mongo.oMongoConnection);
+    const response = await mongoDao.find(mongo.mongoCollectionUser, jsonFilter);
+
+    utils.checkHasError(response);
+    utils.checkNotFound(response.result);
+
+    return response.result;
+  } catch (err) {
+    const res = utils.checkError(err);
+    console.log(`[mongo-controller.getLoginUser] ${res.msgError}`);
+    throw res;
+  }
 }
 
 async function getAllUser(mongo = Mongo) {
@@ -88,8 +99,8 @@ async function getLoginUser(mongo = Mongo) {
 }
 
 module.exports = {
-  savePillHelpers,
-  getPillHelpers,
+  insertOneUser,
   getLoginUser,
   getAllUser,
+  getOneUser,
 };

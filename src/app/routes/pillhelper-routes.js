@@ -7,4 +7,5 @@ module.exports = app => {
   app.get(reportRoutes.getAllUser, BaseController.getAllUser());
 
   app.post(reportRoutes.checkLoginUser, BaseController.checkLoginUser());
+  app.post(reportRoutes.insertOneUser, BaseController.insertOneUser());
 };

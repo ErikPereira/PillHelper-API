@@ -7,6 +7,7 @@ class Controller {
   static routes() {
     return {
       getAllUser: "/getAllUser",
+      insertOneUser: "/insertOneUser",
       checkLoginUser: "/checkLoginUser",
     };
   }
@@ -43,6 +44,23 @@ class Controller {
         res
           .status(checkLoginUserResponse.status)
           .send(this.formatResponseBody(checkLoginUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static insertOneUser() {
+    return async (req, res) => {
+      try {
+        const insertOneUserResponse = await userController.insertOneUser(
+          req.body
+        );
+        res
+          .status(insertOneUserResponse.status)
+          .send(this.formatResponseBody(insertOneUserResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
