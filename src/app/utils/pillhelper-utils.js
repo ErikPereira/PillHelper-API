@@ -48,6 +48,19 @@ class TemplateUtils {
     }
   }
 
+  static checkUpdateFail(result) {
+    let err = {};
+    if (result !== 1) {
+      err = {
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        error: result.hasError,
+        msgError: "Failed to update",
+        response: {},
+      };
+      throw err;
+    }
+  }
+
   static checkError(err) {
     const { msgError } = err;
     const internalError = "Internal Server Error";

@@ -10,6 +10,7 @@ class Controller {
       insertOneUser: "/insertOneUser",
       checkLoginUser: "/checkLoginUser",
       createAlarmUser: "/createAlarmUser",
+      deleteAlarmUser: "/deleteAlarmUser",
     };
   }
 
@@ -80,6 +81,24 @@ class Controller {
         res
           .status(createAlarmUserResponse.status)
           .send(this.formatResponseBody(createAlarmUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteAlarmUser() {
+    return async (req, res) => {
+      try {
+        const deleteAlarmUserResponse = await userController.deleteAlarmUser(
+          req.body.uuidUser,
+          req.body.uuidAlarm
+        );
+        res
+          .status(deleteAlarmUserResponse.status)
+          .send(this.formatResponseBody(deleteAlarmUserResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

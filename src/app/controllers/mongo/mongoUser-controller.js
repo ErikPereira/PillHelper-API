@@ -123,8 +123,7 @@ async function updateUser(user, mongo = Mongo) {
     );
 
     utils.checkHasError(response);
-
-    return response.result;
+    utils.checkUpdateFail(response.result);
   } catch (err) {
     const res = utils.checkError(err);
     console.log(`[mongo-controller.updateUser] ${res.msgError}`);

@@ -90,10 +90,10 @@ async function createAlarmUser(uuid, newAlarm) {
     await mongoUserController.updateUser(user);
 
     return {
-      status: StatusCodes.OK,
+      status: StatusCodes.CREATED,
       error: false,
       msgError: "",
-      response: "sucess",
+      response: "Alarm created",
     };
   } catch (err) {
     console.log(`[pillhelper-collector.createAlarmUser] ${err.msgError}`);
@@ -101,9 +101,32 @@ async function createAlarmUser(uuid, newAlarm) {
   }
 }
 
+async function deleteAlarmUser(uuidUser, uuidAlarm) {
+  try {
+    const user = await mongoUserController.getOneUser(uuidUser);
+
+    user.alarms = user.alarms.filter(alarm => {
+      return alarm.uuidAlarm !== uuidAlarm;
+    });
+
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Alarme Deleted",
+    };
+  } catch (err) {
+    console.log(`[pillhelper-collector.deleteAlarmUser] ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
-  getAllUser,
   createAlarmUser,
-  insertOneUser,
+  deleteAlarmUser,
   checkLoginUser,
+  insertOneUser,
+  getAllUser,
 };
