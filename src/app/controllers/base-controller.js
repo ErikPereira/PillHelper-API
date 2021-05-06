@@ -155,6 +155,21 @@ class Controller {
     };
   }
 
+  static insertOneBox() {
+    return async (req, res) => {
+      try {
+        const insertOneBoxResponse = await boxController.insertOneBox();
+        res
+          .status(insertOneBoxResponse.status)
+          .send(this.formatResponseBody(insertOneBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
   // Finish endpoints Box
 }
 module.exports = Controller;

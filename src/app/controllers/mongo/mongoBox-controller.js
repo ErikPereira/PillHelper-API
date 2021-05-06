@@ -1,17 +1,23 @@
 /* eslint-disable no-console */
+const { v4: uuidv4 } = require("uuid");
 const MongoDBCollectionDao = require("pill-helper-sdk/src/app/infra/mongodb/mongo-collection-dao");
 const Mongo = require("../../../config/mongo");
 const utils = require("../../utils/pillhelper-utils");
 
 const mongoDao = new MongoDBCollectionDao(Mongo.oMongoConnection);
 
-async function insertOneBox(box, mongo = Mongo) {
+async function insertOneBox(mongo = Mongo) {
   try {
+    const box = {
+      uuidBox: uuidv4(),
+      uuidUser: "",
+      nameBox: "",
+    };
     mongoDao.setURI(mongo.oMongoConnection);
     const response = await mongoDao.insertOne(mongo.mongoCollectionBox, box);
     utils.checkHasError(response);
 
-    return { ...response, idBox: box.idBox };
+    return { ...response, uuidBox: box.uuidBox };
   } catch (err) {
     const res = utils.checkError(err);
     console.log(`[mongoBox-controller.getLoginBox] ${res.msgError}`);
@@ -19,12 +25,12 @@ async function insertOneBox(box, mongo = Mongo) {
   }
 }
 
-async function getOneBox(idBox, mongo = Mongo) {
+async function getOneBox(uuidBox, mongo = Mongo) {
   try {
     const jsonFilter = [
       {
         $match: {
-          idBox,
+          uuidBox,
         },
       },
       {
@@ -40,7 +46,7 @@ async function getOneBox(idBox, mongo = Mongo) {
     );
 
     utils.checkHasError(response);
-    utils.checkNotFound(response.result, "idBox unknow");
+    utils.checkNotFound(response.result, "uuidBox unknow");
 
     return response.result[0];
   } catch (err) {
@@ -76,7 +82,7 @@ async function getAllBox(mongo = Mongo) {
 async function updateBox(box, mongo = Mongo) {
   try {
     const jsonFilter = {
-      idBox: box.idBox,
+      uuidBox: box.uuidBox,
     };
     mongoDao.setURI(mongo.oMongoConnection);
     const response = await mongoDao.update(
