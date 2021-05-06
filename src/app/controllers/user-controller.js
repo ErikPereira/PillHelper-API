@@ -77,7 +77,7 @@ async function insertOneUser(credentials) {
       response: result.uuid,
     };
   } catch (err) {
-    console.log(`[pillhelper-collector.checkLoginUser] ${err.msgError}`);
+    console.log(`[pillhelper-collector.insertOneUser] ${err.msgError}`);
     throw err;
   }
 }
@@ -123,7 +123,30 @@ async function deleteAlarmUser(uuidUser, uuidAlarm) {
   }
 }
 
+async function updateAlarmUser(uuid, updateAlarm) {
+  try {
+    const user = await mongoUserController.getOneUser(uuid);
+
+    user.alarms = user.alarms.map(alarm => {
+      return alarm.uuidAlarm === updateAlarm.uuidAlarm ? updateAlarm : alarm;
+    });
+
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Alarme Updated",
+    };
+  } catch (err) {
+    console.log(`[pillhelper-collector.updateAlarmUser] ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
+  updateAlarmUser,
   createAlarmUser,
   deleteAlarmUser,
   checkLoginUser,

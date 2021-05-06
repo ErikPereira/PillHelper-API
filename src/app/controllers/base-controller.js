@@ -11,6 +11,7 @@ class Controller {
       checkLoginUser: "/checkLoginUser",
       createAlarmUser: "/createAlarmUser",
       deleteAlarmUser: "/deleteAlarmUser",
+      updateAlarmUser: "/updateAlarmUser",
     };
   }
 
@@ -99,6 +100,24 @@ class Controller {
         res
           .status(deleteAlarmUserResponse.status)
           .send(this.formatResponseBody(deleteAlarmUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updateAlarmUser() {
+    return async (req, res) => {
+      try {
+        const updateAlarmUserResponse = await userController.updateAlarmUser(
+          req.body.uuid,
+          req.body.updateAlarm
+        );
+        res
+          .status(updateAlarmUserResponse.status)
+          .send(this.formatResponseBody(updateAlarmUserResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

@@ -6,6 +6,7 @@ module.exports = app => {
   // Users endpoints
   app.get(reportRoutes.getAllUser, BaseController.getAllUser());
 
+  app.post(reportRoutes.updateAlarmUser, BaseController.updateAlarmUser());
   app.post(reportRoutes.createAlarmUser, BaseController.createAlarmUser());
   app.post(reportRoutes.deleteAlarmUser, BaseController.deleteAlarmUser());
   app.post(reportRoutes.checkLoginUser, BaseController.checkLoginUser());
