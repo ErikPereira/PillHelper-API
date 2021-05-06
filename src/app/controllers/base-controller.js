@@ -9,6 +9,7 @@ class Controller {
       getAllUser: "/getAllUser",
       insertOneUser: "/insertOneUser",
       checkLoginUser: "/checkLoginUser",
+      createAlarmUser: "/createAlarmUser",
     };
   }
 
@@ -61,6 +62,24 @@ class Controller {
         res
           .status(insertOneUserResponse.status)
           .send(this.formatResponseBody(insertOneUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static createAlarmUser() {
+    return async (req, res) => {
+      try {
+        const createAlarmUserResponse = await userController.createAlarmUser(
+          req.body.uuid,
+          req.body.newAlarm
+        );
+        res
+          .status(createAlarmUserResponse.status)
+          .send(this.formatResponseBody(createAlarmUserResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

@@ -33,16 +33,28 @@ async function insertOneUser(credentials, mongo = Mongo) {
 
 async function getOneUser(uuid, mongo = Mongo) {
   try {
-    const jsonFilter = {
-      uuid,
-    };
+    const jsonFilter = [
+      {
+        $match: {
+          uuid,
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+        },
+      },
+    ];
     mongoDao.setURI(mongo.oMongoConnection);
-    const response = await mongoDao.find(mongo.mongoCollectionUser, jsonFilter);
+    const response = await mongoDao.aggregate(
+      mongo.mongoCollectionUser,
+      jsonFilter
+    );
 
     utils.checkHasError(response);
-    utils.checkNotFound(response.result);
+    utils.checkNotFound(response.result, "Uuid unknow");
 
-    return response.result;
+    return response.result[0];
   } catch (err) {
     const res = utils.checkError(err);
     console.log(`[mongo-controller.getLoginUser] ${res.msgError}`);
@@ -98,9 +110,32 @@ async function getLoginUser(mongo = Mongo) {
   }
 }
 
+async function updateUser(user, mongo = Mongo) {
+  try {
+    const jsonFilter = {
+      uuid: user.uuid,
+    };
+    mongoDao.setURI(mongo.oMongoConnection);
+    const response = await mongoDao.update(
+      mongo.mongoCollectionUser,
+      jsonFilter,
+      user
+    );
+
+    utils.checkHasError(response);
+
+    return response.result;
+  } catch (err) {
+    const res = utils.checkError(err);
+    console.log(`[mongo-controller.updateUser] ${res.msgError}`);
+    throw res;
+  }
+}
+
 module.exports = {
   insertOneUser,
   getLoginUser,
+  updateUser,
   getAllUser,
   getOneUser,
 };

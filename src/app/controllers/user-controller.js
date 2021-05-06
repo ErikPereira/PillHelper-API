@@ -3,6 +3,7 @@
 // const _ = require("lodash");
 const { StatusCodes } = require("http-status-codes");
 const { encode } = require("js-base64");
+const { v4: uuidv4 } = require("uuid");
 const mongoUserController = require("./mongo/mongoUser-controller");
 
 async function getAllUser() {
@@ -80,8 +81,29 @@ async function insertOneUser(credentials) {
     throw err;
   }
 }
+
+async function createAlarmUser(uuid, newAlarm) {
+  try {
+    const user = await mongoUserController.getOneUser(uuid);
+    user.alarms.push({ ...newAlarm, uuidAlarm: uuidv4() });
+
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "sucess",
+    };
+  } catch (err) {
+    console.log(`[pillhelper-collector.createAlarmUser] ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
   getAllUser,
+  createAlarmUser,
   insertOneUser,
   checkLoginUser,
 };
