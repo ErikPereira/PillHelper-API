@@ -86,26 +86,6 @@ async function insertOnePharmaceutical(credentials) {
   }
 }
 
-async function deleteOnePharmaceutical(uuidPhar) {
-  try {
-    const result = await mongoPharmaceuticalController.deleteOnePharmaceutical(
-      uuidPhar
-    );
-    console.log(result);
-    return {
-      status: StatusCodes.ok,
-      error: false,
-      msgError: "",
-      response: "Pharmaceutical deleted",
-    };
-  } catch (err) {
-    console.log(
-      `[Pharmaceutical-controller.deleteOnePharmaceutical] ${err.msgError}`
-    );
-    throw err;
-  }
-}
-
 async function updatePharmaceutical(upPharmaceutical) {
   try {
     await mongoPharmaceuticalController.updatePharmaceutical(upPharmaceutical);
@@ -126,7 +106,6 @@ async function updatePharmaceutical(upPharmaceutical) {
 
 module.exports = {
   checkLoginPharmaceutical,
-  deleteOnePharmaceutical,
   insertOnePharmaceutical,
   getAllPharmaceutical,
   updatePharmaceutical,
