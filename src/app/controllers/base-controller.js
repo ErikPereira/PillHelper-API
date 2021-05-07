@@ -3,6 +3,7 @@
 const { StatusCodes } = require("http-status-codes");
 const userController = require("./user-controller");
 const boxController = require("./box-controller");
+const pharController = require("./pharmaceutical-controller");
 
 class Controller {
   static routes() {
@@ -22,7 +23,12 @@ class Controller {
         deleteOneBox: "/deleteOneBox",
         updateBox: "/updateBox",
       },
-      Pharmaceutical: {},
+      Pharmaceutical: {
+        getAllPharmaceutical: "/getAllPharmaceutical",
+        insertOnePharmaceutical: "/insertOnePharmaceutical",
+        deleteOnePharmaceutical: "/deleteOnePharmaceutical",
+        updatePharmaceutical: "/updatePharmaceutical",
+      },
     };
   }
 
@@ -222,5 +228,24 @@ class Controller {
   }
 
   // Finish endpoints Box
+
+  // Start endpoints Pharmaceutical
+
+  static getAllPharmaceutical() {
+    return async (req, res) => {
+      try {
+        const getAllPharmaceuticalResponse = await pharController.getAllPharmaceutical();
+        res
+          .status(getAllPharmaceuticalResponse.status)
+          .send(this.formatResponseBody(getAllPharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints Pharmaceutical
 }
 module.exports = Controller;

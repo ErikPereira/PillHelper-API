@@ -15,7 +15,7 @@ async function insertOneUser(credentials, mongo = Mongo) {
       uuid: uuidv4(),
       alarms: [],
       box: [],
-      pharmaceutical: [],
+      pharmaceuticals: [],
       login,
     };
 
@@ -26,7 +26,7 @@ async function insertOneUser(credentials, mongo = Mongo) {
     return { ...response, uuid: user.uuid };
   } catch (err) {
     const res = utils.checkError(err);
-    console.log(`[mongoUser-controller.getLoginUser] ${res.msgError}`);
+    console.log(`[mongoUser-controller.insertOneUser] ${res.msgError}`);
     throw res;
   }
 }
@@ -57,7 +57,7 @@ async function getOneUser(uuid, mongo = Mongo) {
     return response.result[0];
   } catch (err) {
     const res = utils.checkError(err);
-    console.log(`[mongoUser-controller.getLoginUser] ${res.msgError}`);
+    console.log(`[mongoUser-controller.getOneUser] ${res.msgError}`);
     throw res;
   }
 }

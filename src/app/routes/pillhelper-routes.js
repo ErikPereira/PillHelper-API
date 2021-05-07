@@ -1,7 +1,7 @@
 const BaseController = require("../controllers/base-controller");
 
 module.exports = app => {
-  const { User, Box } = BaseController.routes();
+  const { User, Box, Pharmaceutical } = BaseController.routes();
 
   // Users endpoints
 
@@ -23,4 +23,9 @@ module.exports = app => {
   app.post(Box.updateBox, BaseController.updateBox());
 
   // Pharmaceutical endpoints
+
+  app.get(
+    Pharmaceutical.getAllPharmaceutical,
+    BaseController.getAllPharmaceutical()
+  );
 };
