@@ -18,6 +18,7 @@ class Controller {
       Box: {
         getAllBox: "/getAllBox",
         insertOneBox: "/insertOneBox",
+        deleteOneBox: "/deleteOneBox",
       },
       Pharmaceutical: {},
     };
@@ -25,9 +26,9 @@ class Controller {
 
   static formatResponseBody(body) {
     return {
-      error: body.error,
-      msgError: body.msgError,
-      response: body.response,
+      error: body.error || true,
+      msgError: body.msgError || "Internal Server Error",
+      response: body.response || {},
     };
   }
 
@@ -162,6 +163,23 @@ class Controller {
         res
           .status(insertOneBoxResponse.status)
           .send(this.formatResponseBody(insertOneBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteOneBox() {
+    return async (req, res) => {
+      try {
+        const deleteOneBoxResponse = await boxController.deleteOneBox(
+          req.body.uuidBox
+        );
+        res
+          .status(deleteOneBoxResponse.status)
+          .send(this.formatResponseBody(deleteOneBoxResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

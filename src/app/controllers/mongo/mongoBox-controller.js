@@ -100,8 +100,30 @@ async function updateBox(box, mongo = Mongo) {
   }
 }
 
+async function deleteOneBox(uuidBox, mongo = Mongo) {
+  try {
+    const jsonFilter = {
+      uuidBox,
+    };
+    mongoDao.setURI(mongo.oMongoConnection);
+    const response = await mongoDao.deleteOne(
+      mongo.mongoCollectionBox,
+      jsonFilter
+    );
+
+    utils.checkHasError(response);
+
+    return response.result;
+  } catch (err) {
+    const res = utils.checkError(err);
+    console.log(`[mongoBox-controller.deleteOneBox] ${res.msgError}`);
+    throw res;
+  }
+}
+
 module.exports = {
   insertOneBox,
+  deleteOneBox,
   updateBox,
   getAllBox,
   getOneBox,

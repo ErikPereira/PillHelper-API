@@ -18,5 +18,7 @@ module.exports = app => {
   app.get(Box.getAllBox, BaseController.getAllBox());
   app.get(Box.insertOneBox, BaseController.insertOneBox());
 
+  app.post(Box.deleteOneBox, BaseController.deleteOneBox());
+
   // Pharmaceutical endpoints
 };

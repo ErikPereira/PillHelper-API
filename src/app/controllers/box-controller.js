@@ -35,6 +35,22 @@ async function insertOneBox() {
   }
 }
 
+async function deleteOneBox(uuidBox) {
+  try {
+    const result = await mongoBoxController.deleteOneBox(uuidBox);
+    console.log(result);
+    return {
+      status: StatusCodes.ok,
+      error: false,
+      msgError: "",
+      response: "Box deleted",
+    };
+  } catch (err) {
+    console.log(`[pillhelper-collector.deleteOneBox] ${err.msgError}`);
+    throw err;
+  }
+}
+
 async function createAlarmBox(uuid, newAlarm) {
   try {
     const user = await mongoBoxController.getOneBox(uuid);
@@ -102,6 +118,7 @@ module.exports = {
   updateAlarmBox,
   createAlarmBox,
   deleteAlarmBox,
+  deleteOneBox,
   insertOneBox,
   getAllBox,
 };
