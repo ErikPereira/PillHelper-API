@@ -1,42 +1,36 @@
 /* eslint-disable no-console */
 const { v4: uuidv4 } = require("uuid");
-const { encode } = require("js-base64");
 const MongoDBCollectionDao = require("pill-helper-sdk/src/app/infra/mongodb/mongo-collection-dao");
 const Mongo = require("../../../config/mongo");
 const utils = require("../../utils/pillhelper-utils");
 
 const mongoDao = new MongoDBCollectionDao(Mongo.oMongoConnection);
 
-async function insertOneUser(credentials, mongo = Mongo) {
-  const login = credentials;
-  login.password = encode(login.password);
+async function insertOneBox(mongo = Mongo) {
   try {
-    const user = {
-      uuid: uuidv4(),
-      alarms: [],
-      box: [],
-      pharmaceuticals: [],
-      login,
+    const box = {
+      uuidBox: uuidv4(),
+      uuidUser: "",
+      nameBox: "",
     };
-
     mongoDao.setURI(mongo.oMongoConnection);
-    const response = await mongoDao.insertOne(mongo.mongoCollectionUser, user);
+    const response = await mongoDao.insertOne(mongo.mongoCollectionBox, box);
     utils.checkHasError(response);
 
-    return { ...response, uuid: user.uuid };
+    return { ...response, uuidBox: box.uuidBox };
   } catch (err) {
     const res = utils.checkError(err);
-    console.log(`[mongoUser-controller.insertOneUser] ${res.msgError}`);
+    console.log(`[mongoBox-controller.getLoginBox] ${res.msgError}`);
     throw res;
   }
 }
 
-async function getOneUser(uuid, mongo = Mongo) {
+async function getOneBox(uuidBox, mongo = Mongo) {
   try {
     const jsonFilter = [
       {
         $match: {
-          uuid,
+          uuidBox,
         },
       },
       {
@@ -47,22 +41,22 @@ async function getOneUser(uuid, mongo = Mongo) {
     ];
     mongoDao.setURI(mongo.oMongoConnection);
     const response = await mongoDao.aggregate(
-      mongo.mongoCollectionUser,
+      mongo.mongoCollectionBox,
       jsonFilter
     );
 
     utils.checkHasError(response);
-    utils.checkNotFound(response.result, "User");
+    utils.checkNotFound(response.result, "Box");
 
     return response.result[0];
   } catch (err) {
     const res = utils.checkError(err);
-    console.log(`[mongoUser-controller.getOneUser] ${res.msgError}`);
+    console.log(`[mongoBox-controller.getLoginBox] ${res.msgError}`);
     throw res;
   }
 }
 
-async function getAllUser(mongo = Mongo) {
+async function getAllBox(mongo = Mongo) {
   try {
     const jsonFilter = [
       {
@@ -73,68 +67,64 @@ async function getAllUser(mongo = Mongo) {
     ];
 
     const response = await mongoDao.aggregate(
-      mongo.mongoCollectionUser,
+      mongo.mongoCollectionBox,
       jsonFilter
     );
     utils.checkHasError(response);
     return response.result;
   } catch (err) {
     const res = utils.checkError(err);
-    console.log(`[mongoUser-controller.getAllUser] ${res.msgError}`);
+    console.log(`[mongoBox-controller.getAllBox] ${res.msgError}`);
     throw res;
   }
 }
 
-async function getLoginUser(mongo = Mongo) {
-  try {
-    const jsonFilter = [
-      {
-        $project: {
-          _id: 0,
-          uuid: 1,
-          login: 1,
-        },
-      },
-    ];
-
-    const response = await mongoDao.aggregate(
-      mongo.mongoCollectionUser,
-      jsonFilter
-    );
-    utils.checkHasError(response);
-    return response.result;
-  } catch (err) {
-    const res = utils.checkError(err);
-    console.log(`[mongoUser-controller.getLoginUser] ${res.msgError}`);
-    throw res;
-  }
-}
-
-async function updateUser(user, mongo = Mongo) {
+async function updateBox(box, mongo = Mongo) {
   try {
     const jsonFilter = {
-      uuid: user.uuid,
+      uuidBox: box.uuidBox,
     };
     mongoDao.setURI(mongo.oMongoConnection);
     const response = await mongoDao.update(
-      mongo.mongoCollectionUser,
+      mongo.mongoCollectionBox,
       jsonFilter,
-      user
+      box
     );
 
     utils.checkHasError(response);
     utils.checkUpdateFail(response.result);
   } catch (err) {
     const res = utils.checkError(err);
-    console.log(`[mongoUser-controller.updateUser] ${res.msgError}`);
+    console.log(`[mongoBox-controller.updateBox] ${res.msgError}`);
+    throw res;
+  }
+}
+
+async function deleteOneBox(uuidBox, mongo = Mongo) {
+  try {
+    const jsonFilter = {
+      uuidBox,
+    };
+    mongoDao.setURI(mongo.oMongoConnection);
+    const response = await mongoDao.deleteOne(
+      mongo.mongoCollectionBox,
+      jsonFilter
+    );
+
+    utils.checkHasError(response);
+
+    return response.result;
+  } catch (err) {
+    const res = utils.checkError(err);
+    console.log(`[mongoBox-controller.deleteOneBox] ${res.msgError}`);
     throw res;
   }
 }
 
 module.exports = {
-  insertOneUser,
-  getLoginUser,
-  updateUser,
-  getAllUser,
-  getOneUser,
+  insertOneBox,
+  deleteOneBox,
+  updateBox,
+  getAllBox,
+  getOneBox,
 };

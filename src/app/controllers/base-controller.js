@@ -2,26 +2,48 @@
 
 const { StatusCodes } = require("http-status-codes");
 const userController = require("./user-controller");
+const boxController = require("./box-controller");
+const pharController = require("./pharmaceutical-controller");
 
 class Controller {
   static routes() {
     return {
-      getAllUser: "/getAllUser",
-      insertOneUser: "/insertOneUser",
-      checkLoginUser: "/checkLoginUser",
-      createAlarmUser: "/createAlarmUser",
-      deleteAlarmUser: "/deleteAlarmUser",
-      updateAlarmUser: "/updateAlarmUser",
+      User: {
+        getAllUser: "/getAllUser",
+        insertOneUser: "/insertOneUser",
+        checkLoginUser: "/checkLoginUser",
+        createAlarmUser: "/createAlarmUser",
+        deleteAlarmUser: "/deleteAlarmUser",
+        updateAlarmUser: "/updateAlarmUser",
+        registerBox: "/registerBox",
+        registerPharmaceutical: "/registerPharmaceutical",
+      },
+      Box: {
+        getAllBox: "/getAllBox",
+        insertOneBox: "/insertOneBox",
+        deleteOneBox: "/deleteOneBox",
+        updateBox: "/updateBox",
+      },
+      Pharmaceutical: {
+        getAllPharmaceutical: "/getAllPharmaceutical",
+        insertOnePharmaceutical: "/insertOnePharmaceutical",
+        checkLoginPharmaceutical: "/checkLoginPharmaceutical",
+        updatePharmaceutical: "/updatePharmaceutical",
+        registerUser: "/registerUser",
+      },
     };
   }
 
   static formatResponseBody(body) {
+    const defaultMsg = "Internal Server Error";
     return {
-      error: body.error,
-      msgError: body.msgError,
-      response: body.response,
+      error: body.error === undefined ? true : body.error,
+      msgError: body.msgError === undefined ? defaultMsg : body.msgError,
+      response: body.response === undefined ? {} : body.response,
     };
   }
+
+  // Start endpoints User
 
   static getAllUser() {
     return async (req, res) => {
@@ -125,5 +147,192 @@ class Controller {
       }
     };
   }
+
+  static registerBox() {
+    return async (req, res) => {
+      try {
+        const registerBoxResponse = await userController.registerBox(req.body);
+        res
+          .status(registerBoxResponse.status)
+          .send(this.formatResponseBody(registerBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static registerPharmaceutical() {
+    return async (req, res) => {
+      try {
+        const registerPharmaceuticalResponse = await userController.registerPharmaceutical(
+          req.body
+        );
+        res
+          .status(registerPharmaceuticalResponse.status)
+          .send(this.formatResponseBody(registerPharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints User
+
+  // Start endpoints Box
+
+  static getAllBox() {
+    return async (req, res) => {
+      try {
+        const getAllBoxResponse = await boxController.getAllBox();
+        res
+          .status(getAllBoxResponse.status)
+          .send(this.formatResponseBody(getAllBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static insertOneBox() {
+    return async (req, res) => {
+      try {
+        const insertOneBoxResponse = await boxController.insertOneBox();
+        res
+          .status(insertOneBoxResponse.status)
+          .send(this.formatResponseBody(insertOneBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteOneBox() {
+    return async (req, res) => {
+      try {
+        const deleteOneBoxResponse = await boxController.deleteOneBox(
+          req.body.uuidBox
+        );
+        res
+          .status(deleteOneBoxResponse.status)
+          .send(this.formatResponseBody(deleteOneBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updateBox() {
+    return async (req, res) => {
+      try {
+        const updateBoxResponse = await boxController.updateBox(req.body);
+        res
+          .status(updateBoxResponse.status)
+          .send(this.formatResponseBody(updateBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints Box
+
+  // Start endpoints Pharmaceutical
+
+  static getAllPharmaceutical() {
+    return async (req, res) => {
+      try {
+        const getAllPharmaceuticalResponse = await pharController.getAllPharmaceutical();
+        res
+          .status(getAllPharmaceuticalResponse.status)
+          .send(this.formatResponseBody(getAllPharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static insertOnePharmaceutical() {
+    return async (req, res) => {
+      try {
+        const insertOnePharmaceuticalResponse = await pharController.insertOnePharmaceutical(
+          req.body
+        );
+        res
+          .status(insertOnePharmaceuticalResponse.status)
+          .send(this.formatResponseBody(insertOnePharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static checkLoginPharmaceutical() {
+    return async (req, res) => {
+      try {
+        const checkLoginPharmaceuticalResponse = await pharController.checkLoginPharmaceutical(
+          req.body
+        );
+        res
+          .status(checkLoginPharmaceuticalResponse.status)
+          .send(this.formatResponseBody(checkLoginPharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updatePharmaceutical() {
+    return async (req, res) => {
+      try {
+        const updatePharmaceuticalResponse = await pharController.updatePharmaceutical(
+          req.body
+        );
+        res
+          .status(updatePharmaceuticalResponse.status)
+          .send(this.formatResponseBody(updatePharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static registerUser() {
+    return async (req, res) => {
+      try {
+        const registerUserResponse = await pharController.registerUser(
+          req.body
+        );
+        res
+          .status(registerUserResponse.status)
+          .send(this.formatResponseBody(registerUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints Pharmaceutical
 }
 module.exports = Controller;
