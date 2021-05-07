@@ -3,6 +3,7 @@
 const { StatusCodes } = require("http-status-codes");
 const userController = require("./user-controller");
 const boxController = require("./box-controller");
+const pharController = require("./pharmaceutical-controller");
 
 class Controller {
   static routes() {
@@ -15,6 +16,7 @@ class Controller {
         deleteAlarmUser: "/deleteAlarmUser",
         updateAlarmUser: "/updateAlarmUser",
         registerBox: "/registerBox",
+        registerPharmaceutical: "/registerPharmaceutical",
       },
       Box: {
         getAllBox: "/getAllBox",
@@ -22,7 +24,13 @@ class Controller {
         deleteOneBox: "/deleteOneBox",
         updateBox: "/updateBox",
       },
-      Pharmaceutical: {},
+      Pharmaceutical: {
+        getAllPharmaceutical: "/getAllPharmaceutical",
+        insertOnePharmaceutical: "/insertOnePharmaceutical",
+        checkLoginPharmaceutical: "/checkLoginPharmaceutical",
+        updatePharmaceutical: "/updatePharmaceutical",
+        registerUser: "/registerUser",
+      },
     };
   }
 
@@ -155,6 +163,23 @@ class Controller {
     };
   }
 
+  static registerPharmaceutical() {
+    return async (req, res) => {
+      try {
+        const registerPharmaceuticalResponse = await userController.registerPharmaceutical(
+          req.body
+        );
+        res
+          .status(registerPharmaceuticalResponse.status)
+          .send(this.formatResponseBody(registerPharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
   // Finish endpoints User
 
   // Start endpoints Box
@@ -222,5 +247,92 @@ class Controller {
   }
 
   // Finish endpoints Box
+
+  // Start endpoints Pharmaceutical
+
+  static getAllPharmaceutical() {
+    return async (req, res) => {
+      try {
+        const getAllPharmaceuticalResponse = await pharController.getAllPharmaceutical();
+        res
+          .status(getAllPharmaceuticalResponse.status)
+          .send(this.formatResponseBody(getAllPharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static insertOnePharmaceutical() {
+    return async (req, res) => {
+      try {
+        const insertOnePharmaceuticalResponse = await pharController.insertOnePharmaceutical(
+          req.body
+        );
+        res
+          .status(insertOnePharmaceuticalResponse.status)
+          .send(this.formatResponseBody(insertOnePharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static checkLoginPharmaceutical() {
+    return async (req, res) => {
+      try {
+        const checkLoginPharmaceuticalResponse = await pharController.checkLoginPharmaceutical(
+          req.body
+        );
+        res
+          .status(checkLoginPharmaceuticalResponse.status)
+          .send(this.formatResponseBody(checkLoginPharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updatePharmaceutical() {
+    return async (req, res) => {
+      try {
+        const updatePharmaceuticalResponse = await pharController.updatePharmaceutical(
+          req.body
+        );
+        res
+          .status(updatePharmaceuticalResponse.status)
+          .send(this.formatResponseBody(updatePharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static registerUser() {
+    return async (req, res) => {
+      try {
+        const registerUserResponse = await pharController.registerUser(
+          req.body
+        );
+        res
+          .status(registerUserResponse.status)
+          .send(this.formatResponseBody(registerUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints Pharmaceutical
 }
 module.exports = Controller;

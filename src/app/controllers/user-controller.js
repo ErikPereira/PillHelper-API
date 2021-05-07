@@ -6,6 +6,7 @@ const { encode } = require("js-base64");
 const { v4: uuidv4 } = require("uuid");
 const mongoUserController = require("./mongo/mongoUser-controller");
 const mongoBoxController = require("./mongo/mongoBox-controller");
+const mongoPharmaceuticalController = require("./mongo/mongoPharmaceutical-controller");
 
 async function getAllUser() {
   try {
@@ -164,18 +165,18 @@ async function removeBoxInOldUser(box) {
 }
 
 async function registerBox(body) {
-  if (body.uuidUser === body.uuidBox) {
-    return {
-      status: StatusCodes.OK,
-      error: false,
-      msgError: "",
-      response: "this box is already in the user",
-    };
-  }
-
   try {
     const user = await mongoUserController.getOneUser(body.uuidUser);
     const box = await mongoBoxController.getOneBox(body.uuidBox);
+
+    if (box.uuidUser === body.uuidUser) {
+      return {
+        status: StatusCodes.OK,
+        error: false,
+        msgError: "",
+        response: "this box is already in the user",
+      };
+    }
 
     box.nameBox = body.nameBox || box.nameBox;
 
@@ -194,7 +195,7 @@ async function registerBox(body) {
       status: StatusCodes.OK,
       error: false,
       msgError: "",
-      response: "Registerd successfully",
+      response: "Box registerd successfully",
     };
   } catch (err) {
     console.log(`[user-controller.registerBox] ${err.msgError}`);
@@ -202,7 +203,44 @@ async function registerBox(body) {
   }
 }
 
+async function registerPharmaceutical(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+    const phar = await mongoPharmaceuticalController.getOnePharmaceutical(
+      body.uuidPhar
+    );
+
+    if (
+      user.pharmaceuticals.find(p => {
+        return p.uuidPhar === phar.uuidPhar;
+      })
+    ) {
+      return {
+        status: StatusCodes.OK,
+        error: false,
+        msgError: "",
+        response: "this Pharmaceutical is already in the User",
+      };
+    }
+
+    user.pharmaceuticals.push({ uuidPhar: phar.uuidPhar });
+
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Pharmaceuticals registerd successfully",
+    };
+  } catch (err) {
+    console.log(`[user-controller.registerPharmaceuticals ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
+  registerPharmaceutical,
   updateAlarmUser,
   createAlarmUser,
   deleteAlarmUser,
