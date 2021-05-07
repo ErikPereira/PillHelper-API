@@ -2,26 +2,38 @@
 
 const { StatusCodes } = require("http-status-codes");
 const userController = require("./user-controller");
+const boxController = require("./box-controller");
 
 class Controller {
   static routes() {
     return {
-      getAllUser: "/getAllUser",
-      insertOneUser: "/insertOneUser",
-      checkLoginUser: "/checkLoginUser",
-      createAlarmUser: "/createAlarmUser",
-      deleteAlarmUser: "/deleteAlarmUser",
-      updateAlarmUser: "/updateAlarmUser",
+      User: {
+        getAllUser: "/getAllUser",
+        insertOneUser: "/insertOneUser",
+        checkLoginUser: "/checkLoginUser",
+        createAlarmUser: "/createAlarmUser",
+        deleteAlarmUser: "/deleteAlarmUser",
+        updateAlarmUser: "/updateAlarmUser",
+      },
+      Box: {
+        getAllBox: "/getAllBox",
+        insertOneBox: "/insertOneBox",
+        deleteOneBox: "/deleteOneBox",
+        updateBox: "/updateBox",
+      },
+      Pharmaceutical: {},
     };
   }
 
   static formatResponseBody(body) {
     return {
-      error: body.error,
-      msgError: body.msgError,
-      response: body.response,
+      error: body.error || true,
+      msgError: body.msgError || "Internal Server Error",
+      response: body.response || {},
     };
   }
+
+  // Start endpoints User
 
   static getAllUser() {
     return async (req, res) => {
@@ -125,5 +137,73 @@ class Controller {
       }
     };
   }
+
+  // Finish endpoints User
+
+  // Start endpoints Box
+
+  static getAllBox() {
+    return async (req, res) => {
+      try {
+        const getAllBoxResponse = await boxController.getAllBox();
+        res
+          .status(getAllBoxResponse.status)
+          .send(this.formatResponseBody(getAllBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static insertOneBox() {
+    return async (req, res) => {
+      try {
+        const insertOneBoxResponse = await boxController.insertOneBox();
+        res
+          .status(insertOneBoxResponse.status)
+          .send(this.formatResponseBody(insertOneBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteOneBox() {
+    return async (req, res) => {
+      try {
+        const deleteOneBoxResponse = await boxController.deleteOneBox(
+          req.body.uuidBox
+        );
+        res
+          .status(deleteOneBoxResponse.status)
+          .send(this.formatResponseBody(deleteOneBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updateBox() {
+    return async (req, res) => {
+      try {
+        const updateBoxResponse = await boxController.updateBox(req.body);
+        res
+          .status(updateBoxResponse.status)
+          .send(this.formatResponseBody(updateBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints Box
 }
 module.exports = Controller;
