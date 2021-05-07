@@ -12,6 +12,7 @@ module.exports = app => {
   app.post(User.deleteAlarmUser, BaseController.deleteAlarmUser());
   app.post(User.checkLoginUser, BaseController.checkLoginUser());
   app.post(User.insertOneUser, BaseController.insertOneUser());
+  app.post(User.registerBox, BaseController.registerBox());
 
   // Box endpoints
 

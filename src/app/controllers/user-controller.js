@@ -5,6 +5,7 @@ const { StatusCodes } = require("http-status-codes");
 const { encode } = require("js-base64");
 const { v4: uuidv4 } = require("uuid");
 const mongoUserController = require("./mongo/mongoUser-controller");
+const mongoBoxController = require("./mongo/mongoBox-controller");
 
 async function getAllUser() {
   try {
@@ -16,7 +17,7 @@ async function getAllUser() {
       response: result,
     };
   } catch (err) {
-    console.log(`[pillhelper-collector.getAllUser] ${err.msgError}`);
+    console.log(`[user-controller.getAllUser] ${err.msgError}`);
     throw err;
   }
 }
@@ -48,7 +49,7 @@ async function checkLoginUser(credentials) {
       response: check.uuid,
     };
   } catch (err) {
-    console.log(`[pillhelper-collector.checkLoginUser] ${err.msgError}`);
+    console.log(`[user-controller.checkLoginUser] ${err.msgError}`);
     throw err;
   }
 }
@@ -77,7 +78,7 @@ async function insertOneUser(credentials) {
       response: result.uuid,
     };
   } catch (err) {
-    console.log(`[pillhelper-collector.insertOneUser] ${err.msgError}`);
+    console.log(`[user-controller.insertOneUser] ${err.msgError}`);
     throw err;
   }
 }
@@ -96,7 +97,7 @@ async function createAlarmUser(uuid, newAlarm) {
       response: "Alarm created",
     };
   } catch (err) {
-    console.log(`[pillhelper-collector.createAlarmUser] ${err.msgError}`);
+    console.log(`[user-controller.createAlarmUser] ${err.msgError}`);
     throw err;
   }
 }
@@ -118,7 +119,7 @@ async function deleteAlarmUser(uuidUser, uuidAlarm) {
       response: "Alarme Deleted",
     };
   } catch (err) {
-    console.log(`[pillhelper-collector.deleteAlarmUser] ${err.msgError}`);
+    console.log(`[user-controller.deleteAlarmUser] ${err.msgError}`);
     throw err;
   }
 }
@@ -140,7 +141,63 @@ async function updateAlarmUser(uuid, updateAlarm) {
       response: "Alarme Updated",
     };
   } catch (err) {
-    console.log(`[pillhelper-collector.updateAlarmUser] ${err.msgError}`);
+    console.log(`[user-controller.updateAlarmUser] ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function removeBoxInOldUser(box) {
+  try {
+    if (box.uuidUser !== "") {
+      const oldUser = await mongoUserController.getOneUser(box.uuidUser);
+      oldUser.box = oldUser.box.filter(b => {
+        return b.uuidBox !== box.uuidBox;
+      });
+      await mongoUserController.updateUser(oldUser);
+    }
+  } catch (err) {
+    if (err.msgError !== "Not Found - User") {
+      throw err;
+    }
+    console.log(`[user-controller.removeBoxInOldUSer] ${err.msgError}`);
+  }
+}
+
+async function registerBox(body) {
+  if (body.uuidUser === body.uuidBox) {
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "this box is already in the user",
+    };
+  }
+
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+    const box = await mongoBoxController.getOneBox(body.uuidBox);
+
+    box.nameBox = body.nameBox || box.nameBox;
+
+    await removeBoxInOldUser(box);
+
+    box.uuidUser = user.uuid;
+    user.box.push({
+      uuidBox: box.uuidBox,
+      nameBox: box.nameBox,
+    });
+
+    await mongoUserController.updateUser(user);
+    await mongoBoxController.updateBox(box);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Registerd successfully",
+    };
+  } catch (err) {
+    console.log(`[user-controller.registerBox] ${err.msgError}`);
     throw err;
   }
 }
@@ -151,5 +208,6 @@ module.exports = {
   deleteAlarmUser,
   checkLoginUser,
   insertOneUser,
+  registerBox,
   getAllUser,
 };

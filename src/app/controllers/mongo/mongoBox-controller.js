@@ -46,7 +46,7 @@ async function getOneBox(uuidBox, mongo = Mongo) {
     );
 
     utils.checkHasError(response);
-    utils.checkNotFound(response.result, "uuidBox unknow");
+    utils.checkNotFound(response.result, "Box");
 
     return response.result[0];
   } catch (err) {
