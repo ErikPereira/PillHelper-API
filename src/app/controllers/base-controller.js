@@ -28,6 +28,7 @@ class Controller {
         insertOnePharmaceutical: "/insertOnePharmaceutical",
         checkLoginPharmaceutical: "/checkLoginPharmaceutical",
         updatePharmaceutical: "/updatePharmaceutical",
+        registerUser: "/registerUser",
       },
     };
   }
@@ -289,6 +290,23 @@ class Controller {
         res
           .status(updatePharmaceuticalResponse.status)
           .send(this.formatResponseBody(updatePharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static registerUser() {
+    return async (req, res) => {
+      try {
+        const registerUserResponse = await pharController.registerUser(
+          req.body
+        );
+        res
+          .status(registerUserResponse.status)
+          .send(this.formatResponseBody(registerUserResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

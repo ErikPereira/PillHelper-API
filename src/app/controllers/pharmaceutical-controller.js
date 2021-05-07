@@ -3,6 +3,7 @@
 const { StatusCodes } = require("http-status-codes");
 const { encode } = require("js-base64");
 const mongoPharmaceuticalController = require("./mongo/mongoPharmaceutical-controller");
+const mongoUserController = require("./mongo/mongoUser-controller");
 
 async function getAllPharmaceutical() {
   try {
@@ -104,9 +105,46 @@ async function updatePharmaceutical(upPharmaceutical) {
   }
 }
 
+async function registerUser(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+    const phar = await mongoPharmaceuticalController.getOnePharmaceutical(
+      body.uuidPhar
+    );
+
+    if (
+      phar.users.find(u => {
+        return u.uuidUser === user.uuid;
+      })
+    ) {
+      return {
+        status: StatusCodes.OK,
+        error: false,
+        msgError: "",
+        response: "this User is already in the Pharmaceutical",
+      };
+    }
+
+    phar.users.push({ uuidUser: user.uuid });
+
+    await mongoPharmaceuticalController.updatePharmaceutical(phar);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "User registerd successfully",
+    };
+  } catch (err) {
+    console.log(`[pharmaceutical-controller.registerUser] ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
   checkLoginPharmaceutical,
   insertOnePharmaceutical,
   getAllPharmaceutical,
   updatePharmaceutical,
+  registerUser,
 };

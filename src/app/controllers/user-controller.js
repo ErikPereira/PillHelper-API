@@ -164,18 +164,18 @@ async function removeBoxInOldUser(box) {
 }
 
 async function registerBox(body) {
-  if (body.uuidUser === body.uuidBox) {
-    return {
-      status: StatusCodes.OK,
-      error: false,
-      msgError: "",
-      response: "this box is already in the user",
-    };
-  }
-
   try {
     const user = await mongoUserController.getOneUser(body.uuidUser);
     const box = await mongoBoxController.getOneBox(body.uuidBox);
+
+    if (box.uuidUser === body.uuidUser) {
+      return {
+        status: StatusCodes.OK,
+        error: false,
+        msgError: "",
+        response: "this box is already in the user",
+      };
+    }
 
     box.nameBox = body.nameBox || box.nameBox;
 
@@ -194,7 +194,7 @@ async function registerBox(body) {
       status: StatusCodes.OK,
       error: false,
       msgError: "",
-      response: "Registerd successfully",
+      response: "Box registerd successfully",
     };
   } catch (err) {
     console.log(`[user-controller.registerBox] ${err.msgError}`);

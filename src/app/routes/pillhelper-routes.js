@@ -41,4 +41,5 @@ module.exports = app => {
     Pharmaceutical.updatePharmaceutical,
     BaseController.updatePharmaceutical()
   );
+  app.post(Pharmaceutical.registerUser, BaseController.registerUser());
 };
