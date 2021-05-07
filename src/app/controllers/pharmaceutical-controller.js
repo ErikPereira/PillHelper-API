@@ -45,7 +45,7 @@ async function checkLoginPharmaceutical(credentials) {
       status: StatusCodes.OK,
       error: false,
       msgError: "",
-      response: check.Phar,
+      response: check.uuidPhar,
     };
   } catch (err) {
     console.log(`[user-controller.checkLoginPharmaceutical] ${err.msgError}`);

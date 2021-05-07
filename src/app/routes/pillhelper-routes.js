@@ -33,4 +33,8 @@ module.exports = app => {
     Pharmaceutical.insertOnePharmaceutical,
     BaseController.insertOnePharmaceutical()
   );
+  app.post(
+    Pharmaceutical.checkLoginPharmaceutical,
+    BaseController.checkLoginPharmaceutical()
+  );
 };

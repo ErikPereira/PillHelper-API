@@ -26,6 +26,7 @@ class Controller {
       Pharmaceutical: {
         getAllPharmaceutical: "/getAllPharmaceutical",
         insertOnePharmaceutical: "/insertOnePharmaceutical",
+        checkLoginPharmaceutical: "/checkLoginPharmaceutical",
         deleteOnePharmaceutical: "/deleteOnePharmaceutical",
         updatePharmaceutical: "/updatePharmaceutical",
       },
@@ -255,6 +256,23 @@ class Controller {
         res
           .status(insertOnePharmaceuticalResponse.status)
           .send(this.formatResponseBody(insertOnePharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static checkLoginPharmaceutical() {
+    return async (req, res) => {
+      try {
+        const checkLoginPharmaceuticalResponse = await pharController.checkLoginPharmaceutical(
+          req.body
+        );
+        res
+          .status(checkLoginPharmaceuticalResponse.status)
+          .send(this.formatResponseBody(checkLoginPharmaceuticalResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
