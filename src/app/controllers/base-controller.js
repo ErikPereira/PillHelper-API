@@ -19,6 +19,7 @@ class Controller {
         getAllBox: "/getAllBox",
         insertOneBox: "/insertOneBox",
         deleteOneBox: "/deleteOneBox",
+        updateBox: "/updateBox",
       },
       Pharmaceutical: {},
     };
@@ -180,6 +181,21 @@ class Controller {
         res
           .status(deleteOneBoxResponse.status)
           .send(this.formatResponseBody(deleteOneBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updateBox() {
+    return async (req, res) => {
+      try {
+        const updateBoxResponse = await boxController.updateBox(req.body);
+        res
+          .status(updateBoxResponse.status)
+          .send(this.formatResponseBody(updateBoxResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
