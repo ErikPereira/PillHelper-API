@@ -246,6 +246,23 @@ class Controller {
     };
   }
 
+  static insertOnePharmaceutical() {
+    return async (req, res) => {
+      try {
+        const insertOnePharmaceuticalResponse = await pharController.insertOnePharmaceutical(
+          req.body
+        );
+        res
+          .status(insertOnePharmaceuticalResponse.status)
+          .send(this.formatResponseBody(insertOnePharmaceuticalResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
   // Finish endpoints Pharmaceutical
 }
 module.exports = Controller;

@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-await-in-loop */
 const { StatusCodes } = require("http-status-codes");
+const { encode } = require("js-base64");
 const mongoPharmaceuticalController = require("./mongo/mongoPharmaceutical-controller");
 
 async function getAllPharmaceutical() {
@@ -20,9 +21,57 @@ async function getAllPharmaceutical() {
   }
 }
 
-async function insertOnePharmaceutical() {
+async function checkLoginPharmaceutical(credentials) {
   try {
-    const result = await mongoPharmaceuticalController.insertOnePharmaceutical();
+    const result = await mongoPharmaceuticalController.getLoginPharmaceutical();
+    const check = result.find(
+      phar =>
+        phar.login.password === encode(credentials.password) &&
+        (phar.login.cell === credentials.cell ||
+          phar.login.email === credentials.email)
+    );
+
+    if (check === undefined) {
+      const err = {
+        status: StatusCodes.NOT_FOUND,
+        error: true,
+        msgError: `Pharmaceutical Not Found`,
+        response: {},
+      };
+      throw err;
+    }
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: check.Phar,
+    };
+  } catch (err) {
+    console.log(`[user-controller.checkLoginPharmaceutical] ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function insertOnePharmaceutical(credentials) {
+  // check if login recive is valide
+  try {
+    await checkLoginPharmaceutical(credentials);
+    return {
+      status: StatusCodes.CONFLICT,
+      error: true,
+      msgError: "email ou celular já cadastrado",
+      response: {},
+    };
+  } catch (err) {
+    console.log("Login disponivel");
+  }
+
+  // insert a new user in Mongobd, collection: User
+  try {
+    const result = await mongoPharmaceuticalController.insertOnePharmaceutical(
+      credentials
+    );
     return {
       status: StatusCodes.CREATED,
       error: false,
@@ -76,8 +125,9 @@ async function updatePharmaceutical(upPharmaceutical) {
 }
 
 module.exports = {
-  updatePharmaceutical,
+  checkLoginPharmaceutical,
   deleteOnePharmaceutical,
   insertOnePharmaceutical,
   getAllPharmaceutical,
+  updatePharmaceutical,
 };

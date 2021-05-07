@@ -28,4 +28,9 @@ module.exports = app => {
     Pharmaceutical.getAllPharmaceutical,
     BaseController.getAllPharmaceutical()
   );
+
+  app.post(
+    Pharmaceutical.insertOnePharmaceutical,
+    BaseController.insertOnePharmaceutical()
+  );
 };
