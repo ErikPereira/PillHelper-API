@@ -6,6 +6,7 @@ const { encode } = require("js-base64");
 const { v4: uuidv4 } = require("uuid");
 const mongoUserController = require("./mongo/mongoUser-controller");
 const mongoBoxController = require("./mongo/mongoBox-controller");
+const mongoPharmaceuticalController = require("./mongo/mongoPharmaceutical-controller");
 
 async function getAllUser() {
   try {
@@ -202,7 +203,44 @@ async function registerBox(body) {
   }
 }
 
+async function registerPharmaceutical(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+    const phar = await mongoPharmaceuticalController.getOnePharmaceutical(
+      body.uuidPhar
+    );
+
+    if (
+      user.pharmaceuticals.find(p => {
+        return p.uuidPhar === phar.uuidPhar;
+      })
+    ) {
+      return {
+        status: StatusCodes.OK,
+        error: false,
+        msgError: "",
+        response: "this Pharmaceutical is already in the User",
+      };
+    }
+
+    user.pharmaceuticals.push({ uuidPhar: phar.uuidPhar });
+
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Pharmaceuticals registerd successfully",
+    };
+  } catch (err) {
+    console.log(`[user-controller.registerPharmaceuticals ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
+  registerPharmaceutical,
   updateAlarmUser,
   createAlarmUser,
   deleteAlarmUser,

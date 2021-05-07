@@ -16,6 +16,7 @@ class Controller {
         deleteAlarmUser: "/deleteAlarmUser",
         updateAlarmUser: "/updateAlarmUser",
         registerBox: "/registerBox",
+        registerPharmaceutical: "/registerPharmaceutical",
       },
       Box: {
         getAllBox: "/getAllBox",
@@ -154,6 +155,23 @@ class Controller {
         res
           .status(registerBoxResponse.status)
           .send(this.formatResponseBody(registerBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static registerPharmaceutical() {
+    return async (req, res) => {
+      try {
+        const registerPharmaceuticalResponse = await userController.registerPharmaceutical(
+          req.body
+        );
+        res
+          .status(registerPharmaceuticalResponse.status)
+          .send(this.formatResponseBody(registerPharmaceuticalResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

@@ -13,6 +13,10 @@ module.exports = app => {
   app.post(User.checkLoginUser, BaseController.checkLoginUser());
   app.post(User.insertOneUser, BaseController.insertOneUser());
   app.post(User.registerBox, BaseController.registerBox());
+  app.post(
+    User.registerPharmaceutical,
+    BaseController.registerPharmaceutical()
+  );
 
   // Box endpoints
 
