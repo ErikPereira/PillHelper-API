@@ -52,7 +52,7 @@ async function getOneUser(uuid, mongo = Mongo) {
     );
 
     utils.checkHasError(response);
-    utils.checkNotFound(response.result, "Uuid unknow");
+    utils.checkNotFound(response.result, "User");
 
     return response.result[0];
   } catch (err) {

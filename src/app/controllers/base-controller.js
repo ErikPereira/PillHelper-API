@@ -14,6 +14,7 @@ class Controller {
         createAlarmUser: "/createAlarmUser",
         deleteAlarmUser: "/deleteAlarmUser",
         updateAlarmUser: "/updateAlarmUser",
+        registerBox: "/registerBox",
       },
       Box: {
         getAllBox: "/getAllBox",
@@ -26,10 +27,11 @@ class Controller {
   }
 
   static formatResponseBody(body) {
+    const defaultMsg = "Internal Server Error";
     return {
-      error: body.error || true,
-      msgError: body.msgError || "Internal Server Error",
-      response: body.response || {},
+      error: body.error === undefined ? true : body.error,
+      msgError: body.msgError === undefined ? defaultMsg : body.msgError,
+      response: body.response === undefined ? {} : body.response,
     };
   }
 
@@ -130,6 +132,21 @@ class Controller {
         res
           .status(updateAlarmUserResponse.status)
           .send(this.formatResponseBody(updateAlarmUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static registerBox() {
+    return async (req, res) => {
+      try {
+        const registerBoxResponse = await userController.registerBox(req.body);
+        res
+          .status(registerBoxResponse.status)
+          .send(this.formatResponseBody(registerBoxResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

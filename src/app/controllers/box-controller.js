@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 /* eslint-disable no-await-in-loop */
-// const _ = require("lodash");
 const { StatusCodes } = require("http-status-codes");
 const mongoBoxController = require("./mongo/mongoBox-controller");
 
@@ -14,7 +13,7 @@ async function getAllBox() {
       response: result,
     };
   } catch (err) {
-    console.log(`[pillhelper-collector.getAllBox] ${err.msgError}`);
+    console.log(`[box-controller.getAllBox] ${err.msgError}`);
     throw err;
   }
 }
@@ -29,7 +28,7 @@ async function insertOneBox() {
       response: result.uuidBox,
     };
   } catch (err) {
-    console.log(`[pillhelper-collector.insertOneBox] ${err.msgError}`);
+    console.log(`[box-controller.insertOneBox] ${err.msgError}`);
     throw err;
   }
 }
@@ -45,7 +44,7 @@ async function deleteOneBox(uuidBox) {
       response: "Box deleted",
     };
   } catch (err) {
-    console.log(`[pillhelper-collector.deleteOneBox] ${err.msgError}`);
+    console.log(`[box-controller.deleteOneBox] ${err.msgError}`);
     throw err;
   }
 }
@@ -61,7 +60,7 @@ async function updateBox(upBox) {
       response: "Box Updated",
     };
   } catch (err) {
-    console.log(`[pillhelper-collector.updateBox] ${err.msgError}`);
+    console.log(`[box-controller.updateBox] ${err.msgError}`);
     throw err;
   }
 }
