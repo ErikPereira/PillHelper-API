@@ -10,6 +10,7 @@ class Controller {
     return {
       User: {
         getAllUser: "/getAllUser",
+        getOneUser: "/getOneUSer",
         insertOneUser: "/insertOneUser",
         checkLoginUser: "/checkLoginUser",
         createAlarmUser: "/createAlarmUser",
@@ -52,6 +53,23 @@ class Controller {
         res
           .status(getAllUserResponse.status)
           .send(this.formatResponseBody(getAllUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static getOneUser() {
+    return async (req, res) => {
+      try {
+        const getOneUserResponse = await userController.getOneUser(
+          req.body.uuid
+        );
+        res
+          .status(getOneUserResponse.status)
+          .send(this.formatResponseBody(getOneUserResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
