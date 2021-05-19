@@ -73,7 +73,7 @@ async function checkLoginUser(credentials) {
 async function insertOneUser(credentials) {
   // check if login recive is valide
   try {
-    await checkLoginUser(credentials);
+    await checkLoginUser(credentials.login);
     return {
       status: StatusCodes.CONFLICT,
       error: true,
