@@ -23,6 +23,21 @@ async function getAllUser() {
   }
 }
 
+async function getOneUser(uuid) {
+  try {
+    const result = await mongoUserController.getOneUser(uuid);
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: result,
+    };
+  } catch (err) {
+    console.log(`[user-controller.getOneUser] ${err.msgError}`);
+    throw err;
+  }
+}
+
 async function checkLoginUser(credentials) {
   try {
     const result = await mongoUserController.getLoginUser();
@@ -58,7 +73,7 @@ async function checkLoginUser(credentials) {
 async function insertOneUser(credentials) {
   // check if login recive is valide
   try {
-    await checkLoginUser(credentials);
+    await checkLoginUser(credentials.login);
     return {
       status: StatusCodes.CONFLICT,
       error: true,
@@ -247,5 +262,6 @@ module.exports = {
   checkLoginUser,
   insertOneUser,
   registerBox,
+  getOneUser,
   getAllUser,
 };

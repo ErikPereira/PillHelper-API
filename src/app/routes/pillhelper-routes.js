@@ -7,6 +7,7 @@ module.exports = app => {
 
   app.get(User.getAllUser, BaseController.getAllUser());
 
+  app.post(User.getOneUser, BaseController.getOneUser());
   app.post(User.updateAlarmUser, BaseController.updateAlarmUser());
   app.post(User.createAlarmUser, BaseController.createAlarmUser());
   app.post(User.deleteAlarmUser, BaseController.deleteAlarmUser());

@@ -8,7 +8,7 @@ const utils = require("../../utils/pillhelper-utils");
 const mongoDao = new MongoDBCollectionDao(Mongo.oMongoConnection);
 
 async function insertOneUser(credentials, mongo = Mongo) {
-  const login = credentials;
+  const { login } = credentials;
   login.password = encode(login.password);
   try {
     const user = {
