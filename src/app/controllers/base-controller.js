@@ -14,8 +14,10 @@ class Controller {
         insertOneUser: "/insertOneUser",
         checkLoginUser: "/checkLoginUser",
         createAlarmUser: "/createAlarmUser",
-        deleteAlarmUser: "/deleteAlarmUser",
         updateAlarmUser: "/updateAlarmUser",
+        updateBoxUser: "/updateBoxUser",
+        deleteAlarmUser: "/deleteAlarmUser",
+        deleteBoxInUser: "/deleteBoxInUser",
         registerBox: "/registerBox",
         registerPharmaceutical: "/registerPharmaceutical",
       },
@@ -140,6 +142,43 @@ class Controller {
         res
           .status(deleteAlarmUserResponse.status)
           .send(this.formatResponseBody(deleteAlarmUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteBoxInUser() {
+    return async (req, res) => {
+      try {
+        const deleteBoxInUserResponse = await userController.deleteBoxInUser(
+          req.body.uuidUser,
+          req.body.uuidBox
+        );
+        res
+          .status(deleteBoxInUserResponse.status)
+          .send(this.formatResponseBody(deleteBoxInUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updateBoxUser() {
+    return async (req, res) => {
+      try {
+        const updateBoxUserResponse = await userController.updateBoxUser(
+          req.body.uuidUser,
+          req.body.uuidBox,
+          req.body.newNameBox
+        );
+        res
+          .status(updateBoxUserResponse.status)
+          .send(this.formatResponseBody(updateBoxUserResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

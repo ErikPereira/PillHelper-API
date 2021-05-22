@@ -9,8 +9,10 @@ module.exports = app => {
 
   app.post(User.getOneUser, BaseController.getOneUser());
   app.post(User.updateAlarmUser, BaseController.updateAlarmUser());
+  app.post(User.updateBoxUser, BaseController.updateBoxUser());
   app.post(User.createAlarmUser, BaseController.createAlarmUser());
   app.post(User.deleteAlarmUser, BaseController.deleteAlarmUser());
+  app.post(User.deleteBoxInUser, BaseController.deleteBoxInUser());
   app.post(User.checkLoginUser, BaseController.checkLoginUser());
   app.post(User.insertOneUser, BaseController.insertOneUser());
   app.post(User.registerBox, BaseController.registerBox());
