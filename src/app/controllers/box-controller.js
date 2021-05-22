@@ -18,6 +18,15 @@ async function getAllBox() {
   }
 }
 
+async function getOneBox(uuidBox) {
+  try {
+    return await mongoBoxController.getOneBox(uuidBox);
+  } catch (err) {
+    console.log(`[box-controller.getOneBox] ${err.msgError}`);
+    throw err;
+  }
+}
+
 async function insertOneBox() {
   try {
     const result = await mongoBoxController.insertOneBox();
@@ -65,9 +74,24 @@ async function updateBox(upBox) {
   }
 }
 
+async function unlinkBox(uuidBox) {
+  try {
+    const box = await mongoBoxController.getOneBox(uuidBox);
+    box.uuidUser = "";
+    box.nameBox = "";
+
+    await updateBox(box);
+  } catch (err) {
+    console.log(`[box-controller.unlinkBox] ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
-  updateBox,
   deleteOneBox,
   insertOneBox,
+  getOneBox,
+  updateBox,
   getAllBox,
+  unlinkBox,
 };
