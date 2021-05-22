@@ -5,7 +5,7 @@ const { StatusCodes } = require("http-status-codes");
 const { encode } = require("js-base64");
 const { v4: uuidv4 } = require("uuid");
 const mongoUserController = require("./mongo/mongoUser-controller");
-const mongoBoxController = require("./mongo/mongoBox-controller");
+const boxController = require("./box-controller");
 const mongoPharmaceuticalController = require("./mongo/mongoPharmaceutical-controller");
 
 async function getAllUser() {
@@ -102,7 +102,8 @@ async function insertOneUser(credentials) {
 async function createAlarmUser(uuid, newAlarm) {
   try {
     const user = await mongoUserController.getOneUser(uuid);
-    user.alarms.push({ ...newAlarm, uuidAlarm: uuidv4() });
+    const uuidAlarm = uuidv4();
+    user.alarms.push({ ...newAlarm, uuidAlarm });
 
     await mongoUserController.updateUser(user);
 
@@ -110,7 +111,7 @@ async function createAlarmUser(uuid, newAlarm) {
       status: StatusCodes.CREATED,
       error: false,
       msgError: "",
-      response: "Alarm created",
+      response: uuidAlarm,
     };
   } catch (err) {
     console.log(`[user-controller.createAlarmUser] ${err.msgError}`);
@@ -182,7 +183,7 @@ async function removeBoxInOldUser(box) {
 async function registerBox(body) {
   try {
     const user = await mongoUserController.getOneUser(body.uuidUser);
-    const box = await mongoBoxController.getOneBox(body.uuidBox);
+    const box = await boxController.getOneBox(body.uuidBox);
 
     if (box.uuidUser === body.uuidUser) {
       return {
@@ -204,7 +205,7 @@ async function registerBox(body) {
     });
 
     await mongoUserController.updateUser(user);
-    await mongoBoxController.updateBox(box);
+    await boxController.updateBox(box);
 
     return {
       status: StatusCodes.OK,
@@ -254,12 +255,60 @@ async function registerPharmaceutical(body) {
   }
 }
 
+async function deleteBoxInUser(uuidUser, uuidBox) {
+  try {
+    await removeBoxInOldUser({ uuidUser, uuidBox });
+    await boxController.unlinkBox(uuidBox);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Box unlink successfully",
+    };
+  } catch (err) {
+    console.log(`[user-controller.deleteBoxInUser ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function updateBoxUser(uuidUser, uuidBox, newNameBox) {
+  try {
+    const user = await mongoUserController.getOneUser(uuidUser);
+    const box = await boxController.getOneBox(uuidBox);
+
+    user.box = user.box.map(b => {
+      const internal = b;
+      if (internal.uuidBox === uuidBox) {
+        internal.nameBox = newNameBox;
+        box.nameBox = newNameBox;
+      }
+      return internal;
+    });
+
+    await boxController.updateBox(box);
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Box update successfully",
+    };
+  } catch (err) {
+    console.log(`[user-controller.updateBoxUser ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
   registerPharmaceutical,
   updateAlarmUser,
   createAlarmUser,
   deleteAlarmUser,
+  deleteBoxInUser,
   checkLoginUser,
+  updateBoxUser,
   insertOneUser,
   registerBox,
   getOneUser,
