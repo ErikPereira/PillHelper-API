@@ -30,6 +30,7 @@ class Controller {
         updateBox: "/updateBox",
       },
       Supervisor: {
+        updateUserInSupervisor: "/updateUserInSupervisor",
         getAllSupervisor: "/getAllSupervisor",
         insertOneSupervisor: "/insertOneSupervisor",
         checkLoginSupervisor: "/checkLoginSupervisor",
@@ -418,6 +419,23 @@ class Controller {
         res
           .status(registerUserResponse.status)
           .send(this.formatResponseBody(registerUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updateUserInSupervisor() {
+    return async (req, res) => {
+      try {
+        const updateUserInSupervisorResponse = await supervisorController.updateUserInSupervisor(
+          req.body
+        );
+        res
+          .status(updateUserInSupervisorResponse.status)
+          .send(this.formatResponseBody(updateUserInSupervisorResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

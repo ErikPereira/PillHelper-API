@@ -15,7 +15,7 @@ async function getAllSupervisor() {
       response: result,
     };
   } catch (err) {
-    console.log(`[Supervisor-controller.getAllSupervisor] ${err.msgError}`);
+    console.log(`[supervisor-controller.getAllSupervisor] ${err.msgError}`);
     throw err;
   }
 }
@@ -52,7 +52,7 @@ async function checkLoginSupervisor(login) {
       response: check.uuidSupervisor,
     };
   } catch (err) {
-    console.log(`[user-controller.checkLoginSupervisor] ${err.msgError}`);
+    console.log(`[supervisor-controller.checkLoginSupervisor] ${err.msgError}`);
     throw err;
   }
 }
@@ -83,7 +83,7 @@ async function insertOneSupervisor(credentials) {
       response: result.uuidSupervisor,
     };
   } catch (err) {
-    console.log(`[Supervisor-controller.insertOneSupervisor] ${err.msgError}`);
+    console.log(`[supervisor-controller.insertOneSupervisor] ${err.msgError}`);
     throw err;
   }
 }
@@ -99,7 +99,7 @@ async function updateSupervisor(upSupervisor) {
       response: "Supervisor Updated",
     };
   } catch (err) {
-    console.log(`[Supervisor-controller.updateSupervisor] ${err.msgError}`);
+    console.log(`[supervisor-controller.updateSupervisor] ${err.msgError}`);
     throw err;
   }
 }
@@ -177,7 +177,7 @@ async function getOneSupervisor(login) {
     }
     return oneSupervisor;
   } catch (err) {
-    console.log(`[Supervisor-controller.getOneSupervisor] ${err.msgError}`);
+    console.log(`[supervisor-controller.getOneSupervisor] ${err.msgError}`);
     throw err;
   }
 }
@@ -194,12 +194,43 @@ async function getOneSupervisorUuid(uuidSupervisor) {
       response: result,
     };
   } catch (err) {
-    console.log(`[user-controller.getOneUser] ${err.msgError}`);
+    console.log(`[supervisor-controller.getOneSupervisorUuid] ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function updateUserInSupervisor(body) {
+  try {
+    const supervisor = await mongoSupervisorController.getOneSupervisor(
+      body.uuidSupervisor
+    );
+
+    supervisor.users = supervisor.users.map(u => {
+      let user = u;
+      if (user.uuidUser === body.user.uuidUser) {
+        user = body.user;
+      }
+      return user;
+    });
+
+    await mongoSupervisorController.updateSupervisor(supervisor);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "User in Supervisor updated successfully",
+    };
+  } catch (err) {
+    console.log(
+      `[supervisor-controller.updateUserInSupervisor] ${err.msgError}`
+    );
     throw err;
   }
 }
 
 module.exports = {
+  updateUserInSupervisor,
   getOneSupervisorUuid,
   checkLoginSupervisor,
   insertOneSupervisor,
