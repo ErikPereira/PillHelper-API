@@ -8,5 +8,5 @@ module.exports = {
   },
   mongoCollectionUser: process.env.MONGO_COLLECTION_USER,
   mongoCollectionBox: process.env.MONGO_COLLECTION_BOX,
-  mongoCollectionPharmaceutical: process.env.MONGO_COLLECTION_PHARMACEUTICAL,
+  mongoCollectionSupervisor: process.env.MONGO_COLLECTION_SUPERVISOR,
 };

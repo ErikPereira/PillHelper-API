@@ -18,4 +18,4 @@ db.createUser({
 
 db.createCollection(mongo.mongoCollectionUser);
 db.createCollection(mongo.mongoCollectionBox);
-db.createCollection(mongo.mongoCollectionPharmaceutical);
+db.createCollection(mongo.mongoCollectionSupervisor);

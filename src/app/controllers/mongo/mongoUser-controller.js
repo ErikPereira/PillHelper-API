@@ -15,7 +15,7 @@ async function insertOneUser(credentials, mongo = Mongo) {
       uuid: uuidv4(),
       alarms: [],
       box: [],
-      pharmaceuticals: [],
+      supervisors: [],
       login,
     };
 

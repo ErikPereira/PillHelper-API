@@ -3,7 +3,7 @@
 const { StatusCodes } = require("http-status-codes");
 const userController = require("./user-controller");
 const boxController = require("./box-controller");
-const pharController = require("./pharmaceutical-controller");
+const supervisorController = require("./supervisor-controller");
 
 class Controller {
   static routes() {
@@ -19,7 +19,8 @@ class Controller {
         deleteAlarmUser: "/deleteAlarmUser",
         deleteBoxInUser: "/deleteBoxInUser",
         registerBox: "/registerBox",
-        registerPharmaceutical: "/registerPharmaceutical",
+        registerSupervisor: "/registerSupervisor",
+        deleteSupervisorInUser: "/deleteSupervisorInUser",
       },
       Box: {
         getAllBox: "/getAllBox",
@@ -27,11 +28,11 @@ class Controller {
         deleteOneBox: "/deleteOneBox",
         updateBox: "/updateBox",
       },
-      Pharmaceutical: {
-        getAllPharmaceutical: "/getAllPharmaceutical",
-        insertOnePharmaceutical: "/insertOnePharmaceutical",
-        checkLoginPharmaceutical: "/checkLoginPharmaceutical",
-        updatePharmaceutical: "/updatePharmaceutical",
+      Supervisor: {
+        getAllSupervisor: "/getAllSupervisor",
+        insertOneSupervisor: "/insertOneSupervisor",
+        checkLoginSupervisor: "/checkLoginSupervisor",
+        updateSupervisor: "/updateSupervisor",
         registerUser: "/registerUser",
       },
     };
@@ -220,15 +221,32 @@ class Controller {
     };
   }
 
-  static registerPharmaceutical() {
+  static registerSupervisor() {
     return async (req, res) => {
       try {
-        const registerPharmaceuticalResponse = await userController.registerPharmaceutical(
+        const registerSupervisorResponse = await userController.registerSupervisor(
           req.body
         );
         res
-          .status(registerPharmaceuticalResponse.status)
-          .send(this.formatResponseBody(registerPharmaceuticalResponse));
+          .status(registerSupervisorResponse.status)
+          .send(this.formatResponseBody(registerSupervisorResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteSupervisorInUser() {
+    return async (req, res) => {
+      try {
+        const deleteSupervisorInUserResponse = await userController.deleteSupervisorInUser(
+          req.body
+        );
+        res
+          .status(deleteSupervisorInUserResponse.status)
+          .send(this.formatResponseBody(deleteSupervisorInUserResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
@@ -305,15 +323,15 @@ class Controller {
 
   // Finish endpoints Box
 
-  // Start endpoints Pharmaceutical
+  // Start endpoints Supervisor
 
-  static getAllPharmaceutical() {
+  static getAllSupervisor() {
     return async (req, res) => {
       try {
-        const getAllPharmaceuticalResponse = await pharController.getAllPharmaceutical();
+        const getAllSupervisorResponse = await supervisorController.getAllSupervisor();
         res
-          .status(getAllPharmaceuticalResponse.status)
-          .send(this.formatResponseBody(getAllPharmaceuticalResponse));
+          .status(getAllSupervisorResponse.status)
+          .send(this.formatResponseBody(getAllSupervisorResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
@@ -322,15 +340,15 @@ class Controller {
     };
   }
 
-  static insertOnePharmaceutical() {
+  static insertOneSupervisor() {
     return async (req, res) => {
       try {
-        const insertOnePharmaceuticalResponse = await pharController.insertOnePharmaceutical(
+        const insertOneSupervisorResponse = await supervisorController.insertOneSupervisor(
           req.body
         );
         res
-          .status(insertOnePharmaceuticalResponse.status)
-          .send(this.formatResponseBody(insertOnePharmaceuticalResponse));
+          .status(insertOneSupervisorResponse.status)
+          .send(this.formatResponseBody(insertOneSupervisorResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
@@ -339,15 +357,15 @@ class Controller {
     };
   }
 
-  static checkLoginPharmaceutical() {
+  static checkLoginSupervisor() {
     return async (req, res) => {
       try {
-        const checkLoginPharmaceuticalResponse = await pharController.checkLoginPharmaceutical(
+        const checkLoginSupervisorResponse = await supervisorController.checkLoginSupervisor(
           req.body
         );
         res
-          .status(checkLoginPharmaceuticalResponse.status)
-          .send(this.formatResponseBody(checkLoginPharmaceuticalResponse));
+          .status(checkLoginSupervisorResponse.status)
+          .send(this.formatResponseBody(checkLoginSupervisorResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
@@ -356,15 +374,15 @@ class Controller {
     };
   }
 
-  static updatePharmaceutical() {
+  static updateSupervisor() {
     return async (req, res) => {
       try {
-        const updatePharmaceuticalResponse = await pharController.updatePharmaceutical(
+        const updateSupervisorResponse = await supervisorController.updateSupervisor(
           req.body
         );
         res
-          .status(updatePharmaceuticalResponse.status)
-          .send(this.formatResponseBody(updatePharmaceuticalResponse));
+          .status(updateSupervisorResponse.status)
+          .send(this.formatResponseBody(updateSupervisorResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
@@ -376,7 +394,7 @@ class Controller {
   static registerUser() {
     return async (req, res) => {
       try {
-        const registerUserResponse = await pharController.registerUser(
+        const registerUserResponse = await supervisorController.registerUser(
           req.body
         );
         res
@@ -390,6 +408,6 @@ class Controller {
     };
   }
 
-  // Finish endpoints Pharmaceutical
+  // Finish endpoints Supervisor
 }
 module.exports = Controller;
