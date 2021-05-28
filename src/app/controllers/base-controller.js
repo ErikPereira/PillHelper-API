@@ -20,6 +20,7 @@ class Controller {
         deleteBoxInUser: "/deleteBoxInUser",
         registerBox: "/registerBox",
         registerSupervisor: "/registerSupervisor",
+        deleteSupervisorInUser: "/deleteSupervisorInUser",
       },
       Box: {
         getAllBox: "/getAllBox",
@@ -229,6 +230,23 @@ class Controller {
         res
           .status(registerSupervisorResponse.status)
           .send(this.formatResponseBody(registerSupervisorResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteSupervisorInUser() {
+    return async (req, res) => {
+      try {
+        const deleteSupervisorInUserResponse = await userController.deleteSupervisorInUser(
+          req.body
+        );
+        res
+          .status(deleteSupervisorInUserResponse.status)
+          .send(this.formatResponseBody(deleteSupervisorInUserResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
