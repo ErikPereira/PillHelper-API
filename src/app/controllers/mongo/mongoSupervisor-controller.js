@@ -7,41 +7,41 @@ const utils = require("../../utils/pillhelper-utils");
 
 const mongoDao = new MongoDBCollectionDao(Mongo.oMongoConnection);
 
-async function insertOnePharmaceutical(credentials, mongo = Mongo) {
+async function insertOneSupervisor(credentials, mongo = Mongo) {
   const login = credentials;
   login.password = encode(login.password);
   try {
-    const pharmaceutical = {
-      uuidPhar: uuidv4(),
+    const supervisor = {
+      uuidSupervisor: uuidv4(),
       users: [],
       login,
     };
     mongoDao.setURI(mongo.oMongoConnection);
     const response = await mongoDao.insertOne(
-      mongo.mongoCollectionPharmaceutical,
-      pharmaceutical
+      mongo.mongoCollectionSupervisor,
+      supervisor
     );
     utils.checkHasError(response);
 
     return {
       ...response,
-      uuidPhar: pharmaceutical.uuidPhar,
+      uuidSupervisor: supervisor.uuidSupervisor,
     };
   } catch (err) {
     const res = utils.checkError(err);
     console.log(
-      `[mongoPharmaceutical-controller.insertOnePharmaceutical] ${res.msgError}`
+      `[mongoSupervisor-controller.insertOneSupervisor] ${res.msgError}`
     );
     throw res;
   }
 }
 
-async function getOnePharmaceutical(uuidPhar, mongo = Mongo) {
+async function getOneSupervisor(uuidSupervisor, mongo = Mongo) {
   try {
     const jsonFilter = [
       {
         $match: {
-          uuidPhar,
+          uuidSupervisor,
         },
       },
       {
@@ -52,24 +52,24 @@ async function getOnePharmaceutical(uuidPhar, mongo = Mongo) {
     ];
     mongoDao.setURI(mongo.oMongoConnection);
     const response = await mongoDao.aggregate(
-      mongo.mongoCollectionPharmaceutical,
+      mongo.mongoCollectionSupervisor,
       jsonFilter
     );
 
     utils.checkHasError(response);
-    utils.checkNotFound(response.result, "Pharmaceutical");
+    utils.checkNotFound(response.result, "Supervisor");
 
     return response.result[0];
   } catch (err) {
     const res = utils.checkError(err);
     console.log(
-      `[mongoPharmaceutical-controller.getOnePharmaceutical] ${res.msgError}`
+      `[mongoSupervisor-controller.getOneSupervisor] ${res.msgError}`
     );
     throw res;
   }
 }
 
-async function getAllPharmaceutical(mongo = Mongo) {
+async function getAllSupervisor(mongo = Mongo) {
   try {
     const jsonFilter = [
       {
@@ -80,7 +80,7 @@ async function getAllPharmaceutical(mongo = Mongo) {
     ];
 
     const response = await mongoDao.aggregate(
-      mongo.mongoCollectionPharmaceutical,
+      mongo.mongoCollectionSupervisor,
       jsonFilter
     );
     utils.checkHasError(response);
@@ -88,22 +88,22 @@ async function getAllPharmaceutical(mongo = Mongo) {
   } catch (err) {
     const res = utils.checkError(err);
     console.log(
-      `[mongoPharmaceutical-controller.getAllPharmaceutical] ${res.msgError}`
+      `[mongoSupervisor-controller.getAllSupervisor] ${res.msgError}`
     );
     throw res;
   }
 }
 
-async function updatePharmaceutical(pharmaceutical, mongo = Mongo) {
+async function updateSupervisor(supervisor, mongo = Mongo) {
   try {
     const jsonFilter = {
-      uuidPhar: pharmaceutical.uuidPhar,
+      uuidSupervisor: supervisor.uuidSupervisor,
     };
     mongoDao.setURI(mongo.oMongoConnection);
     const response = await mongoDao.update(
-      mongo.mongoCollectionPharmaceutical,
+      mongo.mongoCollectionSupervisor,
       jsonFilter,
-      pharmaceutical
+      supervisor
     );
 
     utils.checkHasError(response);
@@ -111,26 +111,26 @@ async function updatePharmaceutical(pharmaceutical, mongo = Mongo) {
   } catch (err) {
     const res = utils.checkError(err);
     console.log(
-      `[mongoPharmaceutical-controller.updatePharmaceutical] ${res.msgError}`
+      `[mongoSupervisor-controller.updateSupervisor] ${res.msgError}`
     );
     throw res;
   }
 }
 
-async function getLoginPharmaceutical(mongo = Mongo) {
+async function getLoginSupervisor(mongo = Mongo) {
   try {
     const jsonFilter = [
       {
         $project: {
           _id: 0,
-          uuidPhar: 1,
+          uuidSupervisor: 1,
           login: 1,
         },
       },
     ];
 
     const response = await mongoDao.aggregate(
-      mongo.mongoCollectionPharmaceutical,
+      mongo.mongoCollectionSupervisor,
       jsonFilter
     );
     utils.checkHasError(response);
@@ -138,20 +138,20 @@ async function getLoginPharmaceutical(mongo = Mongo) {
   } catch (err) {
     const res = utils.checkError(err);
     console.log(
-      `[mongoPharmaceutical-controller.getLoginPharmaceutical] ${res.msgError}`
+      `[mongoSupervisor-controller.getLoginSupervisor] ${res.msgError}`
     );
     throw res;
   }
 }
 
-async function deleteOnePharmaceutical(uuidPhar, mongo = Mongo) {
+async function deleteOneSupervisor(uuidSupervisor, mongo = Mongo) {
   try {
     const jsonFilter = {
-      uuidPhar,
+      uuidSupervisor,
     };
     mongoDao.setURI(mongo.oMongoConnection);
     const response = await mongoDao.deleteOne(
-      mongo.mongoCollectionPharmaceutical,
+      mongo.mongoCollectionSupervisor,
       jsonFilter
     );
 
@@ -161,17 +161,17 @@ async function deleteOnePharmaceutical(uuidPhar, mongo = Mongo) {
   } catch (err) {
     const res = utils.checkError(err);
     console.log(
-      `[mongoPharmaceutical-controller.deleteOnePharmaceutical] ${res.msgError}`
+      `[mongoSupervisor-controller.deleteOneSupervisor] ${res.msgError}`
     );
     throw res;
   }
 }
 
 module.exports = {
-  insertOnePharmaceutical,
-  deleteOnePharmaceutical,
-  getLoginPharmaceutical,
-  updatePharmaceutical,
-  getAllPharmaceutical,
-  getOnePharmaceutical,
+  insertOneSupervisor,
+  deleteOneSupervisor,
+  getLoginSupervisor,
+  updateSupervisor,
+  getAllSupervisor,
+  getOneSupervisor,
 };

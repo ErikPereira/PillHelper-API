@@ -1,7 +1,7 @@
 const BaseController = require("../controllers/base-controller");
 
 module.exports = app => {
-  const { User, Box, Pharmaceutical } = BaseController.routes();
+  const { User, Box, Supervisor } = BaseController.routes();
 
   // Users endpoints
 
@@ -16,10 +16,7 @@ module.exports = app => {
   app.post(User.checkLoginUser, BaseController.checkLoginUser());
   app.post(User.insertOneUser, BaseController.insertOneUser());
   app.post(User.registerBox, BaseController.registerBox());
-  app.post(
-    User.registerPharmaceutical,
-    BaseController.registerPharmaceutical()
-  );
+  app.post(User.registerSupervisor, BaseController.registerSupervisor());
 
   // Box endpoints
 
@@ -29,24 +26,18 @@ module.exports = app => {
   app.post(Box.deleteOneBox, BaseController.deleteOneBox());
   app.post(Box.updateBox, BaseController.updateBox());
 
-  // Pharmaceutical endpoints
+  // Supervisor endpoints
 
-  app.get(
-    Pharmaceutical.getAllPharmaceutical,
-    BaseController.getAllPharmaceutical()
-  );
+  app.get(Supervisor.getAllSupervisor, BaseController.getAllSupervisor());
 
   app.post(
-    Pharmaceutical.insertOnePharmaceutical,
-    BaseController.insertOnePharmaceutical()
+    Supervisor.insertOneSupervisor,
+    BaseController.insertOneSupervisor()
   );
   app.post(
-    Pharmaceutical.checkLoginPharmaceutical,
-    BaseController.checkLoginPharmaceutical()
+    Supervisor.checkLoginSupervisor,
+    BaseController.checkLoginSupervisor()
   );
-  app.post(
-    Pharmaceutical.updatePharmaceutical,
-    BaseController.updatePharmaceutical()
-  );
-  app.post(Pharmaceutical.registerUser, BaseController.registerUser());
+  app.post(Supervisor.updateSupervisor, BaseController.updateSupervisor());
+  app.post(Supervisor.registerUser, BaseController.registerUser());
 };

@@ -6,7 +6,7 @@ const { encode } = require("js-base64");
 const { v4: uuidv4 } = require("uuid");
 const mongoUserController = require("./mongo/mongoUser-controller");
 const boxController = require("./box-controller");
-const mongoPharmaceuticalController = require("./mongo/mongoPharmaceutical-controller");
+const supervisorController = require("./supervisor-controller");
 
 async function getAllUser() {
   try {
@@ -219,38 +219,49 @@ async function registerBox(body) {
   }
 }
 
-async function registerPharmaceutical(body) {
+async function registerSupervisor(body) {
   try {
     const user = await mongoUserController.getOneUser(body.uuidUser);
-    const phar = await mongoPharmaceuticalController.getOnePharmaceutical(
-      body.uuidPhar
+    const supervisor = await supervisorController.getOneSupervisor(
+      body.loginSupervisor
     );
 
     if (
-      user.pharmaceuticals.find(p => {
-        return p.uuidPhar === phar.uuidPhar;
+      user.supervisors.find(sup => {
+        return sup.uuidSupervisor === supervisor.uuidSupervisor;
       })
     ) {
       return {
         status: StatusCodes.OK,
         error: false,
         msgError: "",
-        response: "this Pharmaceutical is already in the User",
+        response: "this Supervisor is already in the User",
       };
     }
 
-    user.pharmaceuticals.push({ uuidPhar: phar.uuidPhar });
+    supervisor.users.push({
+      uuidUser: user.uuid,
+      registeredBy: "User",
+      bond: "wait",
+    });
+
+    user.supervisors.push({
+      uuidSupervisor: supervisor.uuidSupervisor,
+      registeredBy: "User",
+      bond: "wait",
+    });
 
     await mongoUserController.updateUser(user);
+    await supervisorController.updateSupervisor(supervisor);
 
     return {
       status: StatusCodes.OK,
       error: false,
       msgError: "",
-      response: "Pharmaceuticals registerd successfully",
+      response: "Supervisor registerd successfully",
     };
   } catch (err) {
-    console.log(`[user-controller.registerPharmaceuticals ${err.msgError}`);
+    console.log(`[user-controller.registerSupervisor] ${err.msgError}`);
     throw err;
   }
 }
@@ -302,7 +313,7 @@ async function updateBoxUser(uuidUser, uuidBox, newNameBox) {
 }
 
 module.exports = {
-  registerPharmaceutical,
+  registerSupervisor,
   updateAlarmUser,
   createAlarmUser,
   deleteAlarmUser,
