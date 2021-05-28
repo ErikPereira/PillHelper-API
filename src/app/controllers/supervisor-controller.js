@@ -20,8 +20,13 @@ async function getAllSupervisor() {
   }
 }
 
-async function checkLoginSupervisor(credentials) {
+async function checkLoginSupervisor(login) {
   try {
+    const credentials = {
+      email: login.email || "empty",
+      cell: login.cell || "empty",
+      password: login.password,
+    };
     const result = await mongoSupervisorController.getLoginSupervisor();
     const check = result.find(
       supervisor =>
@@ -119,8 +124,20 @@ async function registerUser(body) {
       };
     }
 
-    supervisor.users.push({ uuidUser: user.uuid });
+    supervisor.users.push({
+      uuidUser: user.uuid,
+      registeredBy: "Supervisor",
+      bond: "wait",
+      name: "",
+    });
+    user.supervisors.push({
+      uuidSupervisor: supervisor.uuidSupervisor,
+      registeredBy: "Supervisor",
+      bond: "wait",
+      name: "",
+    });
 
+    await mongoUserController.updateUser(user);
     await mongoSupervisorController.updateSupervisor(supervisor);
 
     return {
@@ -135,8 +152,12 @@ async function registerUser(body) {
   }
 }
 
-async function getOneSupervisor(loginSupervisor) {
+async function getOneSupervisor(login) {
   try {
+    const loginSupervisor = {
+      email: login.email || "empty",
+      cell: login.cell || "empty",
+    };
     const allSupervisor = await getAllSupervisor();
 
     const oneSupervisor = allSupervisor.response.find(
@@ -161,7 +182,25 @@ async function getOneSupervisor(loginSupervisor) {
   }
 }
 
+async function getOneSupervisorUuid(uuidSupervisor) {
+  try {
+    const result = await mongoSupervisorController.getOneSupervisor(
+      uuidSupervisor
+    );
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: result,
+    };
+  } catch (err) {
+    console.log(`[user-controller.getOneUser] ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
+  getOneSupervisorUuid,
   checkLoginSupervisor,
   insertOneSupervisor,
   getOneSupervisor,

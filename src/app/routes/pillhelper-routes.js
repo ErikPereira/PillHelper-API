@@ -17,6 +17,10 @@ module.exports = app => {
   app.post(User.insertOneUser, BaseController.insertOneUser());
   app.post(User.registerBox, BaseController.registerBox());
   app.post(User.registerSupervisor, BaseController.registerSupervisor());
+  app.post(
+    User.deleteSupervisorInUser,
+    BaseController.deleteSupervisorInUser()
+  );
 
   // Box endpoints
 

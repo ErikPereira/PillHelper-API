@@ -219,53 +219,6 @@ async function registerBox(body) {
   }
 }
 
-async function registerSupervisor(body) {
-  try {
-    const user = await mongoUserController.getOneUser(body.uuidUser);
-    const supervisor = await supervisorController.getOneSupervisor(
-      body.loginSupervisor
-    );
-
-    if (
-      user.supervisors.find(sup => {
-        return sup.uuidSupervisor === supervisor.uuidSupervisor;
-      })
-    ) {
-      return {
-        status: StatusCodes.OK,
-        error: false,
-        msgError: "",
-        response: "this Supervisor is already in the User",
-      };
-    }
-
-    supervisor.users.push({
-      uuidUser: user.uuid,
-      registeredBy: "User",
-      bond: "wait",
-    });
-
-    user.supervisors.push({
-      uuidSupervisor: supervisor.uuidSupervisor,
-      registeredBy: "User",
-      bond: "wait",
-    });
-
-    await mongoUserController.updateUser(user);
-    await supervisorController.updateSupervisor(supervisor);
-
-    return {
-      status: StatusCodes.OK,
-      error: false,
-      msgError: "",
-      response: "Supervisor registerd successfully",
-    };
-  } catch (err) {
-    console.log(`[user-controller.registerSupervisor] ${err.msgError}`);
-    throw err;
-  }
-}
-
 async function deleteBoxInUser(uuidUser, uuidBox) {
   try {
     await removeBoxInOldUser({ uuidUser, uuidBox });
@@ -312,7 +265,111 @@ async function updateBoxUser(uuidUser, uuidBox, newNameBox) {
   }
 }
 
+async function registerSupervisor(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+    const supervisor = await supervisorController.getOneSupervisor(
+      body.loginSupervisor
+    );
+
+    if (
+      user.supervisors.find(sup => {
+        return sup.uuidSupervisor === supervisor.uuidSupervisor;
+      })
+    ) {
+      return {
+        status: StatusCodes.OK,
+        error: false,
+        msgError: "",
+        response: "Este supervisor já esta vinculado",
+      };
+    }
+
+    if (
+      supervisor.users.find(u => {
+        return u.uuidUser === user.uuid;
+      })
+    ) {
+      return {
+        status: StatusCodes.OK,
+        error: false,
+        msgError: "",
+        response:
+          "aguarde a confirmação de desvinculo do supervisor para tentar novamente",
+      };
+    }
+
+    supervisor.users.push({
+      uuidUser: user.uuid,
+      registeredBy: "User",
+      bond: "wait",
+      name: "",
+    });
+
+    user.supervisors.push({
+      uuidSupervisor: supervisor.uuidSupervisor,
+      registeredBy: "User",
+      bond: "wait",
+      name: "",
+    });
+
+    await mongoUserController.updateUser(user);
+    await supervisorController.updateSupervisor(supervisor);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Supervisor registerd successfully",
+    };
+  } catch (err) {
+    console.log(`[user-controller.registerSupervisor] ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function deleteSupervisorInUser(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+    const supervisor = (
+      await supervisorController.getOneSupervisorUuid(body.uuidSupervisor)
+    ).response;
+
+    user.supervisors = user.supervisors.filter(sup => {
+      return sup.uuidSupervisor !== supervisor.uuidSupervisor;
+    });
+
+    await mongoUserController.updateUser(user);
+
+    let modify = false;
+    supervisor.users = supervisor.users.map(use => {
+      const u = use;
+      if (u.uuidUser === user.uuid) {
+        u.registeredBy = "User";
+        u.bond = "Delete";
+        modify = true;
+      }
+      return u;
+    });
+
+    if (modify) {
+      await supervisorController.updateSupervisor(supervisor);
+    }
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Supervisor unlink successfully",
+    };
+  } catch (err) {
+    console.log(`[user-controller.deleteSupervisorInUser] ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
+  deleteSupervisorInUser,
   registerSupervisor,
   updateAlarmUser,
   createAlarmUser,
