@@ -368,8 +368,34 @@ async function deleteSupervisorInUser(body) {
   }
 }
 
+async function updateSupervisorInUser(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+
+    user.supervisors = user.supervisors.map(sup => {
+      let supervisor = sup;
+      if (supervisor.uuidSupervisor === body.supervisor.uuidSupervisor) {
+        supervisor = body.supervisor;
+      }
+      return supervisor;
+    });
+
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Supervisor in User updated successfully",
+    };
+  } catch (err) {
+    console.log(`[user-controller.updateSupervisorInUser] ${err.msgError}`);
+    throw err;
+  }
+}
 module.exports = {
   deleteSupervisorInUser,
+  updateSupervisorInUser,
   registerSupervisor,
   updateAlarmUser,
   createAlarmUser,

@@ -21,6 +21,10 @@ module.exports = app => {
     User.deleteSupervisorInUser,
     BaseController.deleteSupervisorInUser()
   );
+  app.post(
+    User.updateSupervisorInUser,
+    BaseController.updateSupervisorInUser()
+  );
 
   // Box endpoints
 

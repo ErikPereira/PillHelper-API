@@ -21,6 +21,7 @@ class Controller {
         registerBox: "/registerBox",
         registerSupervisor: "/registerSupervisor",
         deleteSupervisorInUser: "/deleteSupervisorInUser",
+        updateSupervisorInUser: "/updateSupervisorInUser",
       },
       Box: {
         getAllBox: "/getAllBox",
@@ -247,6 +248,23 @@ class Controller {
         res
           .status(deleteSupervisorInUserResponse.status)
           .send(this.formatResponseBody(deleteSupervisorInUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updateSupervisorInUser() {
+    return async (req, res) => {
+      try {
+        const updateSupervisorInUserResponse = await userController.updateSupervisorInUser(
+          req.body
+        );
+        res
+          .status(updateSupervisorInUserResponse.status)
+          .send(this.formatResponseBody(updateSupervisorInUserResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
