@@ -303,14 +303,17 @@ async function registerSupervisor(body) {
       uuidUser: user.uuid,
       registeredBy: "User",
       bond: "wait",
-      name: "",
+      name: user.login.email || user.login.cell,
     });
 
     user.supervisors.push({
       uuidSupervisor: supervisor.uuidSupervisor,
       registeredBy: "User",
       bond: "wait",
-      name: "",
+      name:
+        body.loginSupervisor.name ||
+        supervisor.loginSupervisor.email ||
+        supervisor.loginSupervisor.cell,
     });
 
     await mongoUserController.updateUser(user);
