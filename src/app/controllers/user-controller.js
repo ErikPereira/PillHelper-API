@@ -306,7 +306,7 @@ async function registerSupervisor(body) {
       name: user.login.email || user.login.cell,
     });
 
-    user.supervisors.push({
+    const register = {
       uuidSupervisor: supervisor.uuidSupervisor,
       registeredBy: "User",
       bond: "wait",
@@ -314,7 +314,9 @@ async function registerSupervisor(body) {
         body.loginSupervisor.name ||
         supervisor.loginSupervisor.email ||
         supervisor.loginSupervisor.cell,
-    });
+    };
+
+    user.supervisors.push(register);
 
     await mongoUserController.updateUser(user);
     await supervisorController.updateSupervisor(supervisor);
@@ -323,7 +325,7 @@ async function registerSupervisor(body) {
       status: StatusCodes.OK,
       error: false,
       msgError: "",
-      response: "Supervisor registerd successfully",
+      response: register,
     };
   } catch (err) {
     console.log(`[user-controller.registerSupervisor] ${err.msgError}`);

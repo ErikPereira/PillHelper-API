@@ -123,13 +123,14 @@ async function registerUser(body) {
         response: "this User is already in the Supervisor",
       };
     }
-
-    supervisor.users.push({
+    const register = {
       uuidUser: user.uuid,
       registeredBy: "Supervisor",
       bond: "wait",
       name: user.login.email || user.login.cell,
-    });
+    };
+
+    supervisor.users.push(register);
 
     user.supervisors.push({
       uuidSupervisor: supervisor.uuidSupervisor,
@@ -148,7 +149,7 @@ async function registerUser(body) {
       status: StatusCodes.OK,
       error: false,
       msgError: "",
-      response: "User registerd successfully",
+      response: register,
     };
   } catch (err) {
     console.log(`[supervisor-controller.registerUser] ${err.msgError}`);
