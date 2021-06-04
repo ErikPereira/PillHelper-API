@@ -4,6 +4,7 @@
 const { StatusCodes } = require("http-status-codes");
 const { encode } = require("js-base64");
 const { v4: uuidv4 } = require("uuid");
+const _ = require("lodash");
 const mongoUserController = require("./mongo/mongoUser-controller");
 const boxController = require("./box-controller");
 const supervisorController = require("./supervisor-controller");
@@ -279,9 +280,9 @@ async function registerSupervisor(body) {
     ) {
       return {
         status: StatusCodes.OK,
-        error: false,
-        msgError: "",
-        response: "Este supervisor já esta vinculado",
+        error: true,
+        msgError: "ERRO: Este supervisor já esta vinculado",
+        response: "",
       };
     }
 
@@ -292,10 +293,10 @@ async function registerSupervisor(body) {
     ) {
       return {
         status: StatusCodes.OK,
-        error: false,
-        msgError: "",
-        response:
-          "aguarde a confirmação de desvinculo do supervisor para tentar novamente",
+        error: true,
+        msgError:
+          "ERRO: aguarde a confirmação de desvinculo do supervisor para tentar novamente",
+        response: "",
       };
     }
 
@@ -312,8 +313,8 @@ async function registerSupervisor(body) {
       bond: "wait",
       name:
         body.loginSupervisor.name ||
-        supervisor.loginSupervisor.email ||
-        supervisor.loginSupervisor.cell,
+        supervisor.login.email ||
+        supervisor.login.cell,
     };
 
     user.supervisors.push(register);
@@ -398,10 +399,119 @@ async function updateSupervisorInUser(body) {
     throw err;
   }
 }
+
+async function addClinicalData(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+
+    const find = user.clinicalData.clinicalDataNames.find(
+      name => name === body.nameClinicalData
+    );
+
+    if (find) {
+      return {
+        status: StatusCodes.CONFLICT,
+        error: false,
+        msgError: "Clinical data already existing",
+        response: "",
+      };
+    }
+
+    user.clinicalData.clinicalDataNames.push(body.nameClinicalData);
+    user.clinicalData = {
+      ...user.clinicalData,
+      [body.nameClinicalData]: body.valueClinicalData,
+    };
+
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Clinical data added",
+    };
+  } catch (err) {
+    console.log(`[user-controller.addClinicalData] ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function deleteClinicalData(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+    let find = user.clinicalData.clinicalDataNames.length;
+
+    user.clinicalData.clinicalDataNames = _.remove(
+      user.clinicalData.clinicalDataNames,
+      name => name !== body.nameClinicalData
+    );
+
+    find = find !== user.clinicalData.clinicalDataNames.length;
+
+    if (!find) {
+      return {
+        status: StatusCodes.NOT_FOUND,
+        error: true,
+        msgError: "Clinical data Not Found",
+        response: "",
+      };
+    }
+
+    delete user.clinicalData[body.nameClinicalData];
+
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Clinical data deleted",
+    };
+  } catch (err) {
+    console.log(`[user-controller.deleteClinicalData] ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function updateClinicalData(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+    const find = user.clinicalData.clinicalDataNames.find(
+      name => name === body.nameClinicalData
+    );
+
+    if (!find) {
+      return {
+        status: StatusCodes.NOT_FOUND,
+        error: true,
+        msgError: "Clinical data Not Found",
+        response: "",
+      };
+    }
+
+    user.clinicalData[body.nameClinicalData] = body.valueClinicalData;
+
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Clinical data updated",
+    };
+  } catch (err) {
+    console.log(`[user-controller.updateClinicalData] ${err.msgError}`);
+    throw err;
+  }
+}
 module.exports = {
   deleteSupervisorInUser,
   updateSupervisorInUser,
   registerSupervisor,
+  updateClinicalData,
+  deleteClinicalData,
+  addClinicalData,
   updateAlarmUser,
   createAlarmUser,
   deleteAlarmUser,

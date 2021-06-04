@@ -118,9 +118,9 @@ async function registerUser(body) {
     ) {
       return {
         status: StatusCodes.OK,
-        error: false,
-        msgError: "",
-        response: "this User is already in the Supervisor",
+        error: true,
+        msgError: "this User is already in the Supervisor",
+        response: "",
       };
     }
     const register = {

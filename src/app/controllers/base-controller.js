@@ -22,6 +22,9 @@ class Controller {
         registerSupervisor: "/registerSupervisor",
         deleteSupervisorInUser: "/deleteSupervisorInUser",
         updateSupervisorInUser: "/updateSupervisorInUser",
+        addClinicalData: "/addClinicalData",
+        deleteClinicalData: "/deleteClinicalData",
+        updateClinicalData: "/updateClinicalData",
       },
       Box: {
         getAllBox: "/getAllBox",
@@ -266,6 +269,57 @@ class Controller {
         res
           .status(updateSupervisorInUserResponse.status)
           .send(this.formatResponseBody(updateSupervisorInUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static addClinicalData() {
+    return async (req, res) => {
+      try {
+        const addClinicalDataResponse = await userController.addClinicalData(
+          req.body
+        );
+        res
+          .status(addClinicalDataResponse.status)
+          .send(this.formatResponseBody(addClinicalDataResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteClinicalData() {
+    return async (req, res) => {
+      try {
+        const deleteClinicalDataResponse = await userController.deleteClinicalData(
+          req.body
+        );
+        res
+          .status(deleteClinicalDataResponse.status)
+          .send(this.formatResponseBody(deleteClinicalDataResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updateClinicalData() {
+    return async (req, res) => {
+      try {
+        const updateClinicalDataResponse = await userController.updateClinicalData(
+          req.body
+        );
+        res
+          .status(updateClinicalDataResponse.status)
+          .send(this.formatResponseBody(updateClinicalDataResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

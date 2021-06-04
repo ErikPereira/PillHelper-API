@@ -25,7 +25,9 @@ module.exports = app => {
     User.updateSupervisorInUser,
     BaseController.updateSupervisorInUser()
   );
-
+  app.post(User.addClinicalData, BaseController.addClinicalData());
+  app.post(User.deleteClinicalData, BaseController.deleteClinicalData());
+  app.post(User.updateClinicalData, BaseController.updateClinicalData());
   // Box endpoints
 
   app.get(Box.getAllBox, BaseController.getAllBox());

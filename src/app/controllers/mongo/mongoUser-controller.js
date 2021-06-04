@@ -16,6 +16,20 @@ async function insertOneUser(credentials, mongo = Mongo) {
       alarms: [],
       box: [],
       supervisors: [],
+      clinicalData: {
+        clinicalDataNames: [
+          "pressão arteria",
+          "glicemia",
+          "peso",
+          "colesterol",
+          "IMC",
+        ],
+        "pressão arteria": "",
+        glicemia: "",
+        peso: "",
+        colesterol: "",
+        IMC: "",
+      },
       login,
     };
 
