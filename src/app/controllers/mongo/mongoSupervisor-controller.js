@@ -10,6 +10,7 @@ const mongoDao = new MongoDBCollectionDao(Mongo.oMongoConnection);
 async function insertOneSupervisor(credentials, mongo = Mongo) {
   const login = credentials;
   login.password = encode(login.password);
+
   try {
     const supervisor = {
       uuidSupervisor: uuidv4(),

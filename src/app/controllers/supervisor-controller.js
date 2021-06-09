@@ -39,18 +39,13 @@ async function checkLoginSupervisor(login) {
       const err = {
         status: StatusCodes.NOT_FOUND,
         error: true,
-        msgError: `Supervisor Not Found`,
+        msgError: `Not Found`,
         response: {},
       };
       throw err;
     }
 
-    return {
-      status: StatusCodes.OK,
-      error: false,
-      msgError: "",
-      response: check.uuidSupervisor,
-    };
+    return check.uuidSupervisor;
   } catch (err) {
     console.log(`[supervisor-controller.checkLoginSupervisor] ${err.msgError}`);
     throw err;

@@ -39,8 +39,13 @@ async function getOneUser(uuid) {
   }
 }
 
-async function checkLoginUser(credentials) {
+async function checkLogin(login) {
   try {
+    const credentials = {
+      email: login.email || "empty",
+      cell: login.cell || "empty",
+      password: login.password,
+    };
     const result = await mongoUserController.getLoginUser();
     const check = result.find(
       user =>
@@ -48,25 +53,27 @@ async function checkLoginUser(credentials) {
         (user.login.cell === credentials.cell ||
           user.login.email === credentials.email)
     );
-
+    let uuid;
     if (check === undefined) {
-      const err = {
-        status: StatusCodes.NOT_FOUND,
-        error: true,
-        msgError: `User Not Found`,
-        response: {},
+      uuid = {
+        uuid: await supervisorController.checkLoginSupervisor(credentials),
+        who: "supervisor",
       };
-      throw err;
+    } else {
+      uuid = {
+        uuid: check.uuid,
+        who: "user",
+      };
     }
 
     return {
       status: StatusCodes.OK,
       error: false,
       msgError: "",
-      response: check.uuid,
+      response: uuid,
     };
   } catch (err) {
-    console.log(`[user-controller.checkLoginUser] ${err.msgError}`);
+    console.log(`[user-controller.checkLogin] ${err.msgError}`);
     throw err;
   }
 }
@@ -74,7 +81,7 @@ async function checkLoginUser(credentials) {
 async function insertOneUser(credentials) {
   // check if login recive is valide
   try {
-    await checkLoginUser(credentials.login);
+    await checkLogin(credentials);
     return {
       status: StatusCodes.CONFLICT,
       error: true,
@@ -516,7 +523,7 @@ module.exports = {
   createAlarmUser,
   deleteAlarmUser,
   deleteBoxInUser,
-  checkLoginUser,
+  checkLogin,
   updateBoxUser,
   insertOneUser,
   registerBox,

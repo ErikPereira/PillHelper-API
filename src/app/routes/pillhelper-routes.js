@@ -13,7 +13,7 @@ module.exports = app => {
   app.post(User.createAlarmUser, BaseController.createAlarmUser());
   app.post(User.deleteAlarmUser, BaseController.deleteAlarmUser());
   app.post(User.deleteBoxInUser, BaseController.deleteBoxInUser());
-  app.post(User.checkLoginUser, BaseController.checkLoginUser());
+  app.post(User.checkLogin, BaseController.checkLogin());
   app.post(User.insertOneUser, BaseController.insertOneUser());
   app.post(User.registerBox, BaseController.registerBox());
   app.post(User.registerSupervisor, BaseController.registerSupervisor());
@@ -43,10 +43,6 @@ module.exports = app => {
   app.post(
     Supervisor.insertOneSupervisor,
     BaseController.insertOneSupervisor()
-  );
-  app.post(
-    Supervisor.checkLoginSupervisor,
-    BaseController.checkLoginSupervisor()
   );
   app.post(Supervisor.updateSupervisor, BaseController.updateSupervisor());
   app.post(Supervisor.registerUser, BaseController.registerUser());

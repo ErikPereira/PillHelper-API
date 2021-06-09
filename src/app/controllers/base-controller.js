@@ -12,7 +12,7 @@ class Controller {
         getAllUser: "/getAllUser",
         getOneUser: "/getOneUSer",
         insertOneUser: "/insertOneUser",
-        checkLoginUser: "/checkLoginUser",
+        checkLogin: "/checkLogin",
         createAlarmUser: "/createAlarmUser",
         updateAlarmUser: "/updateAlarmUser",
         updateBoxUser: "/updateBoxUser",
@@ -36,7 +36,6 @@ class Controller {
         updateUserInSupervisor: "/updateUserInSupervisor",
         getAllSupervisor: "/getAllSupervisor",
         insertOneSupervisor: "/insertOneSupervisor",
-        checkLoginSupervisor: "/checkLoginSupervisor",
         updateSupervisor: "/updateSupervisor",
         registerUser: "/registerUser",
       },
@@ -86,10 +85,10 @@ class Controller {
     };
   }
 
-  static checkLoginUser() {
+  static checkLogin() {
     return async (req, res) => {
       try {
-        const checkLoginUserResponse = await userController.checkLoginUser(
+        const checkLoginUserResponse = await userController.checkLogin(
           req.body
         );
         res
@@ -422,23 +421,6 @@ class Controller {
         res
           .status(insertOneSupervisorResponse.status)
           .send(this.formatResponseBody(insertOneSupervisorResponse));
-      } catch (error) {
-        res
-          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
-          .send(this.formatResponseBody(error));
-      }
-    };
-  }
-
-  static checkLoginSupervisor() {
-    return async (req, res) => {
-      try {
-        const checkLoginSupervisorResponse = await supervisorController.checkLoginSupervisor(
-          req.body
-        );
-        res
-          .status(checkLoginSupervisorResponse.status)
-          .send(this.formatResponseBody(checkLoginSupervisorResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
