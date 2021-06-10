@@ -118,6 +118,20 @@ async function registerUser(body) {
         response: "",
       };
     }
+
+    if (
+      user.supervisors.find(sup => {
+        return sup.uuidSupervisor === supervisor.uuidSupervisor;
+      })
+    ) {
+      return {
+        status: StatusCodes.OK,
+        error: true,
+        msgError:
+          "ERRO: aguarde a confirmação de desvinculo do usuário para tentar novamente",
+        response: "",
+      };
+    }
     const register = {
       uuidUser: user.uuid,
       registeredBy: "Supervisor",
