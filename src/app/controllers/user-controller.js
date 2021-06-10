@@ -512,6 +512,7 @@ async function updateClinicalData(body) {
     throw err;
   }
 }
+
 module.exports = {
   deleteSupervisorInUser,
   updateSupervisorInUser,
@@ -523,10 +524,10 @@ module.exports = {
   createAlarmUser,
   deleteAlarmUser,
   deleteBoxInUser,
-  checkLogin,
   updateBoxUser,
   insertOneUser,
   registerBox,
   getOneUser,
   getAllUser,
+  checkLogin,
 };

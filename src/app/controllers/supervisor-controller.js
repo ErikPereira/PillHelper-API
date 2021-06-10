@@ -101,10 +101,10 @@ async function updateSupervisor(upSupervisor) {
 
 async function registerUser(body) {
   try {
-    const user = await mongoUserController.getOneUser(body.uuidUser);
     const supervisor = await mongoSupervisorController.getOneSupervisor(
       body.uuidSupervisor
     );
+    const user = await mongoUserController.getOneUserLogin(body.loginUser);
 
     if (
       supervisor.users.find(u => {
@@ -114,7 +114,7 @@ async function registerUser(body) {
       return {
         status: StatusCodes.OK,
         error: true,
-        msgError: "this User is already in the Supervisor",
+        msgError: "ERRO: Este Usuários já esta vinculado",
         response: "",
       };
     }
@@ -122,7 +122,7 @@ async function registerUser(body) {
       uuidUser: user.uuid,
       registeredBy: "Supervisor",
       bond: "wait",
-      name: user.login.email || user.login.cell,
+      name: body.loginUser.name || user.login.email || user.login.cell,
     };
 
     supervisor.users.push(register);
@@ -131,10 +131,7 @@ async function registerUser(body) {
       uuidSupervisor: supervisor.uuidSupervisor,
       registeredBy: "Supervisor",
       bond: "wait",
-      name:
-        body.loginSupervisor.name ||
-        supervisor.loginSupervisor.email ||
-        supervisor.loginSupervisor.cell,
+      name: supervisor.login.email || supervisor.login.cell,
     });
 
     await mongoUserController.updateUser(user);

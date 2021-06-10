@@ -35,6 +35,7 @@ class Controller {
       Supervisor: {
         updateUserInSupervisor: "/updateUserInSupervisor",
         getAllSupervisor: "/getAllSupervisor",
+        getOneSupervisor: "/getOneSupervisor",
         insertOneSupervisor: "/insertOneSupervisor",
         updateSupervisor: "/updateSupervisor",
         registerUser: "/registerUser",
@@ -472,6 +473,23 @@ class Controller {
         res
           .status(updateUserInSupervisorResponse.status)
           .send(this.formatResponseBody(updateUserInSupervisorResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static getOneSupervisor() {
+    return async (req, res) => {
+      try {
+        const getOneSupervisorResponse = await supervisorController.getOneSupervisorUuid(
+          req.body.uuidSupervisor
+        );
+        res
+          .status(getOneSupervisorResponse.status)
+          .send(this.formatResponseBody(getOneSupervisorResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

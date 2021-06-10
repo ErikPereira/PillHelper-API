@@ -46,6 +46,7 @@ module.exports = app => {
   );
   app.post(Supervisor.updateSupervisor, BaseController.updateSupervisor());
   app.post(Supervisor.registerUser, BaseController.registerUser());
+  app.post(Supervisor.getOneSupervisor, BaseController.getOneSupervisor());
   app.post(
     Supervisor.updateUserInSupervisor,
     BaseController.updateUserInSupervisor()

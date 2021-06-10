@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+const { StatusCodes } = require("http-status-codes");
 const { v4: uuidv4 } = require("uuid");
 const { encode } = require("js-base64");
 const MongoDBCollectionDao = require("pill-helper-sdk/src/app/infra/mongodb/mongo-collection-dao");
@@ -145,7 +146,37 @@ async function updateUser(user, mongo = Mongo) {
   }
 }
 
+async function getOneUserLogin(login) {
+  try {
+    const loginUser = {
+      email: login.email || "empty",
+      cell: login.cell || "empty",
+    };
+    const allUser = await getAllUser();
+
+    const oneUser = allUser.find(
+      user =>
+        user.login.cell === loginUser.cell ||
+        user.login.email === loginUser.email
+    );
+
+    if (oneUser === undefined) {
+      const err = {
+        status: StatusCodes.NOT_FOUND,
+        error: true,
+        msgError: `User Not Found`,
+        response: {},
+      };
+      throw err;
+    }
+    return oneUser;
+  } catch (err) {
+    console.log(`[supervisor-controller.getOneSupervisor] ${err.msgError}`);
+    throw err;
+  }
+}
 module.exports = {
+  getOneUserLogin,
   insertOneUser,
   getLoginUser,
   updateUser,
