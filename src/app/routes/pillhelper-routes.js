@@ -51,4 +51,8 @@ module.exports = app => {
     Supervisor.updateUserInSupervisor,
     BaseController.updateUserInSupervisor()
   );
+  app.post(
+    Supervisor.deleteUserInSupervisor,
+    BaseController.deleteUserInSupervisor()
+  );
 };

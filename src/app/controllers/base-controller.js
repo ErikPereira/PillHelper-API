@@ -34,6 +34,7 @@ class Controller {
       },
       Supervisor: {
         updateUserInSupervisor: "/updateUserInSupervisor",
+        deleteUserInSupervisor: "/deleteUserInSupervisor",
         getAllSupervisor: "/getAllSupervisor",
         getOneSupervisor: "/getOneSupervisor",
         insertOneSupervisor: "/insertOneSupervisor",
@@ -473,6 +474,23 @@ class Controller {
         res
           .status(updateUserInSupervisorResponse.status)
           .send(this.formatResponseBody(updateUserInSupervisorResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteUserInSupervisor() {
+    return async (req, res) => {
+      try {
+        const deleteUserInSupervisorResponse = await supervisorController.deleteUserInSupervisor(
+          req.body
+        );
+        res
+          .status(deleteUserInSupervisorResponse.status)
+          .send(this.formatResponseBody(deleteUserInSupervisorResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

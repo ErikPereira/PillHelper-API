@@ -226,7 +226,49 @@ async function updateUserInSupervisor(body) {
   }
 }
 
+async function deleteUserInSupervisor(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+    const supervisor = (await getOneSupervisorUuid(body.uuidSupervisor))
+      .response;
+
+    supervisor.users = supervisor.users.filter(u => {
+      return u.uuidUser !== user.uuid;
+    });
+
+    await updateSupervisor(supervisor);
+
+    let modify = false;
+    user.supervisors = user.supervisors.map(sup => {
+      const s = sup;
+      if (s.uuidSupervisor === supervisor.uuidSupervisor) {
+        s.registeredBy = "Supervisor";
+        s.bond = "Delete";
+        modify = true;
+      }
+      return s;
+    });
+
+    if (modify) {
+      await mongoUserController.updateUser(user);
+    }
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "User unlink successfully",
+    };
+  } catch (err) {
+    console.log(
+      `[supervisor-controller.deleteUserInSupervisor] ${err.msgError}`
+    );
+    throw err;
+  }
+}
+
 module.exports = {
+  deleteUserInSupervisor,
   updateUserInSupervisor,
   getOneSupervisorUuid,
   checkLoginSupervisor,
