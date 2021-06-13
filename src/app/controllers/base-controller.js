@@ -12,7 +12,7 @@ class Controller {
         getAllUser: "/getAllUser",
         getOneUser: "/getOneUSer",
         insertOneUser: "/insertOneUser",
-        checkLoginUser: "/checkLoginUser",
+        checkLogin: "/checkLogin",
         createAlarmUser: "/createAlarmUser",
         updateAlarmUser: "/updateAlarmUser",
         updateBoxUser: "/updateBoxUser",
@@ -21,6 +21,10 @@ class Controller {
         registerBox: "/registerBox",
         registerSupervisor: "/registerSupervisor",
         deleteSupervisorInUser: "/deleteSupervisorInUser",
+        updateSupervisorInUser: "/updateSupervisorInUser",
+        addClinicalData: "/addClinicalData",
+        deleteClinicalData: "/deleteClinicalData",
+        updateClinicalData: "/updateClinicalData",
       },
       Box: {
         getAllBox: "/getAllBox",
@@ -29,9 +33,11 @@ class Controller {
         updateBox: "/updateBox",
       },
       Supervisor: {
+        updateUserInSupervisor: "/updateUserInSupervisor",
+        deleteUserInSupervisor: "/deleteUserInSupervisor",
         getAllSupervisor: "/getAllSupervisor",
+        getOneSupervisor: "/getOneSupervisor",
         insertOneSupervisor: "/insertOneSupervisor",
-        checkLoginSupervisor: "/checkLoginSupervisor",
         updateSupervisor: "/updateSupervisor",
         registerUser: "/registerUser",
       },
@@ -81,10 +87,10 @@ class Controller {
     };
   }
 
-  static checkLoginUser() {
+  static checkLogin() {
     return async (req, res) => {
       try {
-        const checkLoginUserResponse = await userController.checkLoginUser(
+        const checkLoginUserResponse = await userController.checkLogin(
           req.body
         );
         res
@@ -255,6 +261,74 @@ class Controller {
     };
   }
 
+  static updateSupervisorInUser() {
+    return async (req, res) => {
+      try {
+        const updateSupervisorInUserResponse = await userController.updateSupervisorInUser(
+          req.body
+        );
+        res
+          .status(updateSupervisorInUserResponse.status)
+          .send(this.formatResponseBody(updateSupervisorInUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static addClinicalData() {
+    return async (req, res) => {
+      try {
+        const addClinicalDataResponse = await userController.addClinicalData(
+          req.body
+        );
+        res
+          .status(addClinicalDataResponse.status)
+          .send(this.formatResponseBody(addClinicalDataResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteClinicalData() {
+    return async (req, res) => {
+      try {
+        const deleteClinicalDataResponse = await userController.deleteClinicalData(
+          req.body
+        );
+        res
+          .status(deleteClinicalDataResponse.status)
+          .send(this.formatResponseBody(deleteClinicalDataResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updateClinicalData() {
+    return async (req, res) => {
+      try {
+        const updateClinicalDataResponse = await userController.updateClinicalData(
+          req.body
+        );
+        res
+          .status(updateClinicalDataResponse.status)
+          .send(this.formatResponseBody(updateClinicalDataResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
   // Finish endpoints User
 
   // Start endpoints Box
@@ -357,23 +431,6 @@ class Controller {
     };
   }
 
-  static checkLoginSupervisor() {
-    return async (req, res) => {
-      try {
-        const checkLoginSupervisorResponse = await supervisorController.checkLoginSupervisor(
-          req.body
-        );
-        res
-          .status(checkLoginSupervisorResponse.status)
-          .send(this.formatResponseBody(checkLoginSupervisorResponse));
-      } catch (error) {
-        res
-          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
-          .send(this.formatResponseBody(error));
-      }
-    };
-  }
-
   static updateSupervisor() {
     return async (req, res) => {
       try {
@@ -400,6 +457,57 @@ class Controller {
         res
           .status(registerUserResponse.status)
           .send(this.formatResponseBody(registerUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updateUserInSupervisor() {
+    return async (req, res) => {
+      try {
+        const updateUserInSupervisorResponse = await supervisorController.updateUserInSupervisor(
+          req.body
+        );
+        res
+          .status(updateUserInSupervisorResponse.status)
+          .send(this.formatResponseBody(updateUserInSupervisorResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteUserInSupervisor() {
+    return async (req, res) => {
+      try {
+        const deleteUserInSupervisorResponse = await supervisorController.deleteUserInSupervisor(
+          req.body
+        );
+        res
+          .status(deleteUserInSupervisorResponse.status)
+          .send(this.formatResponseBody(deleteUserInSupervisorResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static getOneSupervisor() {
+    return async (req, res) => {
+      try {
+        const getOneSupervisorResponse = await supervisorController.getOneSupervisorUuid(
+          req.body.uuidSupervisor
+        );
+        res
+          .status(getOneSupervisorResponse.status)
+          .send(this.formatResponseBody(getOneSupervisorResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

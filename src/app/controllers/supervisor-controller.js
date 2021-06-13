@@ -15,7 +15,7 @@ async function getAllSupervisor() {
       response: result,
     };
   } catch (err) {
-    console.log(`[Supervisor-controller.getAllSupervisor] ${err.msgError}`);
+    console.log(`[supervisor-controller.getAllSupervisor] ${err.msgError}`);
     throw err;
   }
 }
@@ -39,20 +39,15 @@ async function checkLoginSupervisor(login) {
       const err = {
         status: StatusCodes.NOT_FOUND,
         error: true,
-        msgError: `Supervisor Not Found`,
+        msgError: `Not Found`,
         response: {},
       };
       throw err;
     }
 
-    return {
-      status: StatusCodes.OK,
-      error: false,
-      msgError: "",
-      response: check.uuidSupervisor,
-    };
+    return check.uuidSupervisor;
   } catch (err) {
-    console.log(`[user-controller.checkLoginSupervisor] ${err.msgError}`);
+    console.log(`[supervisor-controller.checkLoginSupervisor] ${err.msgError}`);
     throw err;
   }
 }
@@ -83,7 +78,7 @@ async function insertOneSupervisor(credentials) {
       response: result.uuidSupervisor,
     };
   } catch (err) {
-    console.log(`[Supervisor-controller.insertOneSupervisor] ${err.msgError}`);
+    console.log(`[supervisor-controller.insertOneSupervisor] ${err.msgError}`);
     throw err;
   }
 }
@@ -99,17 +94,17 @@ async function updateSupervisor(upSupervisor) {
       response: "Supervisor Updated",
     };
   } catch (err) {
-    console.log(`[Supervisor-controller.updateSupervisor] ${err.msgError}`);
+    console.log(`[supervisor-controller.updateSupervisor] ${err.msgError}`);
     throw err;
   }
 }
 
 async function registerUser(body) {
   try {
-    const user = await mongoUserController.getOneUser(body.uuidUser);
     const supervisor = await mongoSupervisorController.getOneSupervisor(
       body.uuidSupervisor
     );
+    const user = await mongoUserController.getOneUserLogin(body.loginUser);
 
     if (
       supervisor.users.find(u => {
@@ -118,23 +113,39 @@ async function registerUser(body) {
     ) {
       return {
         status: StatusCodes.OK,
-        error: false,
-        msgError: "",
-        response: "this User is already in the Supervisor",
+        error: true,
+        msgError: "ERRO: Este Usuários já esta vinculado",
+        response: "",
       };
     }
 
-    supervisor.users.push({
+    if (
+      user.supervisors.find(sup => {
+        return sup.uuidSupervisor === supervisor.uuidSupervisor;
+      })
+    ) {
+      return {
+        status: StatusCodes.OK,
+        error: true,
+        msgError:
+          "ERRO: aguarde a confirmação de desvinculo do usuário para tentar novamente",
+        response: "",
+      };
+    }
+    const register = {
       uuidUser: user.uuid,
       registeredBy: "Supervisor",
       bond: "wait",
-      name: "",
-    });
+      name: body.loginUser.name || user.login.email || user.login.cell,
+    };
+
+    supervisor.users.push(register);
+
     user.supervisors.push({
       uuidSupervisor: supervisor.uuidSupervisor,
       registeredBy: "Supervisor",
       bond: "wait",
-      name: "",
+      name: supervisor.login.email || supervisor.login.cell,
     });
 
     await mongoUserController.updateUser(user);
@@ -144,7 +155,7 @@ async function registerUser(body) {
       status: StatusCodes.OK,
       error: false,
       msgError: "",
-      response: "User registerd successfully",
+      response: register,
     };
   } catch (err) {
     console.log(`[supervisor-controller.registerUser] ${err.msgError}`);
@@ -177,7 +188,7 @@ async function getOneSupervisor(login) {
     }
     return oneSupervisor;
   } catch (err) {
-    console.log(`[Supervisor-controller.getOneSupervisor] ${err.msgError}`);
+    console.log(`[supervisor-controller.getOneSupervisor] ${err.msgError}`);
     throw err;
   }
 }
@@ -194,12 +205,116 @@ async function getOneSupervisorUuid(uuidSupervisor) {
       response: result,
     };
   } catch (err) {
-    console.log(`[user-controller.getOneUser] ${err.msgError}`);
+    console.log(`[supervisor-controller.getOneSupervisorUuid] ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function acceptedUpdate(uuidSupervisor, uuidUser) {
+  try {
+    const user = await mongoUserController.getOneUser(uuidUser);
+
+    user.supervisors = user.supervisors.map(sup => {
+      const supervisor = sup;
+      if (supervisor.uuidSupervisor === uuidSupervisor) {
+        supervisor.bond = "accepted";
+      }
+      return supervisor;
+    });
+
+    await mongoUserController.updateUser(user);
+  } catch (err) {
+    console.log(`[supervisor-controller.acceptedUpdate] ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function updateUserInSupervisor(body) {
+  try {
+    const supervisor = await mongoSupervisorController.getOneSupervisor(
+      body.uuidSupervisor
+    );
+    const modify = {
+      check: false,
+      uudiUser: "",
+      uuidSupervisor: "",
+    };
+
+    supervisor.users = supervisor.users.map(u => {
+      let user = u;
+      if (user.uuidUser === body.user.uuidUser) {
+        if (user.bond === "wait" && body.user.bond === "accepted") {
+          modify.check = true;
+          modify.uudiUser = user.uuidUser;
+          modify.uuidSupervisor = body.uuidSupervisor;
+        }
+        user = body.user;
+      }
+      return user;
+    });
+
+    await acceptedUpdate(modify.uuidSupervisor, modify.uudiUser);
+
+    await mongoSupervisorController.updateSupervisor(supervisor);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "User in Supervisor updated successfully",
+    };
+  } catch (err) {
+    console.log(
+      `[supervisor-controller.updateUserInSupervisor] ${err.msgError}`
+    );
+    throw err;
+  }
+}
+
+async function deleteUserInSupervisor(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+    const supervisor = (await getOneSupervisorUuid(body.uuidSupervisor))
+      .response;
+
+    supervisor.users = supervisor.users.filter(u => {
+      return u.uuidUser !== user.uuid;
+    });
+
+    await updateSupervisor(supervisor);
+
+    let modify = false;
+    user.supervisors = user.supervisors.map(sup => {
+      const s = sup;
+      if (s.uuidSupervisor === supervisor.uuidSupervisor) {
+        s.registeredBy = "Supervisor";
+        s.bond = body.bondUser;
+        modify = true;
+      }
+      return s;
+    });
+
+    if (modify) {
+      await mongoUserController.updateUser(user);
+    }
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "User unlink successfully",
+    };
+  } catch (err) {
+    console.log(
+      `[supervisor-controller.deleteUserInSupervisor] ${err.msgError}`
+    );
     throw err;
   }
 }
 
 module.exports = {
+  deleteUserInSupervisor,
+  updateUserInSupervisor,
   getOneSupervisorUuid,
   checkLoginSupervisor,
   insertOneSupervisor,

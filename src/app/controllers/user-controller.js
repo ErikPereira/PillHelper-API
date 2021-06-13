@@ -4,6 +4,7 @@
 const { StatusCodes } = require("http-status-codes");
 const { encode } = require("js-base64");
 const { v4: uuidv4 } = require("uuid");
+const _ = require("lodash");
 const mongoUserController = require("./mongo/mongoUser-controller");
 const boxController = require("./box-controller");
 const supervisorController = require("./supervisor-controller");
@@ -38,8 +39,13 @@ async function getOneUser(uuid) {
   }
 }
 
-async function checkLoginUser(credentials) {
+async function checkLogin(login) {
   try {
+    const credentials = {
+      email: login.email || "empty",
+      cell: login.cell || "empty",
+      password: login.password,
+    };
     const result = await mongoUserController.getLoginUser();
     const check = result.find(
       user =>
@@ -47,25 +53,27 @@ async function checkLoginUser(credentials) {
         (user.login.cell === credentials.cell ||
           user.login.email === credentials.email)
     );
-
+    let uuid;
     if (check === undefined) {
-      const err = {
-        status: StatusCodes.NOT_FOUND,
-        error: true,
-        msgError: `User Not Found`,
-        response: {},
+      uuid = {
+        uuid: await supervisorController.checkLoginSupervisor(credentials),
+        who: "supervisor",
       };
-      throw err;
+    } else {
+      uuid = {
+        uuid: check.uuid,
+        who: "user",
+      };
     }
 
     return {
       status: StatusCodes.OK,
       error: false,
       msgError: "",
-      response: check.uuid,
+      response: uuid,
     };
   } catch (err) {
-    console.log(`[user-controller.checkLoginUser] ${err.msgError}`);
+    console.log(`[user-controller.checkLogin] ${err.msgError}`);
     throw err;
   }
 }
@@ -73,7 +81,7 @@ async function checkLoginUser(credentials) {
 async function insertOneUser(credentials) {
   // check if login recive is valide
   try {
-    await checkLoginUser(credentials.login);
+    await checkLogin(credentials);
     return {
       status: StatusCodes.CONFLICT,
       error: true,
@@ -279,9 +287,9 @@ async function registerSupervisor(body) {
     ) {
       return {
         status: StatusCodes.OK,
-        error: false,
-        msgError: "",
-        response: "Este supervisor já esta vinculado",
+        error: true,
+        msgError: "ERRO: Este supervisor já esta vinculado",
+        response: "",
       };
     }
 
@@ -292,10 +300,10 @@ async function registerSupervisor(body) {
     ) {
       return {
         status: StatusCodes.OK,
-        error: false,
-        msgError: "",
-        response:
-          "aguarde a confirmação de desvinculo do supervisor para tentar novamente",
+        error: true,
+        msgError:
+          "ERRO: aguarde a confirmação de desvinculo do supervisor para tentar novamente",
+        response: "",
       };
     }
 
@@ -303,15 +311,20 @@ async function registerSupervisor(body) {
       uuidUser: user.uuid,
       registeredBy: "User",
       bond: "wait",
-      name: "",
+      name: user.login.email || user.login.cell,
     });
 
-    user.supervisors.push({
+    const register = {
       uuidSupervisor: supervisor.uuidSupervisor,
       registeredBy: "User",
       bond: "wait",
-      name: "",
-    });
+      name:
+        body.loginSupervisor.name ||
+        supervisor.login.email ||
+        supervisor.login.cell,
+    };
+
+    user.supervisors.push(register);
 
     await mongoUserController.updateUser(user);
     await supervisorController.updateSupervisor(supervisor);
@@ -320,7 +333,7 @@ async function registerSupervisor(body) {
       status: StatusCodes.OK,
       error: false,
       msgError: "",
-      response: "Supervisor registerd successfully",
+      response: register,
     };
   } catch (err) {
     console.log(`[user-controller.registerSupervisor] ${err.msgError}`);
@@ -346,7 +359,7 @@ async function deleteSupervisorInUser(body) {
       const u = use;
       if (u.uuidUser === user.uuid) {
         u.registeredBy = "User";
-        u.bond = "Delete";
+        u.bond = body.bondSupervisor;
         modify = true;
       }
       return u;
@@ -368,17 +381,190 @@ async function deleteSupervisorInUser(body) {
   }
 }
 
+async function acceptedUpdate(uuidSupervisor, uuidUser) {
+  try {
+    const supervisor = await supervisorController.getOneSupervisorUuid(
+      uuidSupervisor
+    );
+
+    supervisor.users = supervisor.users.map(u => {
+      const user = u;
+      if (user.uuidUser === uuidUser) {
+        user.bond = "accepted";
+      }
+      return user;
+    });
+
+    await supervisorController.updateSupervisor(supervisor);
+  } catch (err) {
+    console.log(`[user-controller.acceptedUpdate] ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function updateSupervisorInUser(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+
+    const modify = {
+      check: false,
+      uudiUser: "",
+      uuidSupervisor: "",
+    };
+
+    user.supervisors = user.supervisors.map(async sup => {
+      let supervisor = sup;
+      if (supervisor.uuidSupervisor === body.supervisor.uuidSupervisor) {
+        if (
+          supervisor.bond === "await" &&
+          body.supervisor.bond === "accepted"
+        ) {
+          modify.check = true;
+          modify.uudiUser = body.uuidUser;
+          modify.uuidSupervisor = supervisor.uuidSupervisor;
+        }
+        supervisor = body.supervisor;
+      }
+      return supervisor;
+    });
+
+    await acceptedUpdate(modify.uuidSupervisor, modify.uudiUser);
+
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Supervisor in User updated successfully",
+    };
+  } catch (err) {
+    console.log(`[user-controller.updateSupervisorInUser] ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function addClinicalData(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+
+    const find = user.clinicalData.clinicalDataNames.find(
+      name => name === body.nameClinicalData
+    );
+
+    if (find) {
+      return {
+        status: StatusCodes.CONFLICT,
+        error: false,
+        msgError: "Clinical data already existing",
+        response: "",
+      };
+    }
+
+    user.clinicalData.clinicalDataNames.push(body.nameClinicalData);
+    user.clinicalData = {
+      ...user.clinicalData,
+      [body.nameClinicalData]: body.valueClinicalData,
+    };
+
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Clinical data added",
+    };
+  } catch (err) {
+    console.log(`[user-controller.addClinicalData] ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function deleteClinicalData(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+    let find = user.clinicalData.clinicalDataNames.length;
+
+    user.clinicalData.clinicalDataNames = _.remove(
+      user.clinicalData.clinicalDataNames,
+      name => name !== body.nameClinicalData
+    );
+
+    find = find !== user.clinicalData.clinicalDataNames.length;
+
+    if (!find) {
+      return {
+        status: StatusCodes.NOT_FOUND,
+        error: true,
+        msgError: "Clinical data Not Found",
+        response: "",
+      };
+    }
+
+    delete user.clinicalData[body.nameClinicalData];
+
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Clinical data deleted",
+    };
+  } catch (err) {
+    console.log(`[user-controller.deleteClinicalData] ${err.msgError}`);
+    throw err;
+  }
+}
+
+async function updateClinicalData(body) {
+  try {
+    const user = await mongoUserController.getOneUser(body.uuidUser);
+    const find = user.clinicalData.clinicalDataNames.find(
+      name => name === body.nameClinicalData
+    );
+
+    if (!find) {
+      return {
+        status: StatusCodes.NOT_FOUND,
+        error: true,
+        msgError: "Clinical data Not Found",
+        response: "",
+      };
+    }
+
+    user.clinicalData[body.nameClinicalData] = body.valueClinicalData;
+
+    await mongoUserController.updateUser(user);
+
+    return {
+      status: StatusCodes.OK,
+      error: false,
+      msgError: "",
+      response: "Clinical data updated",
+    };
+  } catch (err) {
+    console.log(`[user-controller.updateClinicalData] ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
   deleteSupervisorInUser,
+  updateSupervisorInUser,
   registerSupervisor,
+  updateClinicalData,
+  deleteClinicalData,
+  addClinicalData,
   updateAlarmUser,
   createAlarmUser,
   deleteAlarmUser,
   deleteBoxInUser,
-  checkLoginUser,
   updateBoxUser,
   insertOneUser,
   registerBox,
   getOneUser,
   getAllUser,
+  checkLogin,
 };

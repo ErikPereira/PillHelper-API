@@ -13,7 +13,7 @@ module.exports = app => {
   app.post(User.createAlarmUser, BaseController.createAlarmUser());
   app.post(User.deleteAlarmUser, BaseController.deleteAlarmUser());
   app.post(User.deleteBoxInUser, BaseController.deleteBoxInUser());
-  app.post(User.checkLoginUser, BaseController.checkLoginUser());
+  app.post(User.checkLogin, BaseController.checkLogin());
   app.post(User.insertOneUser, BaseController.insertOneUser());
   app.post(User.registerBox, BaseController.registerBox());
   app.post(User.registerSupervisor, BaseController.registerSupervisor());
@@ -21,7 +21,13 @@ module.exports = app => {
     User.deleteSupervisorInUser,
     BaseController.deleteSupervisorInUser()
   );
-
+  app.post(
+    User.updateSupervisorInUser,
+    BaseController.updateSupervisorInUser()
+  );
+  app.post(User.addClinicalData, BaseController.addClinicalData());
+  app.post(User.deleteClinicalData, BaseController.deleteClinicalData());
+  app.post(User.updateClinicalData, BaseController.updateClinicalData());
   // Box endpoints
 
   app.get(Box.getAllBox, BaseController.getAllBox());
@@ -38,10 +44,15 @@ module.exports = app => {
     Supervisor.insertOneSupervisor,
     BaseController.insertOneSupervisor()
   );
-  app.post(
-    Supervisor.checkLoginSupervisor,
-    BaseController.checkLoginSupervisor()
-  );
   app.post(Supervisor.updateSupervisor, BaseController.updateSupervisor());
   app.post(Supervisor.registerUser, BaseController.registerUser());
+  app.post(Supervisor.getOneSupervisor, BaseController.getOneSupervisor());
+  app.post(
+    Supervisor.updateUserInSupervisor,
+    BaseController.updateUserInSupervisor()
+  );
+  app.post(
+    Supervisor.deleteUserInSupervisor,
+    BaseController.deleteUserInSupervisor()
+  );
 };
