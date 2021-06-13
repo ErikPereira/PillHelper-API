@@ -210,19 +210,50 @@ async function getOneSupervisorUuid(uuidSupervisor) {
   }
 }
 
+async function acceptedUpdate(uuidSupervisor, uuidUser) {
+  try {
+    const user = await mongoUserController.getOneUser(uuidUser);
+
+    user.supervisors = user.supervisors.map(sup => {
+      const supervisor = sup;
+      if (supervisor.uuidSupervisor === uuidSupervisor) {
+        supervisor.bond = "accepted";
+      }
+      return supervisor;
+    });
+
+    await mongoUserController.updateUser(user);
+  } catch (err) {
+    console.log(`[supervisor-controller.acceptedUpdate] ${err.msgError}`);
+    throw err;
+  }
+}
+
 async function updateUserInSupervisor(body) {
   try {
     const supervisor = await mongoSupervisorController.getOneSupervisor(
       body.uuidSupervisor
     );
+    const modify = {
+      check: false,
+      uudiUser: "",
+      uuidSupervisor: "",
+    };
 
     supervisor.users = supervisor.users.map(u => {
       let user = u;
       if (user.uuidUser === body.user.uuidUser) {
+        if (user.bond === "wait" && body.user.bond === "accepted") {
+          modify.check = true;
+          modify.uudiUser = user.uuidUser;
+          modify.uuidSupervisor = body.uuidSupervisor;
+        }
         user = body.user;
       }
       return user;
     });
+
+    await acceptedUpdate(modify.uuidSupervisor, modify.uudiUser);
 
     await mongoSupervisorController.updateSupervisor(supervisor);
 
@@ -257,7 +288,7 @@ async function deleteUserInSupervisor(body) {
       const s = sup;
       if (s.uuidSupervisor === supervisor.uuidSupervisor) {
         s.registeredBy = "Supervisor";
-        s.bond = "Delete";
+        s.bond = body.bondUser;
         modify = true;
       }
       return s;
