@@ -3,7 +3,7 @@
 const { StatusCodes } = require("http-status-codes");
 const userController = require("./user-controller");
 const boxController = require("./box-controller");
-const pharController = require("./pharmaceutical-controller");
+const supervisorController = require("./supervisor-controller");
 
 class Controller {
   static routes() {
@@ -12,14 +12,19 @@ class Controller {
         getAllUser: "/getAllUser",
         getOneUser: "/getOneUSer",
         insertOneUser: "/insertOneUser",
-        checkLoginUser: "/checkLoginUser",
+        checkLogin: "/checkLogin",
         createAlarmUser: "/createAlarmUser",
         updateAlarmUser: "/updateAlarmUser",
         updateBoxUser: "/updateBoxUser",
         deleteAlarmUser: "/deleteAlarmUser",
         deleteBoxInUser: "/deleteBoxInUser",
         registerBox: "/registerBox",
-        registerPharmaceutical: "/registerPharmaceutical",
+        registerSupervisor: "/registerSupervisor",
+        deleteSupervisorInUser: "/deleteSupervisorInUser",
+        updateSupervisorInUser: "/updateSupervisorInUser",
+        addClinicalData: "/addClinicalData",
+        deleteClinicalData: "/deleteClinicalData",
+        updateClinicalData: "/updateClinicalData",
       },
       Box: {
         getAllBox: "/getAllBox",
@@ -27,11 +32,13 @@ class Controller {
         deleteOneBox: "/deleteOneBox",
         updateBox: "/updateBox",
       },
-      Pharmaceutical: {
-        getAllPharmaceutical: "/getAllPharmaceutical",
-        insertOnePharmaceutical: "/insertOnePharmaceutical",
-        checkLoginPharmaceutical: "/checkLoginPharmaceutical",
-        updatePharmaceutical: "/updatePharmaceutical",
+      Supervisor: {
+        updateUserInSupervisor: "/updateUserInSupervisor",
+        deleteUserInSupervisor: "/deleteUserInSupervisor",
+        getAllSupervisor: "/getAllSupervisor",
+        getOneSupervisor: "/getOneSupervisor",
+        insertOneSupervisor: "/insertOneSupervisor",
+        updateSupervisor: "/updateSupervisor",
         registerUser: "/registerUser",
       },
     };
@@ -80,10 +87,10 @@ class Controller {
     };
   }
 
-  static checkLoginUser() {
+  static checkLogin() {
     return async (req, res) => {
       try {
-        const checkLoginUserResponse = await userController.checkLoginUser(
+        const checkLoginUserResponse = await userController.checkLogin(
           req.body
         );
         res
@@ -220,15 +227,100 @@ class Controller {
     };
   }
 
-  static registerPharmaceutical() {
+  static registerSupervisor() {
     return async (req, res) => {
       try {
-        const registerPharmaceuticalResponse = await userController.registerPharmaceutical(
+        const registerSupervisorResponse = await userController.registerSupervisor(
           req.body
         );
         res
-          .status(registerPharmaceuticalResponse.status)
-          .send(this.formatResponseBody(registerPharmaceuticalResponse));
+          .status(registerSupervisorResponse.status)
+          .send(this.formatResponseBody(registerSupervisorResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteSupervisorInUser() {
+    return async (req, res) => {
+      try {
+        const deleteSupervisorInUserResponse = await userController.deleteSupervisorInUser(
+          req.body
+        );
+        res
+          .status(deleteSupervisorInUserResponse.status)
+          .send(this.formatResponseBody(deleteSupervisorInUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updateSupervisorInUser() {
+    return async (req, res) => {
+      try {
+        const updateSupervisorInUserResponse = await userController.updateSupervisorInUser(
+          req.body
+        );
+        res
+          .status(updateSupervisorInUserResponse.status)
+          .send(this.formatResponseBody(updateSupervisorInUserResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static addClinicalData() {
+    return async (req, res) => {
+      try {
+        const addClinicalDataResponse = await userController.addClinicalData(
+          req.body
+        );
+        res
+          .status(addClinicalDataResponse.status)
+          .send(this.formatResponseBody(addClinicalDataResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteClinicalData() {
+    return async (req, res) => {
+      try {
+        const deleteClinicalDataResponse = await userController.deleteClinicalData(
+          req.body
+        );
+        res
+          .status(deleteClinicalDataResponse.status)
+          .send(this.formatResponseBody(deleteClinicalDataResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static updateClinicalData() {
+    return async (req, res) => {
+      try {
+        const updateClinicalDataResponse = await userController.updateClinicalData(
+          req.body
+        );
+        res
+          .status(updateClinicalDataResponse.status)
+          .send(this.formatResponseBody(updateClinicalDataResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
@@ -305,15 +397,15 @@ class Controller {
 
   // Finish endpoints Box
 
-  // Start endpoints Pharmaceutical
+  // Start endpoints Supervisor
 
-  static getAllPharmaceutical() {
+  static getAllSupervisor() {
     return async (req, res) => {
       try {
-        const getAllPharmaceuticalResponse = await pharController.getAllPharmaceutical();
+        const getAllSupervisorResponse = await supervisorController.getAllSupervisor();
         res
-          .status(getAllPharmaceuticalResponse.status)
-          .send(this.formatResponseBody(getAllPharmaceuticalResponse));
+          .status(getAllSupervisorResponse.status)
+          .send(this.formatResponseBody(getAllSupervisorResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
@@ -322,15 +414,15 @@ class Controller {
     };
   }
 
-  static insertOnePharmaceutical() {
+  static insertOneSupervisor() {
     return async (req, res) => {
       try {
-        const insertOnePharmaceuticalResponse = await pharController.insertOnePharmaceutical(
+        const insertOneSupervisorResponse = await supervisorController.insertOneSupervisor(
           req.body
         );
         res
-          .status(insertOnePharmaceuticalResponse.status)
-          .send(this.formatResponseBody(insertOnePharmaceuticalResponse));
+          .status(insertOneSupervisorResponse.status)
+          .send(this.formatResponseBody(insertOneSupervisorResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
@@ -339,32 +431,15 @@ class Controller {
     };
   }
 
-  static checkLoginPharmaceutical() {
+  static updateSupervisor() {
     return async (req, res) => {
       try {
-        const checkLoginPharmaceuticalResponse = await pharController.checkLoginPharmaceutical(
+        const updateSupervisorResponse = await supervisorController.updateSupervisor(
           req.body
         );
         res
-          .status(checkLoginPharmaceuticalResponse.status)
-          .send(this.formatResponseBody(checkLoginPharmaceuticalResponse));
-      } catch (error) {
-        res
-          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
-          .send(this.formatResponseBody(error));
-      }
-    };
-  }
-
-  static updatePharmaceutical() {
-    return async (req, res) => {
-      try {
-        const updatePharmaceuticalResponse = await pharController.updatePharmaceutical(
-          req.body
-        );
-        res
-          .status(updatePharmaceuticalResponse.status)
-          .send(this.formatResponseBody(updatePharmaceuticalResponse));
+          .status(updateSupervisorResponse.status)
+          .send(this.formatResponseBody(updateSupervisorResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
@@ -376,7 +451,7 @@ class Controller {
   static registerUser() {
     return async (req, res) => {
       try {
-        const registerUserResponse = await pharController.registerUser(
+        const registerUserResponse = await supervisorController.registerUser(
           req.body
         );
         res
@@ -390,6 +465,57 @@ class Controller {
     };
   }
 
-  // Finish endpoints Pharmaceutical
+  static updateUserInSupervisor() {
+    return async (req, res) => {
+      try {
+        const updateUserInSupervisorResponse = await supervisorController.updateUserInSupervisor(
+          req.body
+        );
+        res
+          .status(updateUserInSupervisorResponse.status)
+          .send(this.formatResponseBody(updateUserInSupervisorResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static deleteUserInSupervisor() {
+    return async (req, res) => {
+      try {
+        const deleteUserInSupervisorResponse = await supervisorController.deleteUserInSupervisor(
+          req.body
+        );
+        res
+          .status(deleteUserInSupervisorResponse.status)
+          .send(this.formatResponseBody(deleteUserInSupervisorResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static getOneSupervisor() {
+    return async (req, res) => {
+      try {
+        const getOneSupervisorResponse = await supervisorController.getOneSupervisorUuid(
+          req.body.uuidSupervisor
+        );
+        res
+          .status(getOneSupervisorResponse.status)
+          .send(this.formatResponseBody(getOneSupervisorResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints Supervisor
 }
 module.exports = Controller;

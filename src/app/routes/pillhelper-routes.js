@@ -1,7 +1,7 @@
 const BaseController = require("../controllers/base-controller");
 
 module.exports = app => {
-  const { User, Box, Pharmaceutical } = BaseController.routes();
+  const { User, Box, Supervisor } = BaseController.routes();
 
   // Users endpoints
 
@@ -13,14 +13,21 @@ module.exports = app => {
   app.post(User.createAlarmUser, BaseController.createAlarmUser());
   app.post(User.deleteAlarmUser, BaseController.deleteAlarmUser());
   app.post(User.deleteBoxInUser, BaseController.deleteBoxInUser());
-  app.post(User.checkLoginUser, BaseController.checkLoginUser());
+  app.post(User.checkLogin, BaseController.checkLogin());
   app.post(User.insertOneUser, BaseController.insertOneUser());
   app.post(User.registerBox, BaseController.registerBox());
+  app.post(User.registerSupervisor, BaseController.registerSupervisor());
   app.post(
-    User.registerPharmaceutical,
-    BaseController.registerPharmaceutical()
+    User.deleteSupervisorInUser,
+    BaseController.deleteSupervisorInUser()
   );
-
+  app.post(
+    User.updateSupervisorInUser,
+    BaseController.updateSupervisorInUser()
+  );
+  app.post(User.addClinicalData, BaseController.addClinicalData());
+  app.post(User.deleteClinicalData, BaseController.deleteClinicalData());
+  app.post(User.updateClinicalData, BaseController.updateClinicalData());
   // Box endpoints
 
   app.get(Box.getAllBox, BaseController.getAllBox());
@@ -29,24 +36,23 @@ module.exports = app => {
   app.post(Box.deleteOneBox, BaseController.deleteOneBox());
   app.post(Box.updateBox, BaseController.updateBox());
 
-  // Pharmaceutical endpoints
+  // Supervisor endpoints
 
-  app.get(
-    Pharmaceutical.getAllPharmaceutical,
-    BaseController.getAllPharmaceutical()
-  );
+  app.get(Supervisor.getAllSupervisor, BaseController.getAllSupervisor());
 
   app.post(
-    Pharmaceutical.insertOnePharmaceutical,
-    BaseController.insertOnePharmaceutical()
+    Supervisor.insertOneSupervisor,
+    BaseController.insertOneSupervisor()
+  );
+  app.post(Supervisor.updateSupervisor, BaseController.updateSupervisor());
+  app.post(Supervisor.registerUser, BaseController.registerUser());
+  app.post(Supervisor.getOneSupervisor, BaseController.getOneSupervisor());
+  app.post(
+    Supervisor.updateUserInSupervisor,
+    BaseController.updateUserInSupervisor()
   );
   app.post(
-    Pharmaceutical.checkLoginPharmaceutical,
-    BaseController.checkLoginPharmaceutical()
+    Supervisor.deleteUserInSupervisor,
+    BaseController.deleteUserInSupervisor()
   );
-  app.post(
-    Pharmaceutical.updatePharmaceutical,
-    BaseController.updatePharmaceutical()
-  );
-  app.post(Pharmaceutical.registerUser, BaseController.registerUser());
 };
