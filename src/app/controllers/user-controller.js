@@ -406,6 +406,12 @@ async function updateSupervisorInUser(body) {
   try {
     const user = await mongoUserController.getOneUser(body.uuidUser);
 
+    const modify = {
+      check: false,
+      uudiUser: "",
+      uuidSupervisor: "",
+    };
+
     user.supervisors = user.supervisors.map(async sup => {
       let supervisor = sup;
       if (supervisor.uuidSupervisor === body.supervisor.uuidSupervisor) {
@@ -413,12 +419,16 @@ async function updateSupervisorInUser(body) {
           supervisor.bond === "await" &&
           body.supervisor.bond === "accepted"
         ) {
-          await acceptedUpdate(supervisor.uuidSupervisor, body.uuidUser);
+          modify.check = true;
+          modify.uudiUser = body.uuidUser;
+          modify.uuidSupervisor = supervisor.uuidSupervisor;
         }
         supervisor = body.supervisor;
       }
       return supervisor;
     });
+
+    await acceptedUpdate(modify.uuidSupervisor, modify.uudiUser);
 
     await mongoUserController.updateUser(user);
 
