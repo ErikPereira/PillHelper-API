@@ -253,7 +253,8 @@ async function updateUserInSupervisor(body) {
       return user;
     });
 
-    await acceptedUpdate(modify.uuidSupervisor, modify.uudiUser);
+    if (modify.check)
+      await acceptedUpdate(modify.uuidSupervisor, modify.uudiUser);
 
     await mongoSupervisorController.updateSupervisor(supervisor);
 
