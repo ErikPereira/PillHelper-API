@@ -1,7 +1,7 @@
 const BaseController = require("../controllers/base-controller");
 
 module.exports = app => {
-  const { User, Box, Supervisor } = BaseController.routes();
+  const { User, Box, Supervisor, Python } = BaseController.routes();
 
   // Users endpoints
 
@@ -55,4 +55,8 @@ module.exports = app => {
     Supervisor.deleteUserInSupervisor,
     BaseController.deleteUserInSupervisor()
   );
+
+  // Python endpoints
+
+  app.post(Python.textRecognizer, BaseController.textRecognizer());
 };

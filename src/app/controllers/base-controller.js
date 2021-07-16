@@ -4,6 +4,7 @@ const { StatusCodes } = require("http-status-codes");
 const userController = require("./user-controller");
 const boxController = require("./box-controller");
 const supervisorController = require("./supervisor-controller");
+const pythonController = require("./python-controller");
 
 class Controller {
   static routes() {
@@ -40,6 +41,9 @@ class Controller {
         insertOneSupervisor: "/insertOneSupervisor",
         updateSupervisor: "/updateSupervisor",
         registerUser: "/registerUser",
+      },
+      Python: {
+        textRecognizer: "/textRecognizer",
       },
     };
   }
@@ -517,5 +521,26 @@ class Controller {
   }
 
   // Finish endpoints Supervisor
+
+  // Start endpoints Phynton
+
+  static textRecognizer() {
+    return async (req, res) => {
+      try {
+        const textRecognizerResponse = await pythonController.textRecognizer(
+          req.body
+        );
+        res
+          .status(textRecognizerResponse.status)
+          .send(this.formatResponseBody(textRecognizerResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints Phynton
 }
 module.exports = Controller;
