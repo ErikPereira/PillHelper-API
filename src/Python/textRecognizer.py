@@ -27,7 +27,7 @@ def rotate_image(img):
   return rotated90
 
 all_results=[]
-image = cv2.imread('C:/Users/ErickBezerra/Desktop/ErikBezerra/TCC/PillHelper-API/src/Python/pare.jpg')
+image = cv2.imread('C:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-API/src/Python/pare.jpg')
 results = ocr(image)
 
 print(results)
