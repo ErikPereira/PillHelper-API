@@ -1,9 +1,9 @@
 const { execSync } = require("child_process");
 const utils = require("../utils/pillhelper-utils");
 
-function getImageString() {
+function getImageString(imageName) {
   try {
-    const command = `python ./src/Python/textRecognizer.py`;
+    const command = `python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/${imageName} --langs pt,en`;
 
     const resultSet = execSync(command);
 
@@ -14,12 +14,12 @@ function getImageString() {
       throw new Error("Timeout");
     }
     // const teste = resultSet.toString();
-    return JSON.parse(resultSet);
+    return resultSet.toString().replace("\r\n", "");
   } catch (err) {
     const res = utils.checkError(err);
-    console.log(
-      `[python-textRecognizer-services copy.getImageString] ${res.msgError}`
-    );
+    // console.log(
+    //   `[python-textRecognizer-services copy.getImageString] ${res.msgError}`
+    // );
     throw res;
   }
 }

@@ -1,0 +1,640 @@
+
+> pill-helper-api@1.0.0 myTest C:\Users\Erik Bezerra\Desktop\git - TCC\PillHelper-API
+> cross-env NODE_ENV=test node server.js
+
+Server running on port 3000
+[
+  {
+    image: 'albendazol lado1.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/albendazol lado1.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado1.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'albendazol lado2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/albendazol lado2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'albendazol tras.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/albendazol tras.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: tras.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'captopril lado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/captopril lado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'captopril lado2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/captopril lado2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'captopril tras.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/captopril tras.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: tras.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'cetoprofeno lado1.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/cetoprofeno lado1.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado1.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'cetoprofeno lado2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/cetoprofeno lado2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'cetoprofeno tras.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/cetoprofeno tras.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: tras.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'ciclopirox clamina tras.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/ciclopirox clamina tras.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: clamina tras.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'ciclopirox olamina.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/ciclopirox olamina.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: olamina.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'cimegripe deitado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/cimegripe deitado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: deitado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'cloridrato de metformina lado1.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/cloridrato de metformina lado1.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de metformina lado1.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'cloridrato de metformina.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/cloridrato de metformina.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de metformina.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'cloridrato de metformina2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/cloridrato de metformina2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de metformina2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'cloridrato de metformina3.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/cloridrato de metformina3.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de metformina3.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'desloratadina lado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/desloratadina lado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'desloratadina lado2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/desloratadina lado2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'desloratadina tras.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/desloratadina tras.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: tras.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dicloridrato de betaistina lado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dicloridrato de betaistina lado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de betaistina lado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dicloridrato de betaistina lado1.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dicloridrato de betaistina lado1.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de betaistina lado1.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dicloridrato de betaistina lado2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dicloridrato de betaistina lado2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de betaistina lado2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dicloridrato de betaistina lado3.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dicloridrato de betaistina lado3.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de betaistina lado3.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dicloridrato de betaistina.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dicloridrato de betaistina.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de betaistina.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dicloridrato de betaistina2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dicloridrato de betaistina2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de betaistina2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dicloridrato de betaistina3.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dicloridrato de betaistina3.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de betaistina3.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dicloridrato de betaistina4.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dicloridrato de betaistina4.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de betaistina4.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dimpimed versao deitado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dimpimed versao deitado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: versao deitado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dipimed deitado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dipimed deitado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: deitado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dipirona monoidratada deitado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dipirona monoidratada deitado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: monoidratada deitado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dipirona monoidratada deitado2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dipirona monoidratada deitado2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: monoidratada deitado2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dipirona monoidratada generico deitado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dipirona monoidratada generico deitado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: monoidratada generico deitado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dipirona monoidratada Generico.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dipirona monoidratada Generico.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: monoidratada Generico.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dipirona monoidratada Generico2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dipirona monoidratada Generico2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: monoidratada Generico2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dipirona monoidratada lado deitado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dipirona monoidratada lado deitado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: monoidratada lado deitado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dipirona monoidratada lado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dipirona monoidratada lado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: monoidratada lado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dipirona monoidratada tras deitado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dipirona monoidratada tras deitado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: monoidratada tras deitado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dipirona monoidratada tras.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dipirona monoidratada tras.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: monoidratada tras.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dipirona monoidratada tras2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dipirona monoidratada tras2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: monoidratada tras2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dipirona monoidratada tras3.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dipirona monoidratada tras3.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: monoidratada tras3.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'dipirona monoidratada tras4.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/dipirona monoidratada tras4.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: monoidratada tras4.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'hidroclorotiazida longe.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/hidroclorotiazida longe.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: longe.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'infralax lado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/infralax lado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'infralax lado2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/infralax lado2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'infralax lado3.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/infralax lado3.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado3.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'infralax tras.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/infralax tras.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: tras.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'losartana potassica longe.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/losartana potassica longe.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: potassica longe.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'losartana potassica.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/losartana potassica.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: potassica.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'maleato de enalapril.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/maleato de enalapril.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de enalapril.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'maleato de enalapril2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/maleato de enalapril2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: de enalapril2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'n sei tras.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/n sei tras.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: sei tras.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'n sei.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/n sei.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: sei.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'paracetamol tras.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/paracetamol tras.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: tras.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'pipimed lado deitado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/pipimed lado deitado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado deitado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'resfenol com remedio no fundo.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/resfenol com remedio no fundo.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: com remedio no fundo.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'resfenol deitado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/resfenol deitado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: deitado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'resfenol lado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/resfenol lado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'resfenol segurando fundo.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/resfenol segurando fundo.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: segurando fundo.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'resfenol segurando fundo2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/resfenol segurando fundo2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: segurando fundo2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'sanilin ciflogex 3x.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/sanilin ciflogex 3x.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: ciflogex 3x.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'torsilax lado.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/torsilax lado.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'torsilax lado2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/torsilax lado2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: lado2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'varios remedios 2.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/varios remedios 2.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: remedios 2.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'varios remedios.jpg',
+    error: true,
+    msgError: 'Command failed: python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/varios remedios.jpg --langs pt,en\n' +
+      'usage: textRecognizer.py [-h] -i IMAGE [-l LANGS] [-g GPU]\r\n' +
+      'textRecognizer.py: error: unrecognized arguments: remedios.jpg\r\n',
+    response: ''
+  },
+  {
+    image: 'Aerodini.jpg',
+    error: false,
+    msgError: '',
+    response: ' TEUTO @ Aerodini sulfato de salbutamol 1OOmcgljato-dose Aerossol USO ORAL USO ADULTO E PEDI�TRICO VENDA SOB PRESCRI��O M�DICA Cont�m 1 tubo de alum�nio 200 com doses adaptador'
+  },
+  {
+    image: 'albendazol.jpg',
+    error: false,
+    msgError: '',
+    response: ' Medley albendazol Medicamento gen�rico Lei n� 9.787, de 1999 400 mg dose �nica contra verminoses intestinais USO ORAL USO ADULTO E PEDIATRICO ACIMA DE 2 ANOS Medicamento Generico VENDA SOB PRESCRI��O M�DICA Cont�m 1 comprimido mastig�vel �'
+  },
+  {
+    image: 'albendazol2.jpg',
+    error: false,
+    msgError: '',
+    response: ' Medleyz albendazol Medicamento gen�rico 400 mg dose �nica contra verminoses intestinais USO ORAL USO ADULTO E PEDIATRICO ACIMA DE 2 ANOS Medicamento Gen�rico VENDA SOB PRESCRI��O M�DICA Cont�m 1 comprimido mastig�vel'
+  },
+  {
+    image: 'atenolol.jpg',
+    error: false,
+    msgError: '',
+    response: ' 4 1 g 8 8 1 2 3 8 8 1 1 2 1 8 g 8'
+  },
+  {
+    image: 'captopril.jpg',
+    error: false,
+    msgError: '',
+    response: ' captopril Medleamento (on�rloo 25mg Uso Oral USO ADULTO Medicamento G Gen�rico VENDA SOB PRESCRI��O M�DICA Cont�m 30 comprimidos'
+  },
+  {
+    image: 'captopril2.jpg',
+    error: false,
+    msgError: '',
+    response: ' ALTEFAR captopril Medicamento gen�rico Lei n� 9.787, de 1999 25mg Uso Oral USO ADULTO Medicamento Gen�rico VENDA SOB PRESCRI��O M�DICA Cont�m 30 comprimidos'
+  },
+  {
+    image: 'cetoprofeno.jpg',
+    error: false,
+    msgError: '',
+    response: ' Biosint�tica cetoprofeno Medicamento gen�rico Lei n� 9.787, de 1999 100 mg uso oral COMPRIMIDOS REVESTIDOS DE LIBERA��O RETARDADA Medicamento Gen�rico VENDA SOB PRESCRI��O MEDICA cont�m C'
+  },
+  {
+    image: 'cimegripe.jpg',
+    error: false,
+    msgError: '',
+    response: ' Nova F�rn Cimegripe cloridrato de fenilefrina 4mg paracetamol A��o 400mg maleato de clorfeniramina 4mg r�pida de 15 CONT�M: Febre 20 NOS Coriza C�PSULAS 5 Dor muscular sintornas de gripes Congest�o nasal A Dor de cabe�a Uso oral CIMED minutos'
+  },
+  {
+    image: 'desloratadina.jpg',
+    error: false,
+    msgError: '',
+    response: ' GERMED desloratadina "Medicamento gen�rico Lei n 9.787, de 1999 0,5mglmL Xarppe ConSeringa Dosador Antial�rgico Urtic�ria; Coriza; Espirros; Prurido Wasal e Tosse USO ORAL USO ADULTO E PEDI�TRICO ACIMA DE 6 MESES Medicamento � Generico Sabor Damasco N�o Cont�m A��car Conte�do 6OmL seringa dosadora'
+  },
+  {
+    image: 'dimegripe.jpg',
+    error: false,
+    msgError: '',
+    response: ' Nova F�rmula Cimegripe A��o paracetamol r�pida 400 mg maleato de clorfeniramina 4mg 0 15 de CONT�M: 20 AL�VIO Febre C�PSULAS NOS 5 Coriza Dor muscular Congest�o nasal CIMED sintomas de gripes Dor de cabe�a Uso oral USO ADULTO eresfriados minutos partir'
+  },
+  {
+    image: 'hidoclorotiazida.jpg',
+    error: false,
+    msgError: '',
+    response: ' MEDQU�MICA hidroclorotiazida "Medicamento gen�rico Lei n� 9.787, de 1999" 24 01 23 02 25 mg 22 03 21 04 Da 20 05 19 06 18 07 USO ADULTO 08 E PEDIATRICO VIA ORAL 16 13 12 11 10 09 Medicamento Generico VENDA SOB PRESCRI��O M�DICA CONT�M 30 COMPRIMIDOS'
+  },
+  {
+    image: 'hidroclorotiazida2.jpg',
+    error: false,
+    msgError: '',
+    response: ' MEDQU�MICA hidroclorotiazida "Medicamento gen�rico Lei n� 9.787, de /999" 24 01 23 02 25 mg 22 03 In�cio do Tratamento 21 04 Dia M�s 20 05 19 06 18 07 Marque 0 hor�rio de tomar 0 seu USO ADULTO 08 medicamento E PEDI�TRICO VIA ORAL 16 15 14 13 12 11 10  09 icamento VENDA SOB PRESCRI��O M�DICA CONT�M 30 COMPRIMIDOS'
+  },
+  {
+    image: 'infralax.jpg',
+    error: false,
+    msgError: '',
+    response: ' EMS INFRALAX cafe�na 30 mg carisoprodol 125 mg diclofenaco s�dico 50 mg paracetamol 300 mg USO ADULTO USO ORAL PRESCRI��O M�DICA Cont�m 15 comprimidos'
+  },
+  {
+    image: 'neolefrin.jpg',
+    error: false,
+    msgError: '',
+    response: ' NEOLeFRIN cloridrato de fenilefrina Dja d� 1 dose = 0 cada CONTRA OS SINTOMAS Uso oral DA GRIPE E RESFRIADO 8h SO ADULTO 0 c�psulas A��OM�LTIPLA CONT�M 20 COMPRIMIDOS Congest�o Nasal Dores em USO ADULTO E PEDI�TRICO ACIMA DE 12 ANOS USO ORAL Febre iaScience 2 Farmaceutica 2Omg sono N�o geral'
+  },
+  {
+    image: 'paracetamol.jpg',
+    error: false,
+    msgError: '',
+    response: ' EMS paracetamol "Medicamento gen�rico Lei n�9.787, de 1999" Dor e Febre 200mg/mL SOLU��O GOTAS USO ADULTO E PEDI�TRICO USO ORAL Medicamento � Generico Conte�do 15 mL'
+  },
+  { image: 'pare.jpg', error: false, msgError: '', response: ' PARE' },
+  {
+    image: 'Regrair.jpg',
+    error: false,
+    msgError: '',
+    response: ' Regrair sulfato de salbutamol Suspens�o Aerossol Uso oral USO ADULTO E PEDI�TRICO Cont�m: 200 doses Peso L�q:: 17,4g Conte�do: 14,6 mL VENDA SOB PRESCRI��O M�DICA gsk'
+  },
+  {
+    image: 'resfedryl.jpg',
+    error: false,
+    msgError: '',
+    response: ' ula JV Resfedryl cloridra a paracete paracetamol 400 maleato de clorfeniramina 4 mg 5 cloridrato de fenilefrina 4 mg CONTRA Uso oral A��o M�ltipla USO ADULTO DA GRIPE Gripes Resfriados Cont�m 20 c�psulas CONT�M 20 Coriza Febre Cefaleia CIMED 5 Congest�o Nasal Dores Musculares PharmaScience mg minutos'
+  },
+  {
+    image: 'resfenol.jpg',
+    error: false,
+    msgError: '',
+    response: ' RESFENOE paracetamol 4OOmg maleato de clorfeniramina cloridrato de fenilefrina CONTRA OS SINTOMAS GRIPES e RESFRIADOS: Coriza Febre Congest�o Nasal Cefal�ia Dores Musculares KLEYHERTZ Cont�m 20 C�psulas USO ADULTO Amg Amg DE'
+  },
+  {
+    image: 'torsilax.jpg',
+    error: false,
+    msgError: '',
+    response: ' nova embalagem Torsilax cafe�na 3Omg carisoprodol 125mg dicloferaco s�dico 5Omg paracetamol 300mg VENDA SOB PRESCRI��O M�DICA CONT�M 12 COMPRIMIDOS'
+  },
+  {
+    image: 'torsilax2.jpg',
+    error: false,
+    msgError: '',
+    response: ' neo Torsilax cafe�na 30mg carisoprodol 125mg diclofenaco s�dico 5Omg paracetamol 300mg VENDA SOB PRESCRI��O M�DICA CONT�M 12 COMPRIMIDOS'
+  }
+]

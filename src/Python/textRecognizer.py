@@ -1,12 +1,18 @@
-import sys
+import argparse
 import easyocr
 from easyocr import Reader
 import cv2
 
-def ocr(image):
-  reader = easyocr.Reader(['pt','en'])
-  results = reader.readtext(image)
-  return results
+# construct the argument parser and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", "--image", required=True, help="path to input image to be OCR'd")
+ap.add_argument("-l", "--langs", type=str, default="en", help="comma separated list of languages to OCR")
+ap.add_argument("-g", "--gpu", type=int, default=-1, help="whether or not GPU should be used")
+args = vars(ap.parse_args())
+
+bestResult = ""
+bastImage = ""
+probCompare = 0
 
 def cleanup_text(text):
 	# strip out non-ASCII text so we can draw the text on the image
@@ -26,8 +32,28 @@ def rotate_image(img):
   rotated90 = cv2.warpAffine(img, M, (h, w))
   return rotated90
 
-all_results=[]
-image = cv2.imread('C:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-API/src/Python/pare.jpg')
-results = ocr(image)
+# break the input languages into a comma separated list
+langs = args["langs"].split(",")
+# load the input image from disk
+image = cv2.imread(args["image"])
+# OCR the input image using EasyOCR
+reader = Reader(langs, gpu=args["gpu"] > 0)
 
-print(results)
+# loop over the results
+for i in range(0,4):
+  results = reader.readtext(image)
+  final_text=''
+  sum_probs=0
+  for (bbox,text, prob) in results:
+    sum_probs+=prob
+    if prob < 0.50:
+      continue
+    else:
+      final_text=final_text+' '+text
+  if sum_probs > probCompare:
+    bestResult = final_text
+    probCompare = sum_probs
+    bastImage = image
+  image = rotate_image(image)
+# show the output image
+print(bestResult)
