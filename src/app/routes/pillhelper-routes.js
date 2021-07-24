@@ -59,4 +59,5 @@ module.exports = app => {
   // Python endpoints
 
   app.post(Python.textRecognizer, BaseController.textRecognizer());
+  app.post(Python.webScraping, BaseController.webScraping());
 };

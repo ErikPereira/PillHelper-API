@@ -44,6 +44,7 @@ class Controller {
       },
       Python: {
         textRecognizer: "/textRecognizer",
+        webScraping: "/webScraping",
       },
     };
   }
@@ -533,6 +534,23 @@ class Controller {
         res
           .status(textRecognizerResponse.status)
           .send(this.formatResponseBody(textRecognizerResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static webScraping() {
+    return async (req, res) => {
+      try {
+        const webScrapingResponse = await pythonController.webScraping(
+          req.body
+        );
+        res
+          .status(webScrapingResponse.status)
+          .send(this.formatResponseBody(webScrapingResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)

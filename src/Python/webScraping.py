@@ -66,7 +66,7 @@ for list in listMedicine:
         continue
     
     medicine = {}
-    medicine["name"] = re.sub("^ ", "", list.text)
+    medicine["nameBulla"] = re.sub("^ ", "", list.text)
 
     urlMedicine = "https://www.bulario.com" + list.contents[0].attrs['href']
     medicine["information"] = getInformationMedicine(urlMedicine)
