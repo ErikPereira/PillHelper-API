@@ -2,6 +2,7 @@ import argparse
 import easyocr
 from easyocr import Reader
 import cv2
+from unidecode import unidecode
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -49,7 +50,7 @@ for i in range(0,4):
     if prob < 0.50:
       continue
     else:
-      final_text=final_text+' '+text
+      final_text=final_text+ '\n'+ cleanup_text(unidecode(text))
   if sum_probs > probCompare:
     bestResult = final_text
     probCompare = sum_probs

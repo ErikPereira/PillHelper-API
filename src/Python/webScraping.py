@@ -1,6 +1,23 @@
+# coding: utf-8
+import sys
+import json
 import urllib.request
 import re
 from bs4 import BeautifulSoup
+from unidecode import unidecode
+
+def stringCorrections(string):
+    string = re.sub("'", '"', string)
+    string = re.sub("\xa0", '', string)
+    string = re.sub("\x1f", '', string)
+    string = re.sub("\x08", '', string)
+    string = re.sub("\x0b", '', string)
+    return string
+
+def cleanup_text(text):
+	# strip out non-ASCII text so we can draw the text on the image
+	# using OpenCV
+	return "".join([c if ord(c) < 128 else "" for c in text]).strip()
 
 def getInformationMedicine(urlMedicine):
     pageMedicine = urllib.request.urlopen(urlMedicine)
@@ -14,47 +31,57 @@ def getInformationMedicine(urlMedicine):
     }
     for tags in webValues.contents[1].contents:
         
-        if tags == ' ' and bulla["title"] != "":
-            information.append(bulla)
-            bulla = {
-                "title": "",
-                "description": "",
-                "information": ""
-            }
+        if tags == ' ':
+            continue
 
-        elif tags.name == "h2":
-            bulla["title"] = tags.text
+        if tags.name == None:
+            bulla["information"] = bulla["information"] + cleanup_text(unidecode(str(tags))) + " <br> "
+            continue
 
-        elif tags.name == "h3":
-            bulla["description"] = tags.text
+        if tags.name == "a":
+            if bulla["title"] != "":
+                information.append(bulla)
+                bulla = {
+                    "title": "",
+                    "description": "",
+                    "information": ""
+                }
+            continue
+        
+        text = cleanup_text(unidecode(str(tags.text)))
+        text = stringCorrections(text)
+
+        if tags.name == "h2":
+            bulla["title"] = text
+
+            bulla["description"] = text
         
         elif tags.name == "h4":
             if tags.text == "Composição":
-                bulla["title"] = tags.text
-                bulla["description"] = "O que contém cada cápsula?"
+                bulla["title"] = text
+                bulla["description"] = "O que contem cada capsula?"
             elif tags.text == "Laboratório":
-                bulla["title"] = tags.text
+                bulla["title"] = text
                 bulla["description"] = "Quem o fabrica?"
             else:
                 bulla["title"] = "Curiosidades"
-                bulla["description"] = tags.text
+                bulla["description"] = text
 
         elif tags.name == "p":
-            info = re.sub("strong>", "b>", str(tags))
-            info = re.sub("<p>", "", info)
-            info = re.sub("</p>", "", info)
-            bulla["information"] = bulla["information"] + info + " <br> "
+            bulla["information"] = bulla["information"] + text + " <br> "
         
         elif tags.name == "ul":
-            info = re.sub("strong>", "b>", str(tags))
-            bulla["information"] = bulla["information"] + info + " <br> "
+            info = re.sub("strong>", "b>", unidecode(str(tags)))
+            info = stringCorrections(info)
+            text = cleanup_text(str(info))
+            bulla["information"] = bulla["information"] + text + " <br> "
         
-
     information.append(bulla)
     return information
 
 
-urlAll = 'https://www.bulario.com/alfa/todos'
+# urlAll = sys.argv[1]
+urlAll = "https://www.bulario.com/alfa/todos/45"
 page = urllib.request.urlopen(urlAll)
 soup = BeautifulSoup(page, 'html5lib')
 
@@ -66,11 +93,10 @@ for list in listMedicine:
         continue
     
     medicine = {}
-    medicine["nameBulla"] = re.sub("^ ", "", list.text)
+    medicine["nameBulla"] = unidecode(re.sub("^ ", "", list.text))
 
     urlMedicine = "https://www.bulario.com" + list.contents[0].attrs['href']
     medicine["information"] = getInformationMedicine(urlMedicine)
     listBulla.append(medicine)
-    # print(medicine)
 
 print(listBulla)

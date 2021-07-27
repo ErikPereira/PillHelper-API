@@ -13,13 +13,12 @@ function getImageString(imageName) {
     if (timeoutErr) {
       throw new Error("Timeout");
     }
-    // const teste = resultSet.toString();
     return resultSet.toString().replace("\r\n", "");
   } catch (err) {
     const res = utils.checkError(err);
-    // console.log(
-    //   `[python-textRecognizer-services copy.getImageString] ${res.msgError}`
-    // );
+    console.log(
+      `[python-textRecognizer-services copy.getImageString] ${res.msgError}`
+    );
     throw res;
   }
 }

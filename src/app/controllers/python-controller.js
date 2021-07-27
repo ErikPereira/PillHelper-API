@@ -46,7 +46,6 @@ async function webScraping(body){
   try {
     let start = 1;
     let end = 54;
-    let url = body.url;
 
     if(!body.allPage){
       start = body.start;
@@ -54,6 +53,8 @@ async function webScraping(body){
     }
 
     for(let i = start; i <= end; i += 1){
+      let url = body.url;
+    
       if(i === 0)
         continue;
         
@@ -63,8 +64,8 @@ async function webScraping(body){
       try{
         const result = await pythonWebScrapingServices.getWebInformation(url);
         await mongoBullaController.insertManyBulla(result);
+        console.log(`Pagina ${i} sucesso, url: ${url}\n\n`);
       } catch (err) {
-        console.log(`[python-controller.webScraping] ${err.msgError}`);
         console.log(`\n\nErro ao tentar buscar informação na pagina ${i}, url: ${url}\n\n`);
       }
     }

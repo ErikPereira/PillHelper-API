@@ -3,22 +3,19 @@ const utils = require("../utils/pillhelper-utils");
 
 function getWebInformation(url) {
   try {
-    const command = command = `python ./src/Python/webScraping.py "${url}"`;
+    const command = `python ./src/Python/webScraping.py "${url}"`;
 
     const resultSet = execSync(command);
 
-    const refexp = /TimeoutError/;
-    const timeoutErr = resultSet.toString().match(refexp);
+    let adaptation = resultSet.toString().replace(/"/g, 'fixOfProblemWithQuotes');
+    adaptation = adaptation.toString().replace(/'/g, '"');
+    adaptation = adaptation.toString().replace(/fixOfProblemWithQuotes/g, "'");
 
-    if (timeoutErr) {
-      throw new Error("Timeout");
-    }
-
-    return JSON.parse(resultSet);
+    return JSON.parse(adaptation);
   } catch (err) {
     const res = utils.checkError(err);
     console.log(
-      `[python-textRecognizer-services copy.getWebInformation] ${res.msgError}`
+      `[python-webScraping-services.getWebInformation] ${res.msgError}`
     );
     throw res;
   }
