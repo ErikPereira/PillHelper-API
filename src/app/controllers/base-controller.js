@@ -5,6 +5,7 @@ const userController = require("./user-controller");
 const boxController = require("./box-controller");
 const supervisorController = require("./supervisor-controller");
 const pythonController = require("./python-controller");
+var fs = require('fs');
 
 class Controller {
   static routes() {
@@ -528,9 +529,11 @@ class Controller {
   static textRecognizer() {
     return async (req, res) => {
       try {
+        const { file } = req;
         const textRecognizerResponse = await pythonController.textRecognizer(
-          req.body
+          file
         );
+        fs.unlinkSync(file.destination + file.filename)
         res
           .status(textRecognizerResponse.status)
           .send(this.formatResponseBody(textRecognizerResponse));

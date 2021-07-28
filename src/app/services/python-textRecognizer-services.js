@@ -1,9 +1,9 @@
 const { execSync } = require("child_process");
 const utils = require("../utils/pillhelper-utils");
 
-function getImageString(imageName) {
+function getImageString(path) {
   try {
-    const command = `python ./src/Python/textRecognizer.py --image ./src/Python/ImagesForTestIA/${imageName} --langs pt,en`;
+    const command = `python ./src/Python/textRecognizer.py --image ${path} --langs pt,en`;
 
     const resultSet = execSync(command);
 

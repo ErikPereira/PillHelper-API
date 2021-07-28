@@ -42,10 +42,10 @@ const mongoBullaController = require("./mongo/mongoBullar-controller");
 //   }
 // }
 
-async function textRecognizer(body) {
+async function textRecognizer(file) {
   try {
     const namesBulla = await mongoBullaController.getAllNameBulla();
-    const resultTextRecognizer = "alektos bilastina 20 mg comprimido 6 venda sob 8 prescricao medica uso adulto acima de 12 anos uso oral contem 30 comprimidos"
+    const resultTextRecognizer = await pythonTextRecognizerServices.getImageString(file.destination + file.filename);
     
     const find = namesBulla.find( 
       bulla => resultTextRecognizer.includes(bulla.nameBulla)

@@ -1,4 +1,16 @@
 const BaseController = require("../controllers/base-controller");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './src/Python/uploads/')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname.replace(/'/g,""));
+  }
+});
+
+const upload = multer({storage: storage});
 
 module.exports = app => {
   const { User, Box, Supervisor, Python } = BaseController.routes();
@@ -58,6 +70,6 @@ module.exports = app => {
 
   // Python endpoints
 
-  app.post(Python.textRecognizer, BaseController.textRecognizer());
+  app.post(Python.textRecognizer, upload.single('image'), BaseController.textRecognizer());
   app.post(Python.webScraping, BaseController.webScraping());
 };
