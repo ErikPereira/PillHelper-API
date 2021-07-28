@@ -80,8 +80,8 @@ def getInformationMedicine(urlMedicine):
     return information
 
 
-# urlAll = sys.argv[1]
-urlAll = "https://www.bulario.com/alfa/todos/45"
+urlAll = sys.argv[1]
+# urlAll = "https://www.bulario.com/alfa/todos/45"
 page = urllib.request.urlopen(urlAll)
 soup = BeautifulSoup(page, 'html5lib')
 
@@ -93,7 +93,7 @@ for list in listMedicine:
         continue
     
     medicine = {}
-    medicine["nameBulla"] = unidecode(re.sub("^ ", "", list.text))
+    medicine["nameBulla"] = unidecode(re.sub("^ ", "", list.text.lower()))
 
     urlMedicine = "https://www.bulario.com" + list.contents[0].attrs['href']
     medicine["information"] = getInformationMedicine(urlMedicine)

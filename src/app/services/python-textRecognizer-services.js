@@ -13,7 +13,7 @@ function getImageString(imageName) {
     if (timeoutErr) {
       throw new Error("Timeout");
     }
-    return resultSet.toString().replace("\r\n", "");
+    return resultSet.toString().replace("\r\n", "").toLowerCase();
   } catch (err) {
     const res = utils.checkError(err);
     console.log(

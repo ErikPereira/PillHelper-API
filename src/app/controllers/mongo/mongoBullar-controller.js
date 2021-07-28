@@ -90,6 +90,30 @@ async function getAllBulla(mongo = Mongo) {
   }
 }
 
+async function getAllNameBulla(mongo = Mongo) {
+  try {
+    const jsonFilter = [
+      {
+        $project: {
+          _id: 0,
+          nameBulla: 1,
+        },
+      },
+    ];
+
+    const response = await mongoDao.aggregate(
+      mongo.mongoCollectionBulla,
+      jsonFilter
+    );
+    utils.checkHasError(response);
+    return response.result;
+  } catch (err) {
+    const res = utils.checkError(err);
+    console.log(`[mongoBulla-controller.getAllBulla] ${res.msgError}`);
+    throw res;
+  }
+}
+
 async function updateBulla(bulla, mongo = Mongo) {
   try {
     const jsonFilter = {
@@ -134,6 +158,7 @@ async function deleteOneBulla(nameBulla, mongo = Mongo) {
 
 module.exports = {
   insertManyBulla,
+  getAllNameBulla,
   insertOneBulla,
   deleteOneBulla,
   updateBulla,

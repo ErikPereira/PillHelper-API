@@ -1,5 +1,6 @@
 import argparse
 import easyocr
+import re
 from easyocr import Reader
 import cv2
 from unidecode import unidecode
@@ -43,18 +44,18 @@ reader = Reader(langs, gpu=args["gpu"] > 0)
 # loop over the results
 for i in range(0,4):
   results = reader.readtext(image)
-  final_text=''
+  final_text= ''
   sum_probs=0
   for (bbox,text, prob) in results:
     sum_probs+=prob
     if prob < 0.50:
       continue
     else:
-      final_text=final_text+ '\n'+ cleanup_text(unidecode(text))
+      final_text=final_text+ ' ' + cleanup_text(unidecode(text))
   if sum_probs > probCompare:
     bestResult = final_text
     probCompare = sum_probs
     bastImage = image
   image = rotate_image(image)
 # show the output image
-print(bestResult)
+print(re.sub("^ ", "", bestResult.lower()))
