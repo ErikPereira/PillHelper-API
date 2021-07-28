@@ -9,4 +9,5 @@ module.exports = {
   mongoCollectionUser: process.env.MONGO_COLLECTION_USER,
   mongoCollectionBox: process.env.MONGO_COLLECTION_BOX,
   mongoCollectionSupervisor: process.env.MONGO_COLLECTION_SUPERVISOR,
+  mongoCollectionBulla: process.env.MONGO_COLLECTION_BULLA,
 };

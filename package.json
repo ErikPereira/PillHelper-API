@@ -41,6 +41,7 @@
     "js-base64": "3.6.0",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.21",
+    "multer": "^1.4.2",
     "pill-helper-sdk": "https://github.com/ErikPereira/PillHelper-SDK.git",
     "uuid": "8.3.1"
   }

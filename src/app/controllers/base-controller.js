@@ -4,6 +4,8 @@ const { StatusCodes } = require("http-status-codes");
 const userController = require("./user-controller");
 const boxController = require("./box-controller");
 const supervisorController = require("./supervisor-controller");
+const pythonController = require("./python-controller");
+var fs = require('fs');
 
 class Controller {
   static routes() {
@@ -40,6 +42,10 @@ class Controller {
         insertOneSupervisor: "/insertOneSupervisor",
         updateSupervisor: "/updateSupervisor",
         registerUser: "/registerUser",
+      },
+      Python: {
+        textRecognizer: "/textRecognizer",
+        webScraping: "/webScraping",
       },
     };
   }
@@ -517,5 +523,45 @@ class Controller {
   }
 
   // Finish endpoints Supervisor
+
+  // Start endpoints Phynton
+
+  static textRecognizer() {
+    return async (req, res) => {
+      try {
+        const { file } = req;
+        const textRecognizerResponse = await pythonController.textRecognizer(
+          file
+        );
+        fs.unlinkSync(file.destination + file.filename)
+        res
+          .status(textRecognizerResponse.status)
+          .send(this.formatResponseBody(textRecognizerResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static webScraping() {
+    return async (req, res) => {
+      try {
+        const webScrapingResponse = await pythonController.webScraping(
+          req.body
+        );
+        res
+          .status(webScrapingResponse.status)
+          .send(this.formatResponseBody(webScrapingResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints Phynton
 }
 module.exports = Controller;
