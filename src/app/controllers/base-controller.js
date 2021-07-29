@@ -533,7 +533,7 @@ class Controller {
         const textRecognizerResponse = await pythonController.textRecognizer(
           file
         );
-        fs.unlinkSync(file.destination + file.filename)
+        fs.unlinkSync(file.destination + file.filename);
         res
           .status(textRecognizerResponse.status)
           .send(this.formatResponseBody(textRecognizerResponse));

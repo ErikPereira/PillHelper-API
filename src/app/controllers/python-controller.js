@@ -7,41 +7,6 @@ const pythonWebScrapingServices = require("../services/python-webScraping-servic
 const { imageNames } = require("../utils/getImagesName");
 const mongoBullaController = require("./mongo/mongoBullar-controller");
 
-// async function textRecognizer(body) {
-//   try {
-//     const testResult = [];
-//     await imageNames.forEach(async name => {
-//       try {  
-//         const result = await pythonTextRecognizerServices.getImageString(name);
-//         testResult.push({
-//           image: name,
-//           error: false,
-//           msgError: "",
-//           response: result,
-//         });
-//       } catch (err){
-//         testResult.push({
-//           image: name,
-//           error: true,
-//           msgError: err.msgError,
-//           response: "",
-//         });
-//       }
-//     });
-    
-//     console.log(testResult);
-//     return {
-//       status: StatusCodes.OK,
-//       error: false,
-//       msgError: "",
-//       response: testResult,
-//     };
-//   } catch (err) {
-//     console.log(`[python-controller.textRecognizer] ${err.msgError}`);
-//     throw err;
-//   }
-// }
-
 async function textRecognizer(file) {
   try {
     const namesBulla = await mongoBullaController.getAllNameBulla();
