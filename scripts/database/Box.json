@@ -1,0 +1,22 @@
+[{
+  "_id": {
+    "$oid": "609467758d040c476c398579"
+  },
+  "uuidBox": "1783b7c9-812f-43b9-9fb3-c99a0602a992",
+  "uuidUser": "fdccc201-1edd-4036-a14a-3da162e95eae",
+  "nameBox": "Sala"
+},{
+  "_id": {
+    "$oid": "609533734a07b3098c82d470"
+  },
+  "uuidBox": "cdbbf4c6-ff9c-4c0d-8d89-7d1b040d6ff6",
+  "uuidUser": "fdccc201-1edd-4036-a14a-3da162e95eae",
+  "nameBox": "nova caixa"
+},{
+  "_id": {
+    "$oid": "60a96714a6838c1cb0f96c6a"
+  },
+  "uuidBox": "0364bfcf-26ad-4079-b12b-def41454f245",
+  "uuidUser": "",
+  "nameBox": ""
+}]
