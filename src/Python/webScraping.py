@@ -54,6 +54,7 @@ def getInformationMedicine(urlMedicine):
         if tags.name == "h2":
             bulla["title"] = text
 
+        elif tags.name == "h3":
             bulla["description"] = text
         
         elif tags.name == "h4":

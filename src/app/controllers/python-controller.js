@@ -4,10 +4,34 @@ const _ = require("lodash");
 const { StatusCodes } = require("http-status-codes");
 const pythonTextRecognizerServices = require("../services/python-textRecognizer-services");
 const pythonWebScrapingServices = require("../services/python-webScraping-services");
-const { imageNames } = require("../utils/getImagesName");
 const mongoBullaController = require("./mongo/mongoBullar-controller");
+const userController = require("./user-controller");
+const supervisorController = require("./supervisor-controller");
+// const { imageNames } = require("../utils/getImagesName");
 
-async function textRecognizer(file) {
+async function textRecognizer(file, uuid) {
+  let people = {
+    who: "user",
+    obj: {},
+  };
+
+  try {
+    people.obj = (await userController.getOneUser(uuid)).response;
+  } catch (err) {
+    try {
+      people.obj = (await supervisorController.getOneSupervisorUuid(uuid)).response;
+      people.who = "supervisor";
+    } catch (err2) {
+      const err = {
+        status: StatusCodes.NOT_FOUND,
+        error: true,
+        msgError: `Uuid Not Found`,
+        response: {},
+      };
+      throw err;
+    }
+  }
+
   try {
     const namesBulla = await mongoBullaController.getAllNameBulla();
     const resultTextRecognizer = await pythonTextRecognizerServices.getImageString(file.destination + file.filename);
@@ -26,7 +50,8 @@ async function textRecognizer(file) {
       throw err;
     }
 
-    const bulla = await mongoBullaController.getOneBulla(find.nameBulla)
+    const bulla = await mongoBullaController.getOneBulla(find.nameBulla);
+    
     return {
       status: StatusCodes.OK,
       error: false,

@@ -313,12 +313,25 @@ async function deleteUserInSupervisor(body) {
   }
 }
 
+async function addBullaSupervisor(supervisor, bulla) {
+  try {
+    if(!bullaController.checkBullaAlreadyRegistered(bulla.nameBula, supervisor)){
+      supervisor.bulla.push(bulla);
+      await mongoSupervisorController.updateSupervisor(supervisor);
+    }
+  } catch (err) {
+    console.log(`[supervisor-controller.addBullaSupervisor] ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
   deleteUserInSupervisor,
   updateUserInSupervisor,
   getOneSupervisorUuid,
   checkLoginSupervisor,
   insertOneSupervisor,
+  addBullaSupervisor,
   getOneSupervisor,
   getAllSupervisor,
   updateSupervisor,
