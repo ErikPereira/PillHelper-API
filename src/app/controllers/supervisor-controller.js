@@ -4,6 +4,7 @@ const { StatusCodes } = require("http-status-codes");
 const { encode } = require("js-base64");
 const mongoSupervisorController = require("./mongo/mongoSupervisor-controller");
 const mongoUserController = require("./mongo/mongoUser-controller");
+const bullaController = require("./bulla-controller");
 
 async function getAllSupervisor() {
   try {
@@ -315,7 +316,8 @@ async function deleteUserInSupervisor(body) {
 
 async function addBullaSupervisor(supervisor, bulla) {
   try {
-    if(!bullaController.checkBullaAlreadyRegistered(bulla.nameBula, supervisor)){
+    const alreadyExists = bullaController.checkBullaAlreadyRegistered(bulla.nameBulla, supervisor);
+    if(!alreadyExists){
       supervisor.bulla.push(bulla);
       await mongoSupervisorController.updateSupervisor(supervisor);
     }

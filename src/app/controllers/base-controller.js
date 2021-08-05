@@ -49,6 +49,9 @@ class Controller {
         textRecognizer: "/textRecognizer",
         webScraping: "/webScraping",
       },
+      Bulla: {
+        removeBulla: "/removeBulla",
+      },
       Test: {
         testFunctions: "/testFunctions",
       }
@@ -570,6 +573,26 @@ class Controller {
 
   // Finish endpoints Phynton
 
+  // Start endpoints Bulla
+
+  static removeBulla() {
+    return async (req, res) => {
+      try {
+        const removeBullaResponse = await bullaController.removeBulla(
+          req.body
+        );
+        res
+          .status(removeBullaResponse.status)
+          .send(this.formatResponseBody(removeBullaResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints Bulla
 
   static testFunctions() {
     return async (req, res) => {

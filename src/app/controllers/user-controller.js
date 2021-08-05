@@ -551,7 +551,8 @@ async function updateClinicalData(body) {
 
 async function addBullaUser(user, bulla) {
   try {
-    if(!bullaController.checkBullaAlreadyRegistered(bulla.nameBula, user)){
+    const alreadyExists = bullaController.checkBullaAlreadyRegistered(bulla.nameBulla, user);
+    if(!alreadyExists){
       user.bulla.push(bulla);
       await mongoUserController.updateUser(user);
     }

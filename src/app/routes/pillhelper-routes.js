@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage});
 
 module.exports = app => {
-  const { User, Box, Supervisor, Python, Test } = BaseController.routes();
+  const { User, Box, Supervisor, Python, Bulla, Test } = BaseController.routes();
 
   // Users endpoints
 
@@ -73,5 +73,10 @@ module.exports = app => {
   app.post(Python.textRecognizer, upload.single('image'), BaseController.textRecognizer());
   app.post(Python.webScraping, BaseController.webScraping());
 
+  // Bulla endpoints
+
+  app.post(Bulla.removeBulla, BaseController.removeBulla());
+
+  // Tests endpoints
   app.post(Test.testFunctions, BaseController.testFunctions());
 };

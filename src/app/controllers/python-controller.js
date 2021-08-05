@@ -51,7 +51,13 @@ async function textRecognizer(file, uuid) {
     }
 
     const bulla = await mongoBullaController.getOneBulla(find.nameBulla);
-    
+
+    if (people.who === "user") {
+      await userController.addBullaUser(people.obj, bulla);
+    } else {
+      await supervisorController.addBullaSupervisor(people.obj, bulla);
+    }
+
     return {
       status: StatusCodes.OK,
       error: false,
