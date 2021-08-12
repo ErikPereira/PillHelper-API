@@ -551,11 +551,14 @@ async function updateClinicalData(body) {
 
 async function addBullaUser(user, bulla) {
   try {
+    let add = false;
     const alreadyExists = bullaController.checkBullaAlreadyRegistered(bulla.nameBulla, user);
     if(!alreadyExists){
       user.bulla.push(bulla);
       await mongoUserController.updateUser(user);
+      add = true; 
     }
+    return add;
   } catch (err) {
     console.log(`[user-controller.addBullaUser] ${err.msgError}`);
     throw err;

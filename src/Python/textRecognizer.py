@@ -42,7 +42,7 @@ image = cv2.imread(args["image"])
 reader = Reader(langs, gpu=args["gpu"] > 0)
 
 # loop over the results
-for i in range(0,4):
+for i in range(0,1):
   results = reader.readtext(image)
   final_text= ''
   sum_probs=0

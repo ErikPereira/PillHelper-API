@@ -316,11 +316,14 @@ async function deleteUserInSupervisor(body) {
 
 async function addBullaSupervisor(supervisor, bulla) {
   try {
+    let add = false;
     const alreadyExists = bullaController.checkBullaAlreadyRegistered(bulla.nameBulla, supervisor);
     if(!alreadyExists){
       supervisor.bulla.push(bulla);
       await mongoSupervisorController.updateSupervisor(supervisor);
+      add = true;
     }
+    return add;
   } catch (err) {
     console.log(`[supervisor-controller.addBullaSupervisor] ${err.msgError}`);
     throw err;

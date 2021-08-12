@@ -34,8 +34,11 @@ async function textRecognizer(file, uuid) {
 
   try {
     const namesBulla = await mongoBullaController.getAllNameBulla();
+
+    console.log(`[Log][python.textRecognizer] IA verificando a imagem...`);
     const resultTextRecognizer = await pythonTextRecognizerServices.getImageString(file.destination + file.filename);
-    
+    console.log(`[Log][python.textRecognizer] Resultado da IA: "${resultTextRecognizer}"`);
+
     const find = namesBulla.find( 
       bulla => resultTextRecognizer.includes(bulla.nameBulla)
     );
@@ -51,18 +54,29 @@ async function textRecognizer(file, uuid) {
     }
 
     const bulla = await mongoBullaController.getOneBulla(find.nameBulla);
-
+    let add;
     if (people.who === "user") {
-      await userController.addBullaUser(people.obj, bulla);
+      add = await userController.addBullaUser(people.obj, bulla);
     } else {
-      await supervisorController.addBullaSupervisor(people.obj, bulla);
+      add = await supervisorController.addBullaSupervisor(people.obj, bulla);
     }
 
+    if(add){
+      console.log(`[Log][python.textRecognizer] adicionou no banco: `);
+      console.log([bulla]);
+      return {
+        status: StatusCodes.OK,
+        error: false,
+        msgError: "",
+        response: [bulla],
+      };
+    }
+    console.log(`[Log][python.textRecognizer] Bula ${bulla.nameBulla} já cadastrada`);
     return {
-      status: StatusCodes.OK,
+      status: StatusCodes.CONFLICT,
       error: false,
       msgError: "",
-      response: bulla,
+      response: `Bula ${bulla.nameBulla} já cadastrada`,
     };
   } catch (err) {
     console.log(`[python-controller.textRecognizer] ${err.msgError}`);
