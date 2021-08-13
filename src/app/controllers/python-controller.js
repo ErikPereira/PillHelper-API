@@ -44,6 +44,7 @@ async function textRecognizer(file, uuid) {
     );
 
     if (find === undefined) {
+      console.log(`[Log][python.textRecognizer]Bula não encontrada`);
       const err = {
         status: StatusCodes.NOT_FOUND,
         error: true,
@@ -73,8 +74,8 @@ async function textRecognizer(file, uuid) {
     }
     console.log(`[Log][python.textRecognizer] Bula ${bulla.nameBulla} já cadastrada`);
     return {
-      status: StatusCodes.CONFLICT,
-      error: false,
+      status: StatusCodes.OK,
+      error: true,
       msgError: "",
       response: `Bula ${bulla.nameBulla} já cadastrada`,
     };
