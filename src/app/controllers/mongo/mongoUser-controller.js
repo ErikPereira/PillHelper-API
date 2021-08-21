@@ -15,6 +15,7 @@ async function insertOneUser(credentials, mongo = Mongo) {
     const user = {
       uuid: uuidv4(),
       alarms: [],
+      bulla: [],
       box: [],
       supervisors: [],
       clinicalData: {

@@ -15,6 +15,7 @@ async function insertOneSupervisor(credentials, mongo = Mongo) {
     const supervisor = {
       uuidSupervisor: uuidv4(),
       users: [],
+      bulla: [],
       login,
     };
     mongoDao.setURI(mongo.oMongoConnection);

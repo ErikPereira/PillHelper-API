@@ -3,7 +3,7 @@ const utils = require("../utils/pillhelper-utils");
 
 function getImageString(path) {
   try {
-    const command = `python ./src/Python/textRecognizer.py --image ${path} --langs pt,en`;
+    const command = `python ./src/Python/textRecognizer.py --image ${path} --langs pt,en --gpu 1`;
 
     const resultSet = execSync(command);
 

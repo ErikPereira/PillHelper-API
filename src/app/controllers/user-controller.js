@@ -8,6 +8,7 @@ const _ = require("lodash");
 const mongoUserController = require("./mongo/mongoUser-controller");
 const boxController = require("./box-controller");
 const supervisorController = require("./supervisor-controller");
+const bullaController = require("./bulla-controller");
 
 async function getAllUser() {
   try {
@@ -548,6 +549,22 @@ async function updateClinicalData(body) {
   }
 }
 
+async function addBullaUser(user, bulla) {
+  try {
+    let add = false;
+    const alreadyExists = bullaController.checkBullaAlreadyRegistered(bulla.nameBulla, user);
+    if(!alreadyExists){
+      user.bulla.push(bulla);
+      await mongoUserController.updateUser(user);
+      add = true; 
+    }
+    return add;
+  } catch (err) {
+    console.log(`[user-controller.addBullaUser] ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
   deleteSupervisorInUser,
   updateSupervisorInUser,
@@ -561,6 +578,7 @@ module.exports = {
   deleteBoxInUser,
   updateBoxUser,
   insertOneUser,
+  addBullaUser,
   registerBox,
   getOneUser,
   getAllUser,

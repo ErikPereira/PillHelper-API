@@ -5,6 +5,8 @@ const userController = require("./user-controller");
 const boxController = require("./box-controller");
 const supervisorController = require("./supervisor-controller");
 const pythonController = require("./python-controller");
+const bullaController = require("./bulla-controller");
+const utils = require("../utils/pillhelper-utils");
 var fs = require('fs');
 
 class Controller {
@@ -47,6 +49,12 @@ class Controller {
         textRecognizer: "/textRecognizer",
         webScraping: "/webScraping",
       },
+      Bulla: {
+        removeBulla: "/removeBulla",
+      },
+      Test: {
+        testFunctions: "/testFunctions",
+      }
     };
   }
 
@@ -531,7 +539,8 @@ class Controller {
       try {
         const { file } = req;
         const textRecognizerResponse = await pythonController.textRecognizer(
-          file
+          file,
+          req.body.uuid
         );
         fs.unlinkSync(file.destination + file.filename);
         res
@@ -563,5 +572,43 @@ class Controller {
   }
 
   // Finish endpoints Phynton
+
+  // Start endpoints Bulla
+
+  static removeBulla() {
+    return async (req, res) => {
+      try {
+        const removeBullaResponse = await bullaController.removeBulla(
+          req.body
+        );
+        res
+          .status(removeBullaResponse.status)
+          .send(this.formatResponseBody(removeBullaResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints Bulla
+
+  static testFunctions() {
+    return async (req, res) => {
+      try {
+        const testFunctions = await utils.checkIsUserOrSupervisor(
+          req.body.uuid
+        );
+        res
+          .status(testFunctions.status)
+          .send(this.formatResponseBody(testFunctions));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
 }
 module.exports = Controller;

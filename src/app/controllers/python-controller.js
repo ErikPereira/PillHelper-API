@@ -4,19 +4,47 @@ const _ = require("lodash");
 const { StatusCodes } = require("http-status-codes");
 const pythonTextRecognizerServices = require("../services/python-textRecognizer-services");
 const pythonWebScrapingServices = require("../services/python-webScraping-services");
-const { imageNames } = require("../utils/getImagesName");
 const mongoBullaController = require("./mongo/mongoBullar-controller");
+const userController = require("./user-controller");
+const supervisorController = require("./supervisor-controller");
+// const { imageNames } = require("../utils/getImagesName");
 
-async function textRecognizer(file) {
+async function textRecognizer(file, uuid) {
+  let people = {
+    who: "user",
+    obj: {},
+  };
+
+  try {
+    people.obj = (await userController.getOneUser(uuid)).response;
+  } catch (err) {
+    try {
+      people.obj = (await supervisorController.getOneSupervisorUuid(uuid)).response;
+      people.who = "supervisor";
+    } catch (err2) {
+      const err = {
+        status: StatusCodes.NOT_FOUND,
+        error: true,
+        msgError: `Uuid Not Found`,
+        response: {},
+      };
+      throw err;
+    }
+  }
+
   try {
     const namesBulla = await mongoBullaController.getAllNameBulla();
+
+    console.log(`[Log][python.textRecognizer] IA verificando a imagem...`);
     const resultTextRecognizer = await pythonTextRecognizerServices.getImageString(file.destination + file.filename);
-    
+    console.log(`[Log][python.textRecognizer] Resultado da IA: "${resultTextRecognizer}"`);
+
     const find = namesBulla.find( 
       bulla => resultTextRecognizer.includes(bulla.nameBulla)
     );
 
     if (find === undefined) {
+      console.log(`[Log][python.textRecognizer]Bula não encontrada`);
       const err = {
         status: StatusCodes.NOT_FOUND,
         error: true,
@@ -26,12 +54,30 @@ async function textRecognizer(file) {
       throw err;
     }
 
-    const bulla = await mongoBullaController.getOneBulla(find.nameBulla)
+    const bulla = await mongoBullaController.getOneBulla(find.nameBulla);
+    let add;
+    if (people.who === "user") {
+      add = await userController.addBullaUser(people.obj, bulla);
+    } else {
+      add = await supervisorController.addBullaSupervisor(people.obj, bulla);
+    }
+
+    if(add){
+      console.log(`[Log][python.textRecognizer] adicionou no banco: `);
+      console.log([bulla]);
+      return {
+        status: StatusCodes.OK,
+        error: false,
+        msgError: "",
+        response: [bulla],
+      };
+    }
+    console.log(`[Log][python.textRecognizer] Bula ${bulla.nameBulla} já cadastrada`);
     return {
       status: StatusCodes.OK,
-      error: false,
+      error: true,
       msgError: "",
-      response: bulla,
+      response: `Bula ${bulla.nameBulla} já cadastrada`,
     };
   } catch (err) {
     console.log(`[python-controller.textRecognizer] ${err.msgError}`);
