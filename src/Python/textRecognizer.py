@@ -1,6 +1,7 @@
 import argparse
-import easyocr
 import re
+import torch
+import os
 from easyocr import Reader
 import cv2
 from unidecode import unidecode
@@ -42,20 +43,18 @@ image = cv2.imread(args["image"])
 reader = Reader(langs, gpu=args["gpu"] > 0)
 
 # loop over the results
-for i in range(0,1):
-  results = reader.readtext(image)
-  final_text= ''
-  sum_probs=0
-  for (bbox,text, prob) in results:
-    sum_probs+=prob
-    if prob < 0.50:
-      continue
-    else:
-      final_text=final_text+ ' ' + cleanup_text(unidecode(text))
-  if sum_probs > probCompare:
-    bestResult = final_text
-    probCompare = sum_probs
-    bastImage = image
-  image = rotate_image(image)
+results = reader.readtext(image)
+final_text= ''
+sum_probs=0
+for (bbox,text, prob) in results:
+  sum_probs+=prob
+  if prob < 0.50:
+    continue
+  else:
+    final_text=final_text + ' ' + cleanup_text(unidecode(text))
+if sum_probs > probCompare:
+  bestResult = final_text
+  probCompare = sum_probs
+
 # show the output image
 print(re.sub("^ ", "", bestResult.lower()))
