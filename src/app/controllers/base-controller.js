@@ -35,6 +35,7 @@ class Controller {
         insertOneBox: "/insertOneBox",
         deleteOneBox: "/deleteOneBox",
         updateBox: "/updateBox",
+        getAlarms: "/getAlarms",
       },
       Supervisor: {
         updateUserInSupervisor: "/updateUserInSupervisor",
@@ -401,6 +402,21 @@ class Controller {
         res
           .status(updateBoxResponse.status)
           .send(this.formatResponseBody(updateBoxResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  static getAlarms() {
+    return async (req, res) => {
+      try {
+        const getAlarmsResponse = await boxController.getAlarms(req.body);
+        res
+          .status(getAlarmsResponse.status)
+          .send(this.formatResponseBody(getAlarmsResponse));
       } catch (error) {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
