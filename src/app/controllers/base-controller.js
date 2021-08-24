@@ -552,13 +552,12 @@ class Controller {
 
   static textRecognizer() {
     return async (req, res) => {
+      const { file } = req;
       try {
-        const { file } = req;
         const textRecognizerResponse = await pythonController.textRecognizer(
           file,
           req.body.uuid
         );
-        fs.unlinkSync(file.destination + file.filename);
         res
           .status(textRecognizerResponse.status)
           .send(this.formatResponseBody(textRecognizerResponse));
@@ -566,6 +565,9 @@ class Controller {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
           .send(this.formatResponseBody(error));
+      }
+      finally {
+        fs.unlinkSync(file.destination + file.filename);
       }
     };
   }
