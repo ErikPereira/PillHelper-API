@@ -4,6 +4,7 @@ const { StatusCodes } = require("http-status-codes");
 const { encode } = require("js-base64");
 const mongoSupervisorController = require("./mongo/mongoSupervisor-controller");
 const mongoUserController = require("./mongo/mongoUser-controller");
+const bullaController = require("./bulla-controller");
 
 async function getAllSupervisor() {
   try {
@@ -253,7 +254,8 @@ async function updateUserInSupervisor(body) {
       return user;
     });
 
-    await acceptedUpdate(modify.uuidSupervisor, modify.uudiUser);
+    if (modify.check)
+      await acceptedUpdate(modify.uuidSupervisor, modify.uudiUser);
 
     await mongoSupervisorController.updateSupervisor(supervisor);
 
@@ -312,12 +314,29 @@ async function deleteUserInSupervisor(body) {
   }
 }
 
+async function addBullaSupervisor(supervisor, bulla) {
+  try {
+    let add = false;
+    const alreadyExists = bullaController.checkBullaAlreadyRegistered(bulla.nameBulla, supervisor);
+    if(!alreadyExists){
+      supervisor.bulla.push(bulla);
+      await mongoSupervisorController.updateSupervisor(supervisor);
+      add = true;
+    }
+    return add;
+  } catch (err) {
+    console.log(`[supervisor-controller.addBullaSupervisor] ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
   deleteUserInSupervisor,
   updateUserInSupervisor,
   getOneSupervisorUuid,
   checkLoginSupervisor,
   insertOneSupervisor,
+  addBullaSupervisor,
   getOneSupervisor,
   getAllSupervisor,
   updateSupervisor,

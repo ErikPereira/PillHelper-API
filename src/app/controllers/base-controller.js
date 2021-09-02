@@ -4,6 +4,10 @@ const { StatusCodes } = require("http-status-codes");
 const userController = require("./user-controller");
 const boxController = require("./box-controller");
 const supervisorController = require("./supervisor-controller");
+const pythonController = require("./python-controller");
+const bullaController = require("./bulla-controller");
+const utils = require("../utils/pillhelper-utils");
+var fs = require('fs');
 
 class Controller {
   static routes() {
@@ -31,6 +35,7 @@ class Controller {
         insertOneBox: "/insertOneBox",
         deleteOneBox: "/deleteOneBox",
         updateBox: "/updateBox",
+        getAlarms: "/getAlarms",
       },
       Supervisor: {
         updateUserInSupervisor: "/updateUserInSupervisor",
@@ -41,6 +46,16 @@ class Controller {
         updateSupervisor: "/updateSupervisor",
         registerUser: "/registerUser",
       },
+      Python: {
+        textRecognizer: "/textRecognizer",
+        webScraping: "/webScraping",
+      },
+      Bulla: {
+        removeBulla: "/removeBulla",
+      },
+      Test: {
+        testFunctions: "/testFunctions",
+      }
     };
   }
 
@@ -395,6 +410,21 @@ class Controller {
     };
   }
 
+  static getAlarms() {
+    return async (req, res) => {
+      try {
+        const getAlarmsResponse = await boxController.getAlarms(req.body);
+        res
+          .status(getAlarmsResponse.status)
+          .send(this.formatResponseBody(getAlarmsResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
   // Finish endpoints Box
 
   // Start endpoints Supervisor
@@ -517,5 +547,86 @@ class Controller {
   }
 
   // Finish endpoints Supervisor
+
+  // Start endpoints Phynton
+
+  static textRecognizer() {
+    return async (req, res) => {
+      const { file } = req;
+      try {
+        const textRecognizerResponse = await pythonController.textRecognizer(
+          file,
+          req.body.uuid
+        );
+        res
+          .status(textRecognizerResponse.status)
+          .send(this.formatResponseBody(textRecognizerResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+      finally {
+        fs.unlinkSync(file.destination + file.filename);
+      }
+    };
+  }
+
+  static webScraping() {
+    return async (req, res) => {
+      try {
+        const webScrapingResponse = await pythonController.webScraping(
+          req.body
+        );
+        res
+          .status(webScrapingResponse.status)
+          .send(this.formatResponseBody(webScrapingResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints Phynton
+
+  // Start endpoints Bulla
+
+  static removeBulla() {
+    return async (req, res) => {
+      try {
+        const removeBullaResponse = await bullaController.removeBulla(
+          req.body
+        );
+        res
+          .status(removeBullaResponse.status)
+          .send(this.formatResponseBody(removeBullaResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
+  // Finish endpoints Bulla
+
+  static testFunctions() {
+    return async (req, res) => {
+      try {
+        const testFunctions = await utils.checkIsUserOrSupervisor(
+          req.body.uuid
+        );
+        res
+          .status(testFunctions.status)
+          .send(this.formatResponseBody(testFunctions));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
 }
 module.exports = Controller;

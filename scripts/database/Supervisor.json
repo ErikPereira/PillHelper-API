@@ -1,0 +1,87 @@
+[{
+  "_id": {
+    "$oid": "60b0f40e884dc0507cd525e7"
+  },
+  "uuidSupervisor": "7d78c3cb-36db-489c-8057-3257f5168db9",
+  "users": [
+    {
+      "uuidUser": "fdccc201-1edd-4036-a14a-3da162e95eae",
+      "registeredBy": "User",
+      "bond": "accepted",
+      "name": "user@hotmail.com"
+    }
+  ],
+  "login": {
+    "cell": "",
+    "email": "supervisor@hotmail.com",
+    "password": "c2hvdw=="
+  }
+},{
+  "_id": {
+    "$oid": "60b15953050b9d36488c2821"
+  },
+  "uuidSupervisor": "1d12854a-546a-46c8-821d-b7816a095a25",
+  "users": [],
+  "login": {
+    "cell": "",
+    "email": "sup@hotmail.com",
+    "password": "c2hvdw=="
+  }
+},{
+  "_id": {
+    "$oid": "60b55523e4a2fa2878287fa6"
+  },
+  "uuidSupervisor": "e5d600a2-8e49-48ce-ad42-30113781d034",
+  "users": [],
+  "login": {
+    "cell": "",
+    "email": "ghj@hotmail.com",
+    "password": "c2hvdw=="
+  }
+},{
+  "_id": {
+    "$oid": "60b8f5295d6f430e6897ed0d"
+  },
+  "uuidSupervisor": "ed1bb82d-e9d1-4883-be15-73d3c94d50fd",
+  "users": [],
+  "login": {
+    "cell": "",
+    "email": "oi@hotmail.com",
+    "password": "c2hvdw=="
+  }
+},{
+  "_id": {
+    "$oid": "60b8f6135d6f430e6897ed0e"
+  },
+  "uuidSupervisor": "5048cc00-56ca-4bb0-9c73-2eba61b7d13e",
+  "users": [
+    {
+      "uuidUser": "1b48d5d1-edb1-4cd7-a066-c033c1cc03cf",
+      "registeredBy": "Supervisor",
+      "bond": "accepted",
+      "name": "Nami"
+    },
+    {
+      "uuidUser": "fdccc201-1edd-4036-a14a-3da162e95eae",
+      "registeredBy": "User",
+      "bond": "accepted",
+      "name": "user@hotmail.com"
+    }
+  ],
+  "login": {
+    "cell": "11997800198",
+    "email": "",
+    "password": "c2hvdw=="
+  }
+},{
+  "_id": {
+    "$oid": "60c111dcfa771740bcab568f"
+  },
+  "uuidSupervisor": "0ffe3165-8eec-4894-9972-08fbd6d96881",
+  "users": [],
+  "login": {
+    "email": "super@teste",
+    "cell": "",
+    "password": "c2hvdw=="
+  }
+}]

@@ -8,6 +8,7 @@ const _ = require("lodash");
 const mongoUserController = require("./mongo/mongoUser-controller");
 const boxController = require("./box-controller");
 const supervisorController = require("./supervisor-controller");
+const bullaController = require("./bulla-controller");
 
 async function getAllUser() {
   try {
@@ -383,9 +384,9 @@ async function deleteSupervisorInUser(body) {
 
 async function acceptedUpdate(uuidSupervisor, uuidUser) {
   try {
-    const supervisor = await supervisorController.getOneSupervisorUuid(
-      uuidSupervisor
-    );
+    const supervisor = (
+      await supervisorController.getOneSupervisorUuid(uuidSupervisor)
+    ).response;
 
     supervisor.users = supervisor.users.map(u => {
       const user = u;
@@ -412,13 +413,10 @@ async function updateSupervisorInUser(body) {
       uuidSupervisor: "",
     };
 
-    user.supervisors = user.supervisors.map(async sup => {
+    user.supervisors = user.supervisors.map(sup => {
       let supervisor = sup;
       if (supervisor.uuidSupervisor === body.supervisor.uuidSupervisor) {
-        if (
-          supervisor.bond === "await" &&
-          body.supervisor.bond === "accepted"
-        ) {
+        if (supervisor.bond === "wait" && body.supervisor.bond === "accepted") {
           modify.check = true;
           modify.uudiUser = body.uuidUser;
           modify.uuidSupervisor = supervisor.uuidSupervisor;
@@ -428,7 +426,8 @@ async function updateSupervisorInUser(body) {
       return supervisor;
     });
 
-    await acceptedUpdate(modify.uuidSupervisor, modify.uudiUser);
+    if (modify.check)
+      await acceptedUpdate(modify.uuidSupervisor, modify.uudiUser);
 
     await mongoUserController.updateUser(user);
 
@@ -550,6 +549,22 @@ async function updateClinicalData(body) {
   }
 }
 
+async function addBullaUser(user, bulla) {
+  try {
+    let add = false;
+    const alreadyExists = bullaController.checkBullaAlreadyRegistered(bulla.nameBulla, user);
+    if(!alreadyExists){
+      user.bulla.push(bulla);
+      await mongoUserController.updateUser(user);
+      add = true; 
+    }
+    return add;
+  } catch (err) {
+    console.log(`[user-controller.addBullaUser] ${err.msgError}`);
+    throw err;
+  }
+}
+
 module.exports = {
   deleteSupervisorInUser,
   updateSupervisorInUser,
@@ -563,6 +578,7 @@ module.exports = {
   deleteBoxInUser,
   updateBoxUser,
   insertOneUser,
+  addBullaUser,
   registerBox,
   getOneUser,
   getAllUser,
