@@ -133,12 +133,12 @@ async function getAlarms(body) {
           }
       }
       else{ // intervalado
-          const vezes_dia = alarm.vezes_dia;
+          const { times_day }  = alarm;
           let hour, min;
 
-          for(var j = 0; j < vezes_dia; j++){
-              hour = ( parseInt(alarm.hour) + (j * parseInt(alarm.periodo_hour)) ) % 24; 
-              min = parseInt(alarm.minute) + (j * parseInt(alarm.periodo_min));
+          for(var j = 0; j < times_day; j++){
+              hour = ( parseInt(alarm.hour) + (j * parseInt(alarm.period_hour)) ) % 24; 
+              min = parseInt(alarm.minute) + (j * parseInt(alarm.period_min));
               
               if(min >= 60){
                   hour = (hour + 1) % 24;
