@@ -35,6 +35,7 @@ class Controller {
         insertOneBox: "/insertOneBox",
         deleteOneBox: "/deleteOneBox",
         updateBox: "/updateBox",
+        getAlarms: "/getAlarms",
       },
       Supervisor: {
         updateUserInSupervisor: "/updateUserInSupervisor",
@@ -409,6 +410,21 @@ class Controller {
     };
   }
 
+  static getAlarms() {
+    return async (req, res) => {
+      try {
+        const getAlarmsResponse = await boxController.getAlarms(req.body);
+        res
+          .status(getAlarmsResponse.status)
+          .send(this.formatResponseBody(getAlarmsResponse));
+      } catch (error) {
+        res
+          .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
+          .send(this.formatResponseBody(error));
+      }
+    };
+  }
+
   // Finish endpoints Box
 
   // Start endpoints Supervisor
@@ -536,13 +552,12 @@ class Controller {
 
   static textRecognizer() {
     return async (req, res) => {
+      const { file } = req;
       try {
-        const { file } = req;
         const textRecognizerResponse = await pythonController.textRecognizer(
           file,
           req.body.uuid
         );
-        fs.unlinkSync(file.destination + file.filename);
         res
           .status(textRecognizerResponse.status)
           .send(this.formatResponseBody(textRecognizerResponse));
@@ -550,6 +565,9 @@ class Controller {
         res
           .status(error.status || StatusCodes.INTERNAL_SERVER_ERROR)
           .send(this.formatResponseBody(error));
+      }
+      finally {
+        fs.unlinkSync(file.destination + file.filename);
       }
     };
   }

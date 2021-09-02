@@ -47,6 +47,7 @@ module.exports = app => {
 
   app.post(Box.deleteOneBox, BaseController.deleteOneBox());
   app.post(Box.updateBox, BaseController.updateBox());
+  app.post(Box.getAlarms, BaseController.getAlarms());
 
   // Supervisor endpoints
 
