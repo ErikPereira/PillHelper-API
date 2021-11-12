@@ -112,6 +112,10 @@ async function getAlarms(body) {
 
     for(let i=0; i < alarms.length; i++){
       const alarm = alarms[i];
+      
+      if(alarm.active !== "1")
+        continue
+
       if(alarm.alarm_type === "1"){ // fixo
           for(var j = 0; j < 7; j++){
               if(alarm[week[j]] === "1"){
@@ -157,7 +161,7 @@ async function getAlarms(body) {
           }
       }
     }
-
+    console.log(result)
     return {
       status: StatusCodes.OK,
       error: false,
